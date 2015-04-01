@@ -3,5 +3,13 @@ vozlisca = {{0, 0}, {1, 0}, {3/2, Sqrt[3]/2}, {1/2, Sqrt[3]/2}};
 povezave = {{2, 4}, {1, 3, 4}, {2, 4}, {1, 2, 3}};
 podpore = {{1, {px[1], py[1]}}, {2, {0, py[2]}}};
 obremenitve = {{3, {0, -1}}};
-Print[GenerirajEnacbe[vozlisca, povezave, obremenitve, podpore]]
+enacbe = GenerirajEnacbe[vozlisca, povezave, podpore, obremenitve];
+neznanke = GenerirajNeznanke[povezave, podpore];
+Print[Solve[enacbe, neznanke]];
 
+S = GenerirajS[povezave, 1];
+Y = GenerirajY[povezave, 1];
+enacbe = GenerirajEnergijsko[vozlisca, povezave, obremenitve, S, Y];
+vezi = GenerirajVezi[podpore];
+neznanke = GenerirajNeznankePomiki[vozlisca];
+Print[NMinimize[{enacbe, vezi}, neznanke]];

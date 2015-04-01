@@ -30,7 +30,19 @@ SileNaVozlisce::usage = "Vrne vsoto vseh sil na vozlišče, po kompomentah.";
 DodajObremenitve::usage = "Doda nove sile med vse sile. Funkcija spremeni drugi argument.";
 GenerirajEnacbe::usage = "Vrne sistem ravnovesnih enačb za vsa vozlišča, upoštevajoč obremenitve, podpore in notranje sile";
 GenerirajNeznanke::usage = "Vrne seznam vseh uporabljenih neznank, sestavljen iz sil v palicah in podpor.";
-F::usage = "Neznanka, uporabljena za notranje sile."
+F::usage = "Neznanka, uporabljena za notranje sile.";
+
+Dolzine::usage = "Vrne dolzine med vozlišči v obliki d[i, j]";
+GenerirajY::usage = "Vrne Yougove module palic Y[i, j] nastavljene na konst";
+GenerirajS::usage = "Vrne preseke palic S[i,j] nastavljene na konst";
+GenerirajK::usage = "Vrne prožnostne koeficinte palic k[i, j]. Y in S sta lahko konstanti ali pa Y[i, j], S[i, j]";
+GenerirajVezi::usage = "Generira energijski funckijonal z vezmi";
+GenerirajEnergijsko::usage = "Generira energijski funckijonal z vezmi";
+GenerirajNeznankePomiki::usage = "Generira neznanke za minimizacijo pomikov.";
+px::usage = "Neznanka za premike v x smeri";
+py::usage = "Neznanka za premike v y smeri";
+
+ResiPalicje::usage = "Resi palicje. Za togo palicje izracuna sile, za elastično pa pomike";
 
 Begin["Private`"]
 
@@ -76,9 +88,7 @@ NarisiPalicje[Vozlisca_, Povezave_] :=
    točkama *)
 EnotskiVektor[tocka1_, tocka2_] := (tocka2 - tocka1) / Norm[tocka2 - tocka1]
 
-(* Funkcija pomaga vrne sistem enačb v x in y smeri za
-   ravnotežje sil v vozlišču i. Sile označimo z F[i, j], enačbe pa vrnemo
-   in so dostopne kot Enacba[i] (če smo rezultat shranili v spr. Enacba *)
+(* Funkcija vrne vsoto sil na vozlišče i v x in y smeri *)
 SileNaVozlisce[i_, Vozlisca_, Povezave_] := Module[
   {sosedi, tocka}, (* lokalne spremenljivke *)
 
@@ -101,7 +111,7 @@ DodajObremenitve[noveSile_, vseSile_] := Module[
 ]
 
 (* Generira in vrne enacbe za paličje *)
-GenerirajEnacbe[Vozlisca_, Povezave_, Obremenitve_, Podpore_] := Module[
+GenerirajEnacbe[Vozlisca_, Povezave_, Podpore_, Obremenitve_] := Module[
   {Sistem, SileVozlisca}, (* lokalne spremenljivke *)
 
   SileVozlisca = Table[SileNaVozlisce[i, Vozlisca, Povezave], {i, 1, Length[Vozlisca]}];
@@ -116,11 +126,12 @@ GenerirajEnacbe[Vozlisca_, Povezave_, Obremenitve_, Podpore_] := Module[
 
 (* Generira neznanje paličja, da jih lahko uporabimo, pri reševanju zgornjega sistema *)
 GenerirajNeznanke[Povezave_, Podpore_] := Module[
-  {SilePalic, Neznanke},
+  {SilePalic, Neznanke}, (* lokalne spremenljivke *)
+
   SilePalic = Flatten[
     Table[
       F @@ Sort[{i, j}],
-        {i, 1, Length[Povezave]}, {j, Povezave[[i]]}]  (* yup, you can do that *)
+        {i, 1, Length[Povezave]}, {j, Povezave[[i]]}]
   ];
 
   Neznanke = Join[
@@ -134,82 +145,103 @@ GenerirajNeznanke[Povezave_, Podpore_] := Module[
   Neznanke = Union[Neznanke] (* return value *)
 ]
 
+ResiPalicje[Vozlisca_, Povezave_, Podpore_, Obremenitve_] := Module[
+  {enacbe, neznanke}, (* lokalne spremenljivke *)
+
+  enacbe = GenerirajEnacbe[Vozlisca, Povezave, Podpore, Obremenitve];
+  neznanke = GenerirajNeznanke[Povezave, Podpore];
+  Solve[enacbe, neznanke] (* return value *)
+]
+
 (* ******** ENERGIJSKO ********** *)
 
-(*
-
 (* Energijska formulacija upogiba *)
-GenerirajDol[Vozlisca_, Povezave_, d_]:=Module[{},
-    GenDolzine[$i_] := Module[{n, j, sos},  n = Length[Povezave[[$i]]];
-     Do[sos = Povezave[[$i, j]]; If[$i < sos,
-       d[$i, sos] = Norm[Vozlisca[[$i]] - Vozlisca[[sos]]]; ] ,
-        {j, n}];];
-           Do[ GenDolzine[i], {i, Length[Povezave]} ];
+
+(* Vrne dolzine palic v obliki d[i, j] *)
+Dolzine[Vozlisca_, Povezave_]:= Module[
+  {d}, (* lokalne spremenljivke *)
+
+  Table[
+    d[i, j] = Norm[Vozlisca[[i]] - Vozlisca[[j]]];,
+      {i, 1, Length[Povezave]}, {j, Povezave[[i]]}];
+  d (* return value *)
 ]
 
-(*Nastavi vse Youngove module palic Y[i,j] na konst*)
-GenerirajY[konst_: 200 10^9, Y_: Y, Povezave_: Povezave] :=
- Module[{},
-  GenY[$i_] := Module[{n, j, sos}, n = Length[Povezave[[$i]]];
-    Do[sos = Povezave[[$i, j]];
-     If[$i < sos, Y[$i, sos] = konst;], {j, n}];];
-  Do[GenY[i], {i, Length[Povezave]}];]
-  (*Nastavi vse preseke palic S[i,j] na konst*)
-GenerirajS[konst_: 10^-6, S_: S, Povezave_: Povezave] :=
- Module[{},
-  GenS[$i_] := Module[{n, j, sos}, n = Length[Povezave[[$i]]];
-    Do[sos = Povezave[[$i, j]];
-     If[$i < sos, S[$i, sos] = konst;], {j, n}];];
-  Do[GenS[i], {i, Length[Povezave]}];]
-(* zgenerira vse prožnostne koeficiente palic k[i, j] *)
-GenerirajK[Vozlisca_, Povezave_, Y_, S_, d_, k_]:= Module[{},
-    GenK[$i_] := Module[{n, j, sos},  n = Length[Povezave[[$i]]];
-     Do[sos = Povezave[[$i, j]]; If[$i < sos,
-       k[$i, sos] = Y[$i, sos] * S[$i, sos]/d[$i, sos]; ] ,
-           {j, n}];];
-           Do[ GenK[i], {i, Length[Povezave]} ];
+(* vrne spremenljivko ki ima s[i,j] nastavljene na konst, če obstaja povezava ij.
+   Uporabno za preseke in Youngove module *)
+GenerirajKonst[Povezave_, konst_] := Module[
+  {x}, (* lokalne spremenljivke *)
+
+  Table[
+    x[i, j] = konst;,
+      {i, 1, Length[Povezave]}, {j, Povezave[[i]]}];
+  x (* return value *)
 ]
 
+(* generira vse Youngove module enake konst*)
+GenerirajY[Povezave_, konst_: 200 10^9] := GenerirajKonst[Povezave, konst]
+(* generira vse preseke enake konst *)
+GenerirajS[Povezave_, konst_: 10^-6] := GenerirajKonst[Povezave, konst]
 
-TrojiceToVred[Trojice_, out_]:=Do[out[Trojice[[i, 1]], Trojice[[i, 2]]]=Trojice[[i, 3]], {i, Length[Trojice]}]
-SosedSeznamToTroj[Povezave_, vre_:1]:=Module[{razp = {}},
-    GenTroj[$i_] := Module[{n}, n = Length[Povezave[[$i]]];
-          Do[
-               If[$i < Povezave[[$i, j]], AppendTo[razp, {$i, Povezave[[$i, j]], vre}]],
-           {j, n}]; ];
-      Do[ GenTroj[i], {i, Length[Povezave]} ];
-    razp
+(* generira vse prožnostne koeficiente palic k[i, j] *)
+GenerirajK[Vozlisca_, Povezave_, Y_: 200 10^9, S_: 10^-6]:= Module[
+  {k, d, y, s}, (* lokalne spremenljivke *)
+
+  d = Dolzine[Vozlisca, Povezave];
+  y = If[NumberQ[Y], GenerirajKonst[Povezave, Y], Y];
+  s = If[NumberQ[S], GenerirajKonst[Povezave, S], S];
+
+  Table[
+    k[i, j] = y[i, j] * s[i, j] / d[i, j];,
+      {i, 1, Length[Povezave]}, {j, Povezave[[i]]}];
+  k (* return value *)
 ]
 
+(* Vrne neznanke za pomike vozlišč *)
+GenerirajNeznankePomiki[Vozlisca_] := Flatten[Table[{px[i], py[i]}, {i, 1, Length[Vozlisca]}]]
 
-GenerirajEnergijsko[Vozlisca_, Povezave_, Podpore_, Obremenitve_,  Y_, S_] :=
- Module[{k, d}, Energija = 0;
-     GenerirajDol[Vozlisca, Povezave, d];
-     GenerirajK[Vozlisca, Povezave, Y, S, d, k];
-         GenE[$i_] := Module[{n, j, sos},  n = Length[Povezave[[$i]]];
-     Do[sos = Povezave[[$i, j]]; If[$i < sos,
-       Energija = Energija +  k[$i, sos]/2 *    (Norm[Vozlisca[[$i]] + {px[$i], py[$i]} - Vozlisca[[sos]] - {px[sos], py[sos]}] - d[$i, sos])^2        ], {j, n}]];
-       Do[ GenE[i], {i, Length[Povezave]} ];
-           GenEObr[$ind_] := Module[{i, sila},
-               i =    Obremenitve[[$ind, 1]];
-               sila = Obremenitve[[$ind, 2]];
-            Energija = Energija - {px[i], py[i]}.sila;
-        ];
-        Do[GenEObr[i], {i, Length[Obremenitve]}];
-        Vezi = {};
-        (* Sprehod po podporah in generacija vezi *)
-        GenVezi[$i_] := Module[{n},(
-            n=Length[Position[{Podpore[[$i,2,1]]},0]];
-            If[n == 0,AppendTo[Vezi,px[Podpore[[$i,1]]]== 0]];
-            n=Length[Position[{Podpore[[$i,2,2]]},0]];
-            If[n == 0,AppendTo[Vezi,py[Podpore[[$i,1]]]== 0]];
-        )];
-        Do[GenVezi[i], {i, 1, Length[Podpore]}];
-        pomiki = Table[{px[i], py[i]}, {i, 1, Length[Vozlisca]}]//Flatten;
-        NMinimize[Join[{Energija}, Vezi],  pomiki]
+(* Vrne vezi paličja, ki jih določajo podpore *)
+GenerirajVezi[Podpore_] := Module[
+  {vezi}, (* lokalne spremenljivke *)
+
+  vezi = {}; (* podpore se ne premikajo *)
+  Do[
+    {i, sila} = podp;
+    If[!NumberQ[sila[[1]]] || sila[[1]] != 0, AppendTo[vezi, px[i] == 0]];
+    If[!NumberQ[sila[[2]]] || sila[[2]] != 0, AppendTo[vezi, py[i] == 0]];,
+      {podp, Podpore}];
+  vezi (* return value *)
 ]
 
-*)
+(* Vrne energijski funkcional z vezmi *)
+GenerirajEnergijsko[Vozlisca_, Povezave_, Obremenitve_, Y_, S_] := Module[
+  {k, vi, vj, Energija, i, sila},
+
+  d = Dolzine[Vozlisca, Povezave];
+  k = GenerirajK[Vozlisca, Povezave, Y, S];
+
+  Energija = 1/2 * Sum[ (* naš potencial *)
+    Sum[
+      {vi, vj} = {Vozlisca[[i]], Vozlisca[[j]]};
+      k[i, j] / 2 * ( Norm[vi + {px[i], py[i]} - (vj + {px[j], py[j]})] - d[i, j] )^2,
+        {j, Povezave[[i]]}],
+          {i, 1, Length[Povezave]}];
+
+  Energija -= Sum[ (* zunanje obremenitve *)
+    {i, sila} = obr;
+    {px[i], py[i]} . sila,
+      {obr, Obremenitve}] (* return value *)
+]
+
+(* Izracuna pomike paličja *)
+ResiPalicje[Vozlisca_, Povezave_, Podpore_, Obremenitve_, Y_, S_] := Module[
+  {enacbe, neznanke}, (* lokalne spremenljivke *)
+
+  enacbe = GenerirajEnergijsko[Vozlisca, Povezave, Obremenitve, Y, S];
+  vezi = GenerirajVezi[Podpore];
+  neznanke = GenerirajNeznankePomiki[Vozlisca];
+  NMinimize[{enacbe, vezi}, neznanke] (* return value *)
+]
 
 End[]
 EndPackage[]
