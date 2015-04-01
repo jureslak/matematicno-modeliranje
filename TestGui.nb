@@ -1,0 +1,446 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 10.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     15586,        437]
+NotebookOptionsPosition[     14471,        395]
+NotebookOutlinePosition[     15125,        420]
+CellTagsIndexPosition[     15040,        415]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[{
+ RowBox[{"Clear", "[", "Palicje", "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"SetDirectory", "[", "\"\<~/faks/mm/\>\"", "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Needs", "[", "\"\<Palicje`\>\"", "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"vozlisca", " ", "=", " ", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"0", ",", "0"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"1", ",", "0"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"3", "/", "2"}], ",", 
+       RowBox[{
+        RowBox[{"Sqrt", "[", "3", "]"}], "/", "2"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"1", "/", "2"}], ",", 
+       RowBox[{
+        RowBox[{"Sqrt", "[", "3", "]"}], "/", "2"}]}], "}"}]}], "}"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"povezave", " ", "=", " ", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"2", ",", "4"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"1", ",", "3", ",", "4"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"2", ",", "4"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"1", ",", "2", ",", "3"}], "}"}]}], "}"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"podpore", "=", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"1", ",", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"px", "[", "1", "]"}], ",", 
+         RowBox[{"py", "[", "1", "]"}]}], "}"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"2", ",", 
+       RowBox[{"{", 
+        RowBox[{"0", ",", 
+         RowBox[{"py", "[", "2", "]"}]}], "}"}]}], "}"}]}], "}"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"obremenitve", " ", "=", " ", 
+   RowBox[{"{", 
+    RowBox[{"{", 
+     RowBox[{"3", ",", 
+      RowBox[{"{", 
+       RowBox[{"0", ",", 
+        RowBox[{"-", "1"}]}], "}"}]}], "}"}], "}"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"NarisiPalicje", "[", 
+  RowBox[{"vozlisca", ",", "povezave"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"enacbe", " ", "=", " ", 
+   RowBox[{"GenerirajEnacbe", "[", 
+    RowBox[{
+    "vozlisca", ",", " ", "povezave", ",", " ", "obremenitve", ",", " ", 
+     "podpore"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"neznanke", " ", "=", " ", 
+   RowBox[{"GenerirajNeznanke", "[", 
+    RowBox[{"povezave", ",", "podpore"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Solve", "[", 
+  RowBox[{"enacbe", ",", "neznanke"}], "]"}]}], "Input",
+ CellChangeTimes->{{3.6368221560083733`*^9, 3.636822216575573*^9}, {
+   3.6368222554882307`*^9, 3.636822261665104*^9}, {3.636822621632309*^9, 
+   3.63682263815928*^9}, {3.636823248873118*^9, 3.636823338696981*^9}, {
+   3.636823381785096*^9, 3.636823412776514*^9}, {3.6368237646426353`*^9, 
+   3.636823765586936*^9}, {3.636824008986566*^9, 3.6368240091943693`*^9}, {
+   3.636824060954507*^9, 3.6368240610169487`*^9}, {3.636826028715375*^9, 
+   3.636826084787344*^9}, 3.6368278581507387`*^9, {3.6368279485335283`*^9, 
+   3.63682794910927*^9}, {3.636828013902403*^9, 3.6368280961013317`*^9}, {
+   3.6368290286498833`*^9, 3.636829104104892*^9}, {3.636829281454534*^9, 
+   3.636829297447432*^9}, {3.636832135018753*^9, 3.636832136754816*^9}}],
+
+Cell[BoxData[
+ GraphicsBox[{
+   {PointSize[
+    Medium], {PointBox[{0, 0}], PointBox[{1, 0}], 
+     PointBox[NCache[{Rational[3, 2], Rational[1, 2] 3^Rational[1, 2]}, {1.5, 
+       0.8660254037844386}]], 
+     PointBox[NCache[{Rational[1, 2], Rational[1, 2] 3^Rational[1, 2]}, {0.5, 
+       0.8660254037844386}]]}, {InsetBox[
+      StyleBox["1",
+       StripOnInput->False,
+       FontSize->Medium], {0, 0}, {0, 2}], InsetBox[
+      StyleBox["2",
+       StripOnInput->False,
+       FontSize->Medium], {1, 0}, {0, 2}], InsetBox[
+      StyleBox["3",
+       StripOnInput->False,
+       FontSize->Medium], 
+      NCache[{Rational[3, 2], Rational[1, 2] 3^Rational[1, 2]}, {1.5, 
+       0.8660254037844386}], {0, 2}], InsetBox[
+      StyleBox["4",
+       StripOnInput->False,
+       FontSize->Medium], 
+      NCache[{Rational[1, 2], Rational[1, 2] 3^Rational[1, 2]}, {0.5, 
+       0.8660254037844386}], {0, 2}]}}, {LineBox[{{0, 0}, {1, 0}}], 
+    LineBox[NCache[{{0, 0}, {
+       Rational[1, 2], Rational[1, 2] 3^Rational[1, 2]}}, {{0, 0}, {0.5, 
+       0.8660254037844386}}]]}, {LineBox[{{1, 0}, {0, 0}}], 
+    LineBox[NCache[{{1, 0}, {
+       Rational[3, 2], Rational[1, 2] 3^Rational[1, 2]}}, {{1, 0}, {1.5, 
+       0.8660254037844386}}]], 
+    LineBox[NCache[{{1, 0}, {
+       Rational[1, 2], Rational[1, 2] 3^Rational[1, 2]}}, {{1, 0}, {0.5, 
+       0.8660254037844386}}]]}, {
+    LineBox[NCache[{{Rational[3, 2], Rational[1, 2] 3^Rational[1, 2]}, {1, 
+       0}}, {{1.5, 0.8660254037844386}, {1, 0}}]], 
+    LineBox[NCache[{{Rational[3, 2], Rational[1, 2] 3^Rational[1, 2]}, {
+       Rational[1, 2], Rational[1, 2] 3^Rational[1, 2]}}, {{1.5, 
+      0.8660254037844386}, {0.5, 0.8660254037844386}}]]}, {
+    LineBox[NCache[{{Rational[1, 2], Rational[1, 2] 3^Rational[1, 2]}, {0, 
+       0}}, {{0.5, 0.8660254037844386}, {0, 0}}]], 
+    LineBox[NCache[{{Rational[1, 2], Rational[1, 2] 3^Rational[1, 2]}, {1, 
+       0}}, {{0.5, 0.8660254037844386}, {1, 0}}]], 
+    LineBox[NCache[{{Rational[1, 2], Rational[1, 2] 3^Rational[1, 2]}, {
+       Rational[3, 2], Rational[1, 2] 3^Rational[1, 2]}}, {{0.5, 
+      0.8660254037844386}, {1.5, 0.8660254037844386}}]]}}]], "Output",
+ CellChangeTimes->{
+  3.636823339252056*^9, {3.636823395882018*^9, 3.636823413286479*^9}, 
+   3.636823452617135*^9, {3.63682400970098*^9, 3.636824012348898*^9}, {
+   3.636824055061173*^9, 3.636824068309898*^9}, 3.636826053357692*^9, 
+   3.636826085595394*^9, {3.6368278489965982`*^9, 3.636827858935965*^9}, 
+   3.636827951630694*^9, 3.6368280967288*^9, {3.636829016991418*^9, 
+   3.636829049677576*^9}, {3.636829084130952*^9, 3.636829104509721*^9}, {
+   3.636829278933752*^9, 3.636829297720367*^9}, 3.636831938421864*^9, {
+   3.636832137724956*^9, 3.63683214050696*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"{", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"F", "[", 
+      RowBox[{"1", ",", "2"}], "]"}], "\[Rule]", 
+     RowBox[{"-", 
+      FractionBox["1", 
+       RowBox[{"2", " ", 
+        SqrtBox["3"]}]]}]}], ",", 
+    RowBox[{
+     RowBox[{"F", "[", 
+      RowBox[{"1", ",", "4"}], "]"}], "\[Rule]", 
+     FractionBox["1", 
+      SqrtBox["3"]]}], ",", 
+    RowBox[{
+     RowBox[{"F", "[", 
+      RowBox[{"2", ",", "3"}], "]"}], "\[Rule]", 
+     RowBox[{"-", 
+      FractionBox["2", 
+       SqrtBox["3"]]}]}], ",", 
+    RowBox[{
+     RowBox[{"F", "[", 
+      RowBox[{"2", ",", "4"}], "]"}], "\[Rule]", 
+     RowBox[{"-", 
+      FractionBox["1", 
+       SqrtBox["3"]]}]}], ",", 
+    RowBox[{
+     RowBox[{"F", "[", 
+      RowBox[{"3", ",", "4"}], "]"}], "\[Rule]", 
+     FractionBox["1", 
+      SqrtBox["3"]]}], ",", 
+    RowBox[{
+     RowBox[{"px", "[", "1", "]"}], "\[Rule]", "0"}], ",", 
+    RowBox[{
+     RowBox[{"py", "[", "1", "]"}], "\[Rule]", 
+     RowBox[{"-", 
+      FractionBox["1", "2"]}]}], ",", 
+    RowBox[{
+     RowBox[{"py", "[", "2", "]"}], "\[Rule]", 
+     FractionBox["3", "2"]}]}], "}"}], "}"}]], "Output",
+ CellChangeTimes->{
+  3.636823339252056*^9, {3.636823395882018*^9, 3.636823413286479*^9}, 
+   3.636823452617135*^9, {3.63682400970098*^9, 3.636824012348898*^9}, {
+   3.636824055061173*^9, 3.636824068309898*^9}, 3.636826053357692*^9, 
+   3.636826085595394*^9, {3.6368278489965982`*^9, 3.636827858935965*^9}, 
+   3.636827951630694*^9, 3.6368280967288*^9, {3.636829016991418*^9, 
+   3.636829049677576*^9}, {3.636829084130952*^9, 3.636829104509721*^9}, {
+   3.636829278933752*^9, 3.636829297720367*^9}, 3.636831938421864*^9, {
+   3.636832137724956*^9, 3.636832140508412*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"?", "Palicje`*"}]], "Input",
+ CellChangeTimes->{{3.63682931541566*^9, 3.636829322734561*^9}}],
+
+Cell[BoxData[
+ DynamicModuleBox[{Typeset`open$$ = True}, 
+  PaneSelectorBox[{False->
+   RowBox[{
+    OpenerBox[Dynamic[Typeset`open$$],
+     ImageSize->Small], 
+    StyleBox["Palicje`", "InfoHeading"]}], True->GridBox[{
+     {
+      RowBox[{
+       OpenerBox[Dynamic[Typeset`open$$],
+        ImageSize->Small], 
+       StyleBox["Palicje`", "InfoHeading"]}]},
+     {GridBox[{
+        {
+         ButtonBox["DodajObremenitve",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info3636839145-1241806", {"DodajObremenitve", "Palicje`"}},
+          ButtonNote->"Palicje`"], 
+         ButtonBox["F",
+          BaseStyle->"InformationLink",
+          ButtonData:>{"Info3636839145-1241806", {"F", "Palicje`"}},
+          ButtonNote->"Palicje`"], 
+         ButtonBox["GenerirajNeznanke",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info3636839145-1241806", {"GenerirajNeznanke", "Palicje`"}},
+          ButtonNote->"Palicje`"], 
+         ButtonBox["NarisiPaliceIzVozlisca",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info3636839145-1241806", {"NarisiPaliceIzVozlisca", "Palicje`"}},
+          ButtonNote->"Palicje`"], 
+         ButtonBox["NarisiVozlisca",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info3636839145-1241806", {"NarisiVozlisca", "Palicje`"}},
+          ButtonNote->"Palicje`"]},
+        {
+         ButtonBox["EnotskiVektor",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info3636839145-1241806", {"EnotskiVektor", "Palicje`"}},
+          ButtonNote->"Palicje`"], 
+         ButtonBox["GenerirajEnacbe",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info3636839145-1241806", {"GenerirajEnacbe", "Palicje`"}},
+          ButtonNote->"Palicje`"], 
+         ButtonBox["NarisiPalice",
+          BaseStyle->"InformationLink",
+          ButtonData:>{"Info3636839145-1241806", {"NarisiPalice", "Palicje`"}},
+          ButtonNote->"Palicje`"], 
+         ButtonBox["NarisiPalicje",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info3636839145-1241806", {"NarisiPalicje", "Palicje`"}},
+          ButtonNote->"Palicje`"], 
+         ButtonBox["SileNaVozlisce",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info3636839145-1241806", {"SileNaVozlisce", "Palicje`"}},
+          ButtonNote->"Palicje`"]}
+       },
+       DefaultBaseStyle->"InfoGrid",
+       GridBoxItemSize->{"Columns" -> {{
+            Scaled[0.19]}}}]}
+    },
+    GridBoxAlignment->{"Columns" -> {{Left}}, "Rows" -> {{Baseline}}}]}, 
+   Dynamic[Typeset`open$$],
+   ImageSize->Automatic]]], "Print", "InfoCell",
+ CellChangeTimes->{3.636831945129608*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"?", "F"}], "\[IndentingNewLine]", 
+ RowBox[{"??", "GenerirajEnacbe"}]}], "Input",
+ CellChangeTimes->{{3.636831948649324*^9, 3.636831977145993*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ StyleBox["\<\"Neznanka, uporabljena za notranje sile.\"\>", "MSG"]], "Print",\
+ "PrintUsage",
+ CellChangeTimes->{3.636831977435679*^9},
+ CellTags->"Info3636839177-1241806"],
+
+Cell[BoxData[
+ StyleBox["\<\"Vrne sistem ravnovesnih ena\[CHacek]b za vsa vozli\[SHacek]\
+\[CHacek]a, upo\[SHacek]tevajo\[CHacek] obremenitve, podpore in notranje sile\
+\"\>", "MSG"]], "Print", "PrintUsage",
+ CellChangeTimes->{3.636831977489216*^9},
+ CellTags->"Info3636839177-1241806"],
+
+Cell[BoxData[
+ InterpretationBox[GridBox[{
+    {GridBox[{
+       {
+        RowBox[{
+         RowBox[{"GenerirajEnacbe", "[", 
+          RowBox[{
+          "Private`Vozlisca_", ",", "Private`Povezave_", ",", 
+           "Private`Obremenitve_", ",", "Private`Podpore_"}], "]"}], ":=", 
+         RowBox[{"Module", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"Private`Sistem", ",", "Private`SileVozlisca"}], "}"}], 
+           ",", 
+           RowBox[{
+            RowBox[{"Private`SileVozlisca", "=", 
+             RowBox[{"Table", "[", 
+              RowBox[{
+               RowBox[{"SileNaVozlisce", "[", 
+                RowBox[{
+                "Private`i", ",", "Private`Vozlisca", ",", 
+                 "Private`Povezave"}], "]"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"Private`i", ",", "1", ",", 
+                 RowBox[{"Length", "[", "Private`Vozlisca", "]"}]}], "}"}]}], 
+              "]"}]}], ";", 
+            RowBox[{"DodajObremenitve", "[", 
+             RowBox[{"Private`Obremenitve", ",", "Private`SileVozlisca"}], 
+             "]"}], ";", 
+            RowBox[{"DodajObremenitve", "[", 
+             RowBox[{"Private`Podpore", ",", "Private`SileVozlisca"}], "]"}], 
+            ";", 
+            RowBox[{"Flatten", "[", 
+             RowBox[{"Table", "[", 
+              RowBox[{
+               RowBox[{"Thread", "[", 
+                RowBox[{
+                 RowBox[{
+                 "Private`SileVozlisca", "\[LeftDoubleBracket]", "Private`i", 
+                  "\[RightDoubleBracket]"}], "\[Equal]", "0"}], "]"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"Private`i", ",", 
+                 RowBox[{"Length", "[", "Private`Vozlisca", "]"}]}], "}"}]}], 
+              "]"}], "]"}]}]}], "]"}]}]}
+      },
+      BaselinePosition->{Baseline, {1, 1}},
+      GridBoxAlignment->{
+       "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+        "RowsIndexed" -> {}},
+      GridBoxItemSize->{"Columns" -> {{
+           Scaled[0.999]}}, "ColumnsIndexed" -> {}, "Rows" -> {{1.}}, 
+        "RowsIndexed" -> {}}]}
+   },
+   BaselinePosition->{Baseline, {1, 1}},
+   GridBoxAlignment->{
+    "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+     "RowsIndexed" -> {}}],
+  Definition[Palicje`GenerirajEnacbe],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.6368319775111217`*^9},
+ CellTags->"Info3636839177-1241806"]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{1680, 1030},
+WindowMargins->{{Automatic, 0}, {Automatic, 0}},
+FrontEndVersion->"10.0 for Linux x86 (64-bit) (September 9, 2014)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{
+ "Info3636839177-1241806"->{
+  Cell[11528, 318, 187, 4, 42, "Print",
+   CellTags->"Info3636839177-1241806"],
+  Cell[11718, 324, 286, 5, 42, "Print",
+   CellTags->"Info3636839177-1241806"],
+  Cell[12007, 331, 2436, 60, 100, "Print",
+   CellTags->"Info3636839177-1241806"]}
+ }
+*)
+(*CellTagsIndex
+CellTagsIndex->{
+ {"Info3636839177-1241806", 14773, 405}
+ }
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 3242, 89, 253, "Input"],
+Cell[3825, 113, 2739, 53, 243, "Output"],
+Cell[6567, 168, 1731, 50, 55, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[8335, 223, 117, 2, 32, "Input"],
+Cell[8455, 227, 2839, 79, 78, "Print"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[11331, 311, 172, 3, 55, "Input"],
+Cell[CellGroupData[{
+Cell[11528, 318, 187, 4, 42, "Print",
+ CellTags->"Info3636839177-1241806"],
+Cell[11718, 324, 286, 5, 42, "Print",
+ CellTags->"Info3636839177-1241806"],
+Cell[12007, 331, 2436, 60, 100, "Print",
+ CellTags->"Info3636839177-1241806"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
