@@ -85,7 +85,7 @@ NarisiPalicje[Vozlisca_List, Povezave_List] :=
   Show[NarisiVozlisca[Vozlisca], NarisiPalice[Vozlisca, Povezave]]
 
 (* funkcija ki naredi funkcijo za barvanje palic *)
-NarediFunkcijoBarvanja[minF_?NumericQ, maxF_?NumericQ] := Function[f, (f - minF) / (maxF - minF) / 2]
+NarediFunkcijoBarvanja[minF_?NumericQ, maxF_?NumericQ] := Function[f, (f - minF) / (maxF - minF) / 3]
 NarisiBarvnePaliceIzVozlisca[i_Integer, Vozlisca_List, Povezave_List, Sile_, barva_Function] := Module[
   {vozlisce, sosednja, sile}, (* lokalne spremenljivke *)
 
@@ -118,7 +118,7 @@ NarisiPaleto[minF_?NumericQ, maxF_?NumericQ] := Module[
 
   Show[Table[
     Graphics[{
-      Hue[i/(2 nx)],
+      Hue[i/(3 nx)],
       Rectangle[{x0 + i dx, y0}, {x0 + (i + 1) dx, y1}]
     }], {i, nx}],
     Table[Graphics[
@@ -131,10 +131,10 @@ NarisiPaleto[minF_?NumericQ, maxF_?NumericQ] := Module[
 ]
 
 NarisiBarvnoPalicje[Vozlisca_List, Povezave_List, Sile:List[List[_Rule..]]] := Module[
-  {paleta, barva, vrednostiSil, sile, minF, maxF}, (* lokalne spremenljivke *)
+  {paleta, barva, vrednostiSil, sile, minF, maxF, notranjeSile}, (* lokalne spremenljivke *)
 
-  (* FIXME: nastavi tudi uporabnikove spremenljivke *)
-  vrednostiSil = Sile /. {F -> sile, Rule -> Set}; (* nastavimo sile[i, j] in dobimo vse vrednosti *)
+  notranjeSile = Cases[Sile, HoldPattern[Rule[_F, _]], 2]; (* Hold ker mathcamo Rule *)
+  vrednostiSil = notranjeSile /. {F -> sile, Rule -> Set}; (* nastavimo sile[i, j] in dobimo vse vrednosti *)
   minF = Min[vrednostiSil];
   maxF = Max[vrednostiSil];
   barva = NarediFunkcijoBarvanja[minF, maxF];
