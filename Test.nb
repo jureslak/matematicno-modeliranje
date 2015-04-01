@@ -5,7 +5,8 @@ podpore = {{1, {px[1], py[1]}}, {2, {0, py[2]}}};
 obremenitve = {{3, {0, -1}}};
 enacbe = GenerirajEnacbe[vozlisca, povezave, podpore, obremenitve];
 neznanke = GenerirajNeznanke[povezave, podpore];
-Print[Solve[enacbe, neznanke]];
+resitev = Solve[enacbe, neznanke];
+NarisiBarvnePaliceIzVozlisca[1, vozlisca, povezave, resitev]
 
 S = GenerirajS[povezave, 1];
 Y = GenerirajY[povezave, 1];

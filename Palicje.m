@@ -24,6 +24,9 @@ NarisiPaliceIzVozlisca::iBounds = "`1` out of range [1, `2`]";
 NarisiPaliceIzVozlisca::povezaveBounds = "Lengths of Vozlisca and Povezave differ! (`1` != `2`)";
 NarisiPalice::usage = "Nariše vse palice iz danih vozlišč";
 NarisiPalicje::usage = "Nariše celotno paličje podano z vozlišči in povezavami";
+NarisiBarvnePalice::usage = "Nariše barve palice";
+NarisiBarvnePaliceIzVozlisca::usage = "Nariše pobarvane palice iz vozlišča i";
+NarisiBarvnoPalicje::usage = "Nariše barvno paličje z legendo";
 
 EnotskiVektor::usage = "Vrne enotski vektor med tocko1 in tocko2";
 SileNaVozlisce::usage = "Vrne vsoto vseh sil na vozlišče, po kompomentah.";
@@ -49,7 +52,7 @@ Begin["Private`"]
 (* ******** RISANJE ********** *)
 
 (* Funkcija  NarisiVozlisca nariše vozlišča podana s seznamom koordinat*)
-NarisiVozlisca[Vozlisca_] := Graphics[{
+NarisiVozlisca[Vozlisca_List] := Graphics[{
   PointSize[Medium],
   Table[Point[Vozlisca[[k]]], {k, Length[Vozlisca]}],
   Table[
@@ -58,8 +61,33 @@ NarisiVozlisca[Vozlisca_] := Graphics[{
 }];
 
 (* Funkcija nariše vozlišča palice iz i-tega vozlišča. *)
-NarisiPaliceIzVozlisca[i_, Vozlisca_, Povezave_] := Module[
-  {vozlisce, sosednje}, (* lokalne spremenljivke *)
+NarisiPaliceIzVozlisca[i_Integer, Vozlisca_List, Povezave_List] := Module[
+  {vozlisce, sosednja}, (* lokalne spremenljivke *)
+
+  (* errors *)
+  If[1 <= i <= Length[Vozlisca], Null,
+    Message[NarisiPaliceIzVozlisca::iBounds, i, Length[Vozlisca]]; Return[$Failed]];
+  If[Length[Vozlisca] == Length[Povezave], Null,
+    Message[NarisiPaliceIzVozlisca::povezaveBounds, i, Length[Vozlisca]]; Return[$Failed]];
+
+  vozlisce = Vozlisca[[i]];
+  sosednja = Table[Vozlisca[[j]], {j, Povezave[[i]]}];
+  Graphics[
+    Table[Line[{vozlisce, sosed}], {sosed, sosednja}] (* return value *)
+  ]
+]
+(* Nariše vse palice *)
+NarisiPalice[Vozlisca_List, Povezave_List] :=
+  Table[NarisiPaliceIzVozlisca[i, Vozlisca, Povezave], {i, Length[Vozlisca]}]
+
+(* Funkcija nariše paličje, združi točke in povezave *)
+NarisiPalicje[Vozlisca_List, Povezave_List] :=
+  Show[NarisiVozlisca[Vozlisca], NarisiPalice[Vozlisca, Povezave]]
+
+(* funkcija ki naredi funkcijo za barvanje palic *)
+NarediFunkcijoBarvanja[minF_?NumericQ, maxF_?NumericQ] := Function[f, (f - minF) / (maxF - minF) / 2]
+NarisiBarvnePaliceIzVozlisca[i_Integer, Vozlisca_List, Povezave_List, Sile_, barva_Function] := Module[
+  {vozlisce, sosednja, sile}, (* lokalne spremenljivke *)
 
   (* errors *)
   If[1 <= i <= Length[Vozlisca], Null,
@@ -68,19 +96,51 @@ NarisiPaliceIzVozlisca[i_, Vozlisca_, Povezave_] := Module[
     Message[NarisiPaliceIzVozlisca::povezaveBounds, i, Length[Vozlisca]]; Return[$failed]];
 
   vozlisce = Vozlisca[[i]];
-  sosednje = Table[Vozlisca[[j]], {j, Povezave[[i]]}];
+  sosednja = Table[Vozlisca[[j]], {j, Povezave[[i]]}];
   Graphics[
-    Table[Line[{vozlisce, sosed}], {sosed, sosednje}] (* return value *)
+    Table[{
+      Hue[barva[ Sile @@ Sort[{i, j} ]]],
+      Thick,
+      Line[{vozlisce, Vozlisca[[j]]}]},
+        {j, Povezave[[i]]}] (* return value *)
   ]
 ]
+NarisiBarvnePalice[Vozlisca_List, Povezave_List, Sile_, barva_Function] :=
+  Table[
+    NarisiBarvnePaliceIzVozlisca[i, Vozlisca, Povezave, Sile, barva],
+      {i, Length[Vozlisca]}] (* return value *)
 
-(* Nariše vse palice *)
-NarisiPalice[Vozlisca_, Povezave_] :=
-  Table[NarisiPaliceIzVozlisca[i, Vozlisca, Povezave], {i, Length[Vozlisca]}]
+NarisiPaleto[minF_?NumericQ, maxF_?NumericQ] := Module[
+  {x0, y0, x1, y1, dx, nx, y2}, (* lokalne spremenljivke *)
 
-(* Funkcija nariše paličje, združi točke in povezave *)
-NarisiPalicje[Vozlisca_, Povezave_] :=
-  Show[NarisiVozlisca[Vozlisca], NarisiPalice[Vozlisca, Povezave]]
+  x0 = 0; y0 = -1/4; x1 = 1; y1 = y0 + 1/8; nx = 100;
+  dx = (x1 - x0)/nx; y2 = y0 - 1/20;
+
+  Show[Table[
+    Graphics[{
+      Hue[i/(2 nx)],
+      Rectangle[{x0 + i dx, y0}, {x0 + (i + 1) dx, y1}]
+    }], {i, nx}],
+    Table[Graphics[
+      Text[
+        Style[N[Round[minF + (maxF - minF) s, 1/20]], Medium],
+        {s, y2}, {0, 0}
+      ]
+    ], {s, 0, 1, 0.2}]
+  ] (* return value *)
+]
+
+NarisiBarvnoPalicje[Vozlisca_List, Povezave_List, Sile:List[List[_Rule..]]] := Module[
+  {paleta, barva, vrednostiSil, sile, minF, maxF}, (* lokalne spremenljivke *)
+
+  (* FIXME: nastavi tudi uporabnikove spremenljivke *)
+  vrednostiSil = Sile /. {F -> sile, Rule -> Set}; (* nastavimo sile[i, j] in dobimo vse vrednosti *)
+  minF = Min[vrednostiSil];
+  maxF = Max[vrednostiSil];
+  barva = NarediFunkcijoBarvanja[minF, maxF];
+  paleta = NarisiPaleto[minF, maxF];
+  Show[NarisiVozlisca[Vozlisca], NarisiBarvnePalice[Vozlisca, Povezave, sile, barva], paleta]
+]
 
 (* ******** STATIKA ********** *)
 
@@ -89,7 +149,7 @@ NarisiPalicje[Vozlisca_, Povezave_] :=
 EnotskiVektor[tocka1_, tocka2_] := (tocka2 - tocka1) / Norm[tocka2 - tocka1]
 
 (* Funkcija vrne vsoto sil na vozlišče i v x in y smeri *)
-SileNaVozlisce[i_, Vozlisca_, Povezave_] := Module[
+SileNaVozlisce[i_, Vozlisca_List, Povezave_List] := Module[
   {sosedi, tocka}, (* lokalne spremenljivke *)
 
   sosedi = Povezave[[i]];
@@ -111,7 +171,7 @@ DodajObremenitve[noveSile_, vseSile_] := Module[
 ]
 
 (* Generira in vrne enacbe za paličje *)
-GenerirajEnacbe[Vozlisca_, Povezave_, Podpore_, Obremenitve_] := Module[
+GenerirajEnacbe[Vozlisca_List, Povezave_List, Podpore_List, Obremenitve_List] := Module[
   {Sistem, SileVozlisca}, (* lokalne spremenljivke *)
 
   SileVozlisca = Table[SileNaVozlisce[i, Vozlisca, Povezave], {i, 1, Length[Vozlisca]}];
@@ -125,9 +185,10 @@ GenerirajEnacbe[Vozlisca_, Povezave_, Podpore_, Obremenitve_] := Module[
 ]
 
 (* Generira neznanje paličja, da jih lahko uporabimo, pri reševanju zgornjega sistema *)
-GenerirajNeznanke[Povezave_, Podpore_] := Module[
+GenerirajNeznanke[Povezave_List, Podpore_List] := Module[
   {SilePalic, Neznanke}, (* lokalne spremenljivke *)
 
+  ClearAll[F];
   SilePalic = Flatten[
     Table[
       F @@ Sort[{i, j}],
@@ -145,7 +206,7 @@ GenerirajNeznanke[Povezave_, Podpore_] := Module[
   Neznanke = Union[Neznanke] (* return value *)
 ]
 
-ResiPalicje[Vozlisca_, Povezave_, Podpore_, Obremenitve_] := Module[
+ResiPalicje[Vozlisca_List, Povezave_List, Podpore_List, Obremenitve_List] := Module[
   {enacbe, neznanke}, (* lokalne spremenljivke *)
 
   enacbe = GenerirajEnacbe[Vozlisca, Povezave, Podpore, Obremenitve];
@@ -158,7 +219,7 @@ ResiPalicje[Vozlisca_, Povezave_, Podpore_, Obremenitve_] := Module[
 (* Energijska formulacija upogiba *)
 
 (* Vrne dolzine palic v obliki d[i, j] *)
-Dolzine[Vozlisca_, Povezave_]:= Module[
+Dolzine[Vozlisca_List, Povezave_List]:= Module[
   {d}, (* lokalne spremenljivke *)
 
   Table[
@@ -169,7 +230,7 @@ Dolzine[Vozlisca_, Povezave_]:= Module[
 
 (* vrne spremenljivko ki ima s[i,j] nastavljene na konst, če obstaja povezava ij.
    Uporabno za preseke in Youngove module *)
-GenerirajKonst[Povezave_, konst_] := Module[
+GenerirajKonst[Povezave_List, konst_] := Module[
   {x}, (* lokalne spremenljivke *)
 
   Table[
@@ -179,12 +240,12 @@ GenerirajKonst[Povezave_, konst_] := Module[
 ]
 
 (* generira vse Youngove module enake konst*)
-GenerirajY[Povezave_, konst_: 200 10^9] := GenerirajKonst[Povezave, konst]
+GenerirajY[Povezave_List, konst_: 200 10^9] := GenerirajKonst[Povezave, konst]
 (* generira vse preseke enake konst *)
-GenerirajS[Povezave_, konst_: 10^-6] := GenerirajKonst[Povezave, konst]
+GenerirajS[Povezave_List, konst_: 10^-6] := GenerirajKonst[Povezave, konst]
 
 (* generira vse prožnostne koeficiente palic k[i, j] *)
-GenerirajK[Vozlisca_, Povezave_, Y_: 200 10^9, S_: 10^-6]:= Module[
+GenerirajK[Vozlisca_List, Povezave_List, Y_: 200 10^9, S_: 10^-6]:= Module[
   {k, d, y, s}, (* lokalne spremenljivke *)
 
   d = Dolzine[Vozlisca, Povezave];
@@ -198,10 +259,10 @@ GenerirajK[Vozlisca_, Povezave_, Y_: 200 10^9, S_: 10^-6]:= Module[
 ]
 
 (* Vrne neznanke za pomike vozlišč *)
-GenerirajNeznankePomiki[Vozlisca_] := Flatten[Table[{px[i], py[i]}, {i, 1, Length[Vozlisca]}]]
+GenerirajNeznankePomiki[Vozlisca_List] := Flatten[Table[{px[i], py[i]}, {i, 1, Length[Vozlisca]}]]
 
 (* Vrne vezi paličja, ki jih določajo podpore *)
-GenerirajVezi[Podpore_] := Module[
+GenerirajVezi[Podpore_List] := Module[
   {vezi}, (* lokalne spremenljivke *)
 
   vezi = {}; (* podpore se ne premikajo *)
@@ -214,11 +275,12 @@ GenerirajVezi[Podpore_] := Module[
 ]
 
 (* Vrne energijski funkcional z vezmi *)
-GenerirajEnergijsko[Vozlisca_, Povezave_, Obremenitve_, Y_, S_] := Module[
+GenerirajEnergijsko[Vozlisca_List, Povezave_List, Obremenitve_List, Y_, S_] := Module[
   {k, vi, vj, Energija, i, sila},
 
   d = Dolzine[Vozlisca, Povezave];
   k = GenerirajK[Vozlisca, Povezave, Y, S];
+  ClearAll[px, py];
 
   Energija = 1/2 * Sum[ (* naš potencial *)
     Sum[
@@ -234,7 +296,7 @@ GenerirajEnergijsko[Vozlisca_, Povezave_, Obremenitve_, Y_, S_] := Module[
 ]
 
 (* Izracuna pomike paličja *)
-ResiPalicje[Vozlisca_, Povezave_, Podpore_, Obremenitve_, Y_, S_] := Module[
+ResiPalicje[Vozlisca_List, Povezave_List, Podpore_List, Obremenitve_List, Y_, S_] := Module[
   {enacbe, neznanke}, (* lokalne spremenljivke *)
 
   enacbe = GenerirajEnergijsko[Vozlisca, Povezave, Obremenitve, Y, S];
