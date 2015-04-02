@@ -3,14 +3,15 @@ vozlisca = {{0, 0}, {1, 0}, {3/2, Sqrt[3]/2}, {1/2, Sqrt[3]/2}};
 povezave = {{2, 4}, {1, 3, 4}, {2, 4}, {1, 2, 3}};
 podpore = {{1, {px[1], py[1]}}, {2, {0, py[2]}}};
 obremenitve = {{3, {0, -1}}};
-enacbe = GenerirajEnacbe[vozlisca, povezave, podpore, obremenitve];
-neznanke = GenerirajNeznanke[povezave, podpore];
+enacbe = RavnovesneEnacbe[vozlisca, povezave, podpore, obremenitve];
+neznanke = NeznankeSile[povezave, podpore];
 resitev = Solve[enacbe, neznanke];
+Print[resitev];
 NarisiBarvnePaliceIzVozlisca[1, vozlisca, povezave, resitev]
 
 S = GenerirajS[povezave, 1];
 Y = GenerirajY[povezave, 1];
-enacbe = GenerirajEnergijsko[vozlisca, povezave, obremenitve, S, Y];
-vezi = GenerirajVezi[podpore];
-neznanke = GenerirajNeznankePomiki[vozlisca];
+enacbe = EnergijskiFunkcional[vozlisca, povezave, obremenitve, S, Y];
+vezi = Vezi[podpore];
+neznanke = NeznankePomiki[vozlisca];
 Print[NMinimize[{enacbe, vezi}, neznanke]];

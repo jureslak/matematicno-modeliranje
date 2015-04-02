@@ -18,32 +18,70 @@ BeginPackage["Palicje`"]
 
 (* ******** DEFINICIJE ********* *)
 
-NarisiVozlisca::usage = "Nariše vozlišča dana s seznamom koordinat"
-NarisiPaliceIzVozlisca::usage = "Nariše vse palice iz danega vozlišča";
-NarisiPalice::usage = "Nariše vse palice iz danih vozlišč";
-NarisiPalicje::usage = "Nariše celotno paličje podano z vozlišči in povezavami";
-NarisiBarvnePalice::usage = "Nariše barve palice";
-NarisiBarvnePaliceIzVozlisca::usage = "Nariše pobarvane palice iz vozlišča i";
-NarisiBarvnoPalicje::usage = "Nariše barvno paličje z legendo";
+NarisiVozlisca::usage = "NarisiVozlisca[Vozlisca] nariše oštevilčena vozlišča kot točke v ravnini.";
+NarisiPalice::usage = "NarisiPalice[Vozlisca, Povezave] nariše vse palice med vozlišči.";
 
-EnotskiVektor::usage = "Vrne enotski vektor med tocko1 in tocko2";
-SileNaVozlisce::usage = "Vrne vsoto vseh sil na vozlišče, po kompomentah.";
-DodajObremenitve::usage = "Doda nove sile med vse sile. Funkcija spremeni drugi argument.";
-GenerirajEnacbe::usage = "Vrne sistem ravnovesnih enačb za vsa vozlišča, upoštevajoč obremenitve, podpore in notranje sile";
-GenerirajNeznanke::usage = "Vrne seznam vseh uporabljenih neznank, sestavljen iz sil v palicah in podpor.";
+NarisiPalicje::usage =
+"NarisiPalicje[Vozlisca, Povezave] nariše celotno paličje podano z vozlišči in povezavami";
+
+NarisiBarvnePalice::usage =
+"NarisiBarvnePalice[Vozlisca, Povezave, Sile, BarvaFn] nariše pobarvane palice. Palica ij je \
+pobarvana s funkcijo Hue[BarvaFn[Sile[i, j]]], barva je odvisna od sil z dano funkcijo BarvaFn.";
+
+NarisiBarvnoPalicje::usage =
+"NarisiBarvnoPalicje[Vozlisca, Povezave, Sile, MinF:Null, MaxF:Null] nariše barvno paličje z \
+legendo barv. Sile[i, j] v palici ij določajo barvo, ki je enakomerno porazdeljena na intervalu \
+[MinF, MaxF]. Če spremenljivki nista podani, vzamemo največjo in najmanjšo izmed Sile (legenda \
+je tesna z obeh strani).";
+
+SileNaVozlisce::usage =
+"SileNaVozlisce[i, Vozlisca, Povezave] vrne vsoto vseh sil na vozlišče i, po x in y smeri posebej.";
+
+RavnovesneEnacbe::usage =
+"RavnovesneEnacbe[Vozlisca, Povezave, Podpore, Obremenitve] vrne sistem ravnovesnih enačb za vsa \
+vozlišča, upoštevajoč obremenitve, podpore in notranje sile.";
+
+NeznankeSile::usage =
+"NeznankeSile[Povezave, Podpore] vrne seznam vseh uporabljenih neznank, \
+sestavljen iz sil v palicah (F[i, j]) in podpor (user-defined).";
+
 F::usage = "Neznanka, uporabljena za notranje sile.";
 
-Dolzine::usage = "Vrne dolzine med vozlišči v obliki d[i, j]";
-GenerirajY::usage = "Vrne Yougove module palic Y[i, j] nastavljene na konst";
-GenerirajS::usage = "Vrne preseke palic S[i,j] nastavljene na konst";
-GenerirajK::usage = "Vrne prožnostne koeficinte palic k[i, j]. Y in S sta lahko konstanti ali pa Y[i, j], S[i, j]";
-GenerirajVezi::usage = "Generira energijski funckijonal z vezmi";
-GenerirajEnergijsko::usage = "Generira energijski funckijonal z vezmi";
-GenerirajNeznankePomiki::usage = "Generira neznanke za minimizacijo pomikov.";
+Dolzine::usage =
+"Dolzine[Vozlisca, Povezave] Vrne dolzine med vozlišči v obliki d[i, j] za vse \
+povezave ij.";
+
+GenerirajY::usage =
+"GenerirajY[Povezave, konst] vrne Yougove module palic Y[i, j] nastavljene na \
+konst, za vse povezave ij.";
+
+GenerirajS::usage =
+"GenerirajS[Povezave, konst] vrne preseke palic S[i,j] nastavljene na konst,\
+za vse povezave ij.";
+
+GenerirajK::usage =
+"GenerirajK[Vozlisca, Povezave] vrne prožnostne koeficinte palic k[i, j] po \
+formuli k = Y * S / d. Y in S sta lahko konstanti ali pa Y[i, j], S[i, j]. ";
+
+Vezi::usage =
+"Vezi[Podpore] vrne vezi za fiksne in drsne podpore.\nVezi[{{1, {Fpx[1], Fpy[1]}}, {1, {0, \
+Fpy[1]}}}] vrne {px[1] == 0, py[1] == 0, py[2] == 0}, saj so tam podpoore fiksirane."
+
+EnergijskiFunkcional::usage =
+"EnergijskiFunkcional[Vozlisca, Povezave, Obremenitve, Y, S] generira energijski funckional danega \
+paličja. Y in S sta lahko bodisi konstanti bodisi Y[i, j], S[i, j].";
+
+NeznankePomiki::usage =
+"NeznankePomiki[Vozlisca] generira neznanke za minimizacijo pomikov, tj. seznam {px[1], py[1], ...}.";
+
 px::usage = "Neznanka za premike v x smeri";
 py::usage = "Neznanka za premike v y smeri";
 
-ResiPalicje::usage = "Resi palicje. Za togo palicje izracuna sile, za elastično pa pomike";
+ResiPalicje::usage =
+"ResiPalicje[Vozlisca, Povezave, Podpore, Obremenitve] določi sile v palicah za model togega \
+paličja. \n\n\
+ResiPalicje[Vozlisca, Povezave, Podpore, Obremenitve, Y, S] določi pomike vozlišč s pomočjo \
+minimizacije energijskega funkcionala.";
 
 (* errors *)
 Palicje::VozliscaPovezaveLength = "Dolžine seznamov vozlišč in povezav so različne! (`1` != `2`)";
@@ -77,6 +115,8 @@ NarisiVozlisca[Vozlisca:$VFP] := Graphics[{
 }];
 
 (* Funkcija nariše vozlišča palice iz i-tega vozlišča. *)
+NarisiPaliceIzVozlisca::usage = "NarisiPaliceIzVozlisca[i, Vozlisca, Palice] nariše vse palice iz\
+vozlisca i, torej vse palice od Vozlisca[[i]] do Povezave[[i]]";
 NarisiPaliceIzVozlisca[i_Integer, Vozlisca:$VFP, Povezave:$PFP] := Module[
   {vozlisce, sosednja}, (* lokalne spremenljivke *)
 
@@ -98,7 +138,9 @@ NarisiPalicje[Vozlisca:$VFP, Povezave:$PFP] :=
 
 (* funkcija ki naredi funkcijo za barvanje palic *)
 NarediFunkcijoBarvanja[minF_?NumericQ, maxF_?NumericQ] := Function[f, (f - minF) / (maxF - minF) / 3]
-NarisiBarvnePaliceIzVozlisca[i_Integer, Vozlisca:$VFP, Povezave:$PFP, Sile_, barva_Function] := Module[
+
+NarisiBarvnePaliceIzVozlisca::usage = "Nariše pobarvane palice iz vozlišča i";
+NarisiBarvnePaliceIzVozlisca[i_Integer, Vozlisca:$VFP, Povezave:$PFP, Sile_, BarvaFn_Function] := Module[
   {vozlisce, sosednja, sile}, (* lokalne spremenljivke *)
 
   If[CheckInvalidVozliscaPovezave[Vozlisca, Povezave, i], Return[$Failed]];
@@ -107,15 +149,15 @@ NarisiBarvnePaliceIzVozlisca[i_Integer, Vozlisca:$VFP, Povezave:$PFP, Sile_, bar
   sosednja = Table[Vozlisca[[j]], {j, Povezave[[i]]}];
   Graphics[
     Table[{
-      Hue[barva[ Sile @@ Sort[{i, j} ]]],
+      Hue[BarvaFn[ Sile @@ Sort[{i, j} ]]],
       Thick,
       Line[{vozlisce, Vozlisca[[j]]}]},
         {j, Povezave[[i]]}] (* return value *)
   ]
 ]
-NarisiBarvnePalice[Vozlisca:$VFP, Povezave:$PFP, Sile_, barva_Function] :=
+NarisiBarvnePalice[Vozlisca:$VFP, Povezave:$PFP, Sile_, BarvaFn_Function] :=
   Table[
-    NarisiBarvnePaliceIzVozlisca[i, Vozlisca, Povezave, Sile, barva],
+    NarisiBarvnePaliceIzVozlisca[i, Vozlisca, Povezave, Sile, BarvaFn],
       {i, Length[Vozlisca]}] (* return value *)
 
 NarisiPaleto[minF_?NumericQ, maxF_?NumericQ] := Module[
@@ -138,7 +180,7 @@ NarisiPaleto[minF_?NumericQ, maxF_?NumericQ] := Module[
 ]
 
 NarisiBarvnoPalicje[Vozlisca:$VFP, Povezave:$PFP, Sile:$RFP, MinF_:Null, MaxF_:Null] := Module[
-  {paleta, barva, vrednostiSil, sile, minF, maxF, notranjeSile}, (* lokalne spremenljivke *)
+  {paleta, BarvaFn, vrednostiSil, sile, minF, maxF, notranjeSile}, (* lokalne spremenljivke *)
 
   If[CheckInvalidVozliscaPovezave[Vozlisca, Povezave, i], Return[$Failed]];
 
@@ -146,15 +188,16 @@ NarisiBarvnoPalicje[Vozlisca:$VFP, Povezave:$PFP, Sile:$RFP, MinF_:Null, MaxF_:N
   vrednostiSil = notranjeSile /. {F -> sile, Rule -> Set}; (* nastavimo sile[i, j] in dobimo vse vrednosti *)
   minF = If[NumericQ[MinF], MinF, Min[vrednostiSil]];
   maxF = If[NumericQ[MaxF], MaxF, Max[vrednostiSil]];
-  barva = NarediFunkcijoBarvanja[minF, maxF];
+  BarvaFn = NarediFunkcijoBarvanja[minF, maxF];
   paleta = NarisiPaleto[minF, maxF];
-  Show[NarisiVozlisca[Vozlisca], NarisiBarvnePalice[Vozlisca, Povezave, sile, barva], paleta]
+  Show[NarisiVozlisca[Vozlisca], NarisiBarvnePalice[Vozlisca, Povezave, sile, BarvaFn], paleta]
 ]
 
 (* ******** STATIKA ********** *)
 
 (* Funkcija razdeli silo v palici na kompenento v x in y smeri, vrne enotski vektor med dvema
    točkama *)
+EnotskiVektor::usage = "Vrne enotski vektor med tocko1 in tocko2";
 EnotskiVektor[tocka1_List, tocka2_List] := (tocka2 - tocka1) / Norm[tocka2 - tocka1]
 
 (* Funkcija vrne vsoto sil na vozlišče i v x in y smeri *)
@@ -169,6 +212,7 @@ SileNaVozlisce[i_, Vozlisca:$VFP, Povezave:$PFP] := Module[
 
 (* Funkcija doda obremenitve za vozlišča k notranjim silam, kjer obremenitev obstaja.
    Deluje za obremenitve in tudi podpore, kjer podamo neznane sile po komponentah. *)
+DodajObremenitve::usage = "Doda nove sile med vse sile. Funkcija spremeni drugi argument.";
 SetAttributes[DodajObremenitve, HoldAll] (* da lahko modifyamo spremenljivke *)
 DodajObremenitve[noveSile_, vseSile_] := Module[
   {idx, sila}, (* lokalne spremenljivke *)
@@ -180,7 +224,7 @@ DodajObremenitve[noveSile_, vseSile_] := Module[
 ]
 
 (* Generira in vrne enacbe za paličje *)
-GenerirajEnacbe[Vozlisca:$VFP, Povezave:$PFP, Podpore:$OFP, Obremenitve:$OFP] := Module[
+RavnovesneEnacbe[Vozlisca:$VFP, Povezave:$PFP, Podpore:$OFP, Obremenitve:$OFP] := Module[
   {Sistem, SileVozlisca}, (* lokalne spremenljivke *)
 
   SileVozlisca = Table[SileNaVozlisce[i, Vozlisca, Povezave], {i, 1, Length[Vozlisca]}];
@@ -194,7 +238,7 @@ GenerirajEnacbe[Vozlisca:$VFP, Povezave:$PFP, Podpore:$OFP, Obremenitve:$OFP] :=
 ]
 
 (* Generira neznanje paličja, da jih lahko uporabimo, pri reševanju zgornjega sistema *)
-GenerirajNeznanke[Povezave:$PFP, Podpore:$OFP] := Module[
+NeznankeSile[Povezave:$PFP, Podpore:$OFP] := Module[
   {SilePalic, Neznanke}, (* lokalne spremenljivke *)
 
   ClearAll[F];
@@ -218,8 +262,8 @@ GenerirajNeznanke[Povezave:$PFP, Podpore:$OFP] := Module[
 ResiPalicje[Vozlisca:$VFP, Povezave:$PFP, Podpore:$OFP, Obremenitve:$OFP] := Module[
   {enacbe, neznanke}, (* lokalne spremenljivke *)
 
-  enacbe = GenerirajEnacbe[Vozlisca, Povezave, Podpore, Obremenitve];
-  neznanke = GenerirajNeznanke[Povezave, Podpore];
+  enacbe = RavnovesneEnacbe[Vozlisca, Povezave, Podpore, Obremenitve];
+  neznanke = NeznankeSile[Povezave, Podpore];
   Solve[enacbe, neznanke] (* return value *)
 ]
 
@@ -268,10 +312,10 @@ GenerirajK[Vozlisca:$VFP, Povezave:$PFP, Y_: 200 10^9, S_: 10^-6]:= Module[
 ]
 
 (* Vrne neznanke za pomike vozlišč *)
-GenerirajNeznankePomiki[Vozlisca:$VFP] := Flatten[Table[{px[i], py[i]}, {i, 1, Length[Vozlisca]}]]
+NeznankePomiki[Vozlisca:$VFP] := Flatten[Table[{px[i], py[i]}, {i, 1, Length[Vozlisca]}]]
 
 (* Vrne vezi paličja, ki jih določajo podpore *)
-GenerirajVezi[Podpore:$OFP] := Module[
+Vezi[Podpore:$OFP] := Module[
   {vezi}, (* lokalne spremenljivke *)
 
   vezi = {}; (* podpore se ne premikajo *)
@@ -284,7 +328,7 @@ GenerirajVezi[Podpore:$OFP] := Module[
 ]
 
 (* Vrne energijski funkcional z vezmi *)
-GenerirajEnergijsko[Vozlisca:$VFP, Povezave:$PFP, Obremenitve:$OFP, Y_, S_] := Module[
+EnergijskiFunkcional[Vozlisca:$VFP, Povezave:$PFP, Obremenitve:$OFP, Y_, S_] := Module[
   {k, vi, vj, Energija, i, sila},
 
   d = Dolzine[Vozlisca, Povezave];
@@ -310,9 +354,9 @@ ResiPalicje[Vozlisca:$VFP, Povezave:$PFP, Podpore:$OFP, Obremenitve:$OFP, Y_, S_
 
   If[CheckInvalidVozliscaPovezave[Vozlisca, Povezave, i], Return[$Failed]];
 
-  enacbe = GenerirajEnergijsko[Vozlisca, Povezave, Obremenitve, Y, S];
-  vezi = GenerirajVezi[Podpore];
-  neznanke = GenerirajNeznankePomiki[Vozlisca];
+  enacbe = EnergijskiFunkcional[Vozlisca, Povezave, Obremenitve, Y, S];
+  vezi = Vezi[Podpore];
+  neznanke = NeznankePomiki[Vozlisca];
   NMinimize[{enacbe, vezi}, neznanke] (* return value *)
 ]
 
