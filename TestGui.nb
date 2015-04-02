@@ -10,18 +10,20 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     55803,       1381]
-NotebookOptionsPosition[     54225,       1327]
-NotebookOutlinePosition[     54883,       1352]
-CellTagsIndexPosition[     54797,       1347]
+NotebookDataLength[     60694,       1507]
+NotebookOptionsPosition[     59114,       1452]
+NotebookOutlinePosition[     59772,       1477]
+CellTagsIndexPosition[     59686,       1472]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
 Notebook[{
 Cell[BoxData[{
  RowBox[{
-  RowBox[{"Needs", "[", "\"\<Palicje`\>\"", "]"}], 
-  ";"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"Needs", "[", "\"\<Palicje`\>\"", "]"}], ";"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", "definicije", " ", "*)"}]}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"vozlisca", " ", "=", " ", 
    RowBox[{"{", 
@@ -93,33 +95,41 @@ Cell[BoxData[{
    3.636909976713286*^9}, {3.63691001216855*^9, 3.636910022472403*^9}, {
    3.636910111216576*^9, 3.636910111400285*^9}, 3.63691026589785*^9, {
    3.6369131922745247`*^9, 3.636913195058765*^9}, {3.636913620819776*^9, 
-   3.636913624379818*^9}, {3.636913903307673*^9, 3.636913908579361*^9}}],
+   3.636913624379818*^9}, {3.636913903307673*^9, 3.636913908579361*^9}, {
+   3.636982226587563*^9, 3.636982230691564*^9}}],
 
 Cell[CellGroupData[{
 
-Cell[BoxData[{
- RowBox[{"NarisiPalicje", "[", 
-  RowBox[{"vozlisca", ",", "povezave"}], "]"}], "\[IndentingNewLine]", 
+Cell[BoxData[
  RowBox[{
-  RowBox[{"enacbe", " ", "=", " ", 
-   RowBox[{"GenerirajEnacbe", "[", 
-    RowBox[{
-    "vozlisca", ",", " ", "povezave", ",", " ", "obremenitve", ",", " ", 
-     "podpore"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{"neznanke", " ", "=", " ", 
-   RowBox[{"GenerirajNeznanke", "[", 
-    RowBox[{"povezave", ",", "podpore"}], "]"}]}], 
-  ";"}], "\[IndentingNewLine]", 
- RowBox[{"Solve", "[", 
-  RowBox[{"enacbe", ",", "neznanke"}], "]"}], "\[IndentingNewLine]", 
- RowBox[{"resitev", "=", 
-  RowBox[{"ResiPalicje", "[", 
-   RowBox[{"vozlisca", ",", "povezave", ",", "podpore", ",", "obremenitve"}], 
-   "]"}]}], "\[IndentingNewLine]", 
- RowBox[{"N", "[", "resitev", "]"}], "\[IndentingNewLine]", 
- RowBox[{"NarisiBarvnoPalicje", "[", 
-  RowBox[{"vozlisca", ",", "povezave", ",", "resitev"}], "]"}]}], "Input",
+  RowBox[{"(*", " ", 
+   RowBox[{"Enostavno", " ", "pali\[CHacek]je"}], " ", "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"NarisiPalicje", "[", 
+    RowBox[{"vozlisca", ",", "povezave"}], "]"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"enacbe", " ", "=", " ", 
+     RowBox[{"GenerirajEnacbe", "[", 
+      RowBox[{
+      "vozlisca", ",", " ", "povezave", ",", " ", "obremenitve", ",", " ", 
+       "podpore"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"neznanke", " ", "=", " ", 
+     RowBox[{"GenerirajNeznanke", "[", 
+      RowBox[{"povezave", ",", "podpore"}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"Solve", "[", 
+    RowBox[{"enacbe", ",", "neznanke"}], "]"}], "\[IndentingNewLine]", 
+   RowBox[{"resitev", "=", 
+    RowBox[{"ResiPalicje", "[", 
+     RowBox[{
+     "vozlisca", ",", "povezave", ",", "podpore", ",", "obremenitve"}], 
+     "]"}]}], "\[IndentingNewLine]", 
+   RowBox[{"N", "[", "resitev", "]"}], "\[IndentingNewLine]", 
+   RowBox[{"NarisiBarvnoPalicje", "[", 
+    RowBox[{"vozlisca", ",", "povezave", ",", "resitev"}], "]"}]}]}]], "Input",\
+
  CellChangeTimes->{{3.6368221560083733`*^9, 3.636822216575573*^9}, {
    3.6368222554882307`*^9, 3.636822261665104*^9}, {3.636822621632309*^9, 
    3.63682263815928*^9}, {3.636823248873118*^9, 3.636823338696981*^9}, {
@@ -135,7 +145,9 @@ Cell[BoxData[{
    3.636909976713286*^9}, {3.63691001216855*^9, 3.636910022472403*^9}, {
    3.636910111216576*^9, 3.636910111400285*^9}, 3.63691026589785*^9, {
    3.6369131922745247`*^9, 3.636913195058765*^9}, {3.636913620819776*^9, 
-   3.636913624379818*^9}}],
+   3.636913624379818*^9}, {3.636982232875284*^9, 3.63698224001014*^9}, {
+   3.636987704446496*^9, 3.636987768765299*^9}, {3.636987816159417*^9, 
+   3.636987816486478*^9}}],
 
 Cell[BoxData[
  GraphicsBox[{
@@ -185,118 +197,10 @@ Cell[BoxData[
  CellChangeTimes->{
   3.636910573633195*^9, 3.63691151591546*^9, 3.6369130942591467`*^9, {
    3.636913185288981*^9, 3.6369132191572847`*^9}, {3.636913844282454*^9, 
-   3.63691386184394*^9}, {3.636918431246318*^9, 
-   3.6369184358461657`*^9}},ImageCache->GraphicsData["CompressedBitmap", "\<\
-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
-XzI5dv6/w7flgnz/AY7bEbc=\
-\>"]],
+   3.63691386184394*^9}, {3.636918431246318*^9, 3.6369184358461657`*^9}, {
+   3.6369821736717854`*^9, 3.636982181490878*^9}, 3.636982242779114*^9, 
+   3.636985462663355*^9, 3.636987667404234*^9, {3.6369877075661507`*^9, 
+   3.636987769209034*^9}, {3.636987816994957*^9, 3.636987833300859*^9}}],
 
 Cell[BoxData[
  RowBox[{"{", 
@@ -343,7 +247,10 @@ Cell[BoxData[
  CellChangeTimes->{
   3.636910573633195*^9, 3.63691151591546*^9, 3.6369130942591467`*^9, {
    3.636913185288981*^9, 3.6369132191572847`*^9}, {3.636913844282454*^9, 
-   3.63691386184394*^9}, {3.636918431246318*^9, 3.636918435847575*^9}}],
+   3.63691386184394*^9}, {3.636918431246318*^9, 3.6369184358461657`*^9}, {
+   3.6369821736717854`*^9, 3.636982181490878*^9}, 3.636982242779114*^9, 
+   3.636985462663355*^9, 3.636987667404234*^9, {3.6369877075661507`*^9, 
+   3.636987769209034*^9}, {3.636987816994957*^9, 3.636987833302946*^9}}],
 
 Cell[BoxData[
  RowBox[{"{", 
@@ -390,7 +297,10 @@ Cell[BoxData[
  CellChangeTimes->{
   3.636910573633195*^9, 3.63691151591546*^9, 3.6369130942591467`*^9, {
    3.636913185288981*^9, 3.6369132191572847`*^9}, {3.636913844282454*^9, 
-   3.63691386184394*^9}, {3.636918431246318*^9, 3.6369184358483343`*^9}}],
+   3.63691386184394*^9}, {3.636918431246318*^9, 3.6369184358461657`*^9}, {
+   3.6369821736717854`*^9, 3.636982181490878*^9}, 3.636982242779114*^9, 
+   3.636985462663355*^9, 3.636987667404234*^9, {3.6369877075661507`*^9, 
+   3.636987769209034*^9}, {3.636987816994957*^9, 3.636987833305091*^9}}],
 
 Cell[BoxData[
  RowBox[{"{", 
@@ -427,7 +337,10 @@ Cell[BoxData[
  CellChangeTimes->{
   3.636910573633195*^9, 3.63691151591546*^9, 3.6369130942591467`*^9, {
    3.636913185288981*^9, 3.6369132191572847`*^9}, {3.636913844282454*^9, 
-   3.63691386184394*^9}, {3.636918431246318*^9, 3.6369184358491087`*^9}}],
+   3.63691386184394*^9}, {3.636918431246318*^9, 3.6369184358461657`*^9}, {
+   3.6369821736717854`*^9, 3.636982181490878*^9}, 3.636982242779114*^9, 
+   3.636985462663355*^9, 3.636987667404234*^9, {3.6369877075661507`*^9, 
+   3.636987769209034*^9}, {3.636987816994957*^9, 3.636987833306527*^9}}],
 
 Cell[BoxData[
  GraphicsBox[{
@@ -455,23 +368,25 @@ Cell[BoxData[
        0.8660254037844386}], {0, 2}]}}, {
     {Hue[
       NCache[
-       Rational[1, 4], 0.25]], Thickness[Large], LineBox[{{0, 0}, {1, 0}}]}, 
+       Rational[1, 6], 0.16666666666666666`]], Thickness[Large], 
+     LineBox[{{0, 0}, {1, 0}}]}, 
     {Hue[
       NCache[
-       Rational[1, 2], 0.5]], Thickness[Large], 
+       Rational[1, 3], 0.3333333333333333]], Thickness[Large], 
      LineBox[NCache[{{0, 0}, {
         Rational[1, 2], Rational[1, 2] 3^Rational[1, 2]}}, {{0, 0}, {0.5, 
         0.8660254037844386}}]]}}, {
     {Hue[
       NCache[
-       Rational[1, 4], 0.25]], Thickness[Large], LineBox[{{1, 0}, {0, 0}}]}, 
+       Rational[1, 6], 0.16666666666666666`]], Thickness[Large], 
+     LineBox[{{1, 0}, {0, 0}}]}, 
     {Hue[0], Thickness[Large], 
      LineBox[NCache[{{1, 0}, {
         Rational[3, 2], Rational[1, 2] 3^Rational[1, 2]}}, {{1, 0}, {1.5, 
         0.8660254037844386}}]]}, 
     {Hue[
       NCache[
-       Rational[1, 6], 0.16666666666666666`]], Thickness[Large], 
+       Rational[1, 9], 0.1111111111111111]], Thickness[Large], 
      LineBox[NCache[{{1, 0}, {
         Rational[1, 2], Rational[1, 2] 3^Rational[1, 2]}}, {{1, 0}, {0.5, 
         0.8660254037844386}}]]}}, {
@@ -480,524 +395,525 @@ Cell[BoxData[
         0}}, {{1.5, 0.8660254037844386}, {1, 0}}]]}, 
     {Hue[
       NCache[
-       Rational[1, 2], 0.5]], Thickness[Large], 
-     LineBox[NCache[{{Rational[3, 2], Rational[1, 2] 3^Rational[1, 2]}, {
+       Rational[1, 3], 0.3333333333333333]], Thickness[Large], 
+     LineBox[
+      NCache[{{Rational[3, 2], Rational[1, 2] 3^Rational[1, 2]}, {
         Rational[1, 2], Rational[1, 2] 3^Rational[1, 2]}}, {{1.5, 
        0.8660254037844386}, {0.5, 0.8660254037844386}}]]}}, {
     {Hue[
       NCache[
-       Rational[1, 2], 0.5]], Thickness[Large], 
+       Rational[1, 3], 0.3333333333333333]], Thickness[Large], 
      LineBox[NCache[{{Rational[1, 2], Rational[1, 2] 3^Rational[1, 2]}, {0, 
         0}}, {{0.5, 0.8660254037844386}, {0, 0}}]]}, 
     {Hue[
       NCache[
-       Rational[1, 6], 0.16666666666666666`]], Thickness[Large], 
+       Rational[1, 9], 0.1111111111111111]], Thickness[Large], 
      LineBox[NCache[{{Rational[1, 2], Rational[1, 2] 3^Rational[1, 2]}, {1, 
         0}}, {{0.5, 0.8660254037844386}, {1, 0}}]]}, 
     {Hue[
       NCache[
-       Rational[1, 2], 0.5]], Thickness[Large], 
+       Rational[1, 3], 0.3333333333333333]], Thickness[Large], 
      LineBox[NCache[{{Rational[1, 2], Rational[1, 2] 3^Rational[1, 2]}, {
         Rational[3, 2], Rational[1, 2] 3^Rational[1, 2]}}, {{0.5, 
        0.8660254037844386}, {1.5, 0.8660254037844386}}]]}}, {
     {Hue[
       NCache[
-       Rational[1, 200], 0.005]], 
+       Rational[1, 300], 0.0033333333333333335`]], 
      RectangleBox[NCache[{Rational[1, 100], Rational[-1, 4]}, {0.01, -0.25}], 
       NCache[{Rational[1, 50], Rational[-1, 8]}, {0.02, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[1, 100], 0.01]], 
+       Rational[1, 150], 0.006666666666666667]], 
      RectangleBox[NCache[{Rational[1, 50], Rational[-1, 4]}, {0.02, -0.25}], 
       NCache[{Rational[3, 100], Rational[-1, 8]}, {0.03, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[3, 200], 0.015]], 
+       Rational[1, 100], 0.01]], 
      RectangleBox[NCache[{Rational[3, 100], Rational[-1, 4]}, {0.03, -0.25}], 
       NCache[{Rational[1, 25], Rational[-1, 8]}, {0.04, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[1, 50], 0.02]], 
+       Rational[1, 75], 0.013333333333333334`]], 
      RectangleBox[NCache[{Rational[1, 25], Rational[-1, 4]}, {0.04, -0.25}], 
       NCache[{Rational[1, 20], Rational[-1, 8]}, {0.05, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[1, 40], 0.025]], 
+       Rational[1, 60], 0.016666666666666666`]], 
      RectangleBox[NCache[{Rational[1, 20], Rational[-1, 4]}, {0.05, -0.25}], 
       NCache[{Rational[3, 50], Rational[-1, 8]}, {0.06, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[3, 100], 0.03]], 
+       Rational[1, 50], 0.02]], 
      RectangleBox[NCache[{Rational[3, 50], Rational[-1, 4]}, {0.06, -0.25}], 
       NCache[{Rational[7, 100], Rational[-1, 8]}, {0.07, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[7, 200], 0.035]], 
+       Rational[7, 300], 0.023333333333333334`]], 
      RectangleBox[NCache[{Rational[7, 100], Rational[-1, 4]}, {0.07, -0.25}], 
       NCache[{Rational[2, 25], Rational[-1, 8]}, {0.08, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[1, 25], 0.04]], 
+       Rational[2, 75], 0.02666666666666667]], 
      RectangleBox[NCache[{Rational[2, 25], Rational[-1, 4]}, {0.08, -0.25}], 
       NCache[{Rational[9, 100], Rational[-1, 8]}, {0.09, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[9, 200], 0.045]], 
+       Rational[3, 100], 0.03]], 
      RectangleBox[NCache[{Rational[9, 100], Rational[-1, 4]}, {0.09, -0.25}], 
       NCache[{Rational[1, 10], Rational[-1, 8]}, {0.1, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[1, 20], 0.05]], 
+       Rational[1, 30], 0.03333333333333333]], 
      RectangleBox[NCache[{Rational[1, 10], Rational[-1, 4]}, {0.1, -0.25}], 
       NCache[{Rational[11, 100], Rational[-1, 8]}, {0.11, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[11, 200], 0.055]], 
+       Rational[11, 300], 0.03666666666666667]], 
      RectangleBox[NCache[{Rational[11, 100], Rational[-1, 4]}, {0.11, -0.25}],
        NCache[{Rational[3, 25], Rational[-1, 8]}, {0.12, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[3, 50], 0.06]], 
+       Rational[1, 25], 0.04]], 
      RectangleBox[NCache[{Rational[3, 25], Rational[-1, 4]}, {0.12, -0.25}], 
       NCache[{Rational[13, 100], Rational[-1, 8]}, {0.13, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[13, 200], 0.065]], 
+       Rational[13, 300], 0.043333333333333335`]], 
      RectangleBox[NCache[{Rational[13, 100], Rational[-1, 4]}, {0.13, -0.25}],
        NCache[{Rational[7, 50], Rational[-1, 8]}, {0.14, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[7, 100], 0.07]], 
+       Rational[7, 150], 0.04666666666666667]], 
      RectangleBox[NCache[{Rational[7, 50], Rational[-1, 4]}, {0.14, -0.25}], 
       NCache[{Rational[3, 20], Rational[-1, 8]}, {0.15, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[3, 40], 0.075]], 
+       Rational[1, 20], 0.05]], 
      RectangleBox[NCache[{Rational[3, 20], Rational[-1, 4]}, {0.15, -0.25}], 
       NCache[{Rational[4, 25], Rational[-1, 8]}, {0.16, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[2, 25], 0.08]], 
+       Rational[4, 75], 0.05333333333333334]], 
      RectangleBox[NCache[{Rational[4, 25], Rational[-1, 4]}, {0.16, -0.25}], 
       NCache[{Rational[17, 100], Rational[-1, 8]}, {0.17, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[17, 200], 0.085]], 
+       Rational[17, 300], 0.056666666666666664`]], 
      RectangleBox[NCache[{Rational[17, 100], Rational[-1, 4]}, {0.17, -0.25}],
        NCache[{Rational[9, 50], Rational[-1, 8]}, {0.18, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[9, 100], 0.09]], 
+       Rational[3, 50], 0.06]], 
      RectangleBox[NCache[{Rational[9, 50], Rational[-1, 4]}, {0.18, -0.25}], 
       NCache[{Rational[19, 100], Rational[-1, 8]}, {0.19, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[19, 200], 0.095]], 
+       Rational[19, 300], 0.06333333333333334]], 
      RectangleBox[NCache[{Rational[19, 100], Rational[-1, 4]}, {0.19, -0.25}],
        NCache[{Rational[1, 5], Rational[-1, 8]}, {0.2, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[1, 10], 0.1]], 
+       Rational[1, 15], 0.06666666666666667]], 
      RectangleBox[NCache[{Rational[1, 5], Rational[-1, 4]}, {0.2, -0.25}], 
       NCache[{Rational[21, 100], Rational[-1, 8]}, {0.21, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[21, 200], 0.105]], 
+       Rational[7, 100], 0.07]], 
      RectangleBox[NCache[{Rational[21, 100], Rational[-1, 4]}, {0.21, -0.25}],
        NCache[{Rational[11, 50], Rational[-1, 8]}, {0.22, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[11, 100], 0.11]], 
+       Rational[11, 150], 0.07333333333333333]], 
      RectangleBox[NCache[{Rational[11, 50], Rational[-1, 4]}, {0.22, -0.25}], 
       NCache[{Rational[23, 100], Rational[-1, 8]}, {0.23, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[23, 200], 0.115]], 
+       Rational[23, 300], 0.07666666666666666]], 
      RectangleBox[NCache[{Rational[23, 100], Rational[-1, 4]}, {0.23, -0.25}],
        NCache[{Rational[6, 25], Rational[-1, 8]}, {0.24, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[3, 25], 0.12]], 
+       Rational[2, 25], 0.08]], 
      RectangleBox[NCache[{Rational[6, 25], Rational[-1, 4]}, {0.24, -0.25}], 
       NCache[{Rational[1, 4], Rational[-1, 8]}, {0.25, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[1, 8], 0.125]], 
+       Rational[1, 12], 0.08333333333333333]], 
      RectangleBox[NCache[{Rational[1, 4], Rational[-1, 4]}, {0.25, -0.25}], 
       NCache[{Rational[13, 50], Rational[-1, 8]}, {0.26, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[13, 100], 0.13]], 
+       Rational[13, 150], 0.08666666666666667]], 
      RectangleBox[NCache[{Rational[13, 50], Rational[-1, 4]}, {0.26, -0.25}], 
       NCache[{Rational[27, 100], Rational[-1, 8]}, {0.27, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[27, 200], 0.135]], 
+       Rational[9, 100], 0.09]], 
      RectangleBox[NCache[{Rational[27, 100], Rational[-1, 4]}, {0.27, -0.25}],
        NCache[{Rational[7, 25], Rational[-1, 8]}, {0.28, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[7, 50], 0.14]], 
+       Rational[7, 75], 0.09333333333333334]], 
      RectangleBox[NCache[{Rational[7, 25], Rational[-1, 4]}, {0.28, -0.25}], 
       NCache[{Rational[29, 100], Rational[-1, 8]}, {0.29, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[29, 200], 0.145]], 
+       Rational[29, 300], 0.09666666666666666]], 
      RectangleBox[NCache[{Rational[29, 100], Rational[-1, 4]}, {0.29, -0.25}],
        NCache[{Rational[3, 10], Rational[-1, 8]}, {0.3, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[3, 20], 0.15]], 
+       Rational[1, 10], 0.1]], 
      RectangleBox[NCache[{Rational[3, 10], Rational[-1, 4]}, {0.3, -0.25}], 
       NCache[{Rational[31, 100], Rational[-1, 8]}, {0.31, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[31, 200], 0.155]], 
+       Rational[31, 300], 0.10333333333333333`]], 
      RectangleBox[NCache[{Rational[31, 100], Rational[-1, 4]}, {0.31, -0.25}],
        NCache[{Rational[8, 25], Rational[-1, 8]}, {0.32, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[4, 25], 0.16]], 
+       Rational[8, 75], 0.10666666666666667`]], 
      RectangleBox[NCache[{Rational[8, 25], Rational[-1, 4]}, {0.32, -0.25}], 
       NCache[{Rational[33, 100], Rational[-1, 8]}, {0.33, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[33, 200], 0.165]], 
+       Rational[11, 100], 0.11]], 
      RectangleBox[NCache[{Rational[33, 100], Rational[-1, 4]}, {0.33, -0.25}],
        NCache[{Rational[17, 50], Rational[-1, 8]}, {0.34, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[17, 100], 0.17]], 
+       Rational[17, 150], 0.11333333333333333`]], 
      RectangleBox[NCache[{Rational[17, 50], Rational[-1, 4]}, {0.34, -0.25}], 
       NCache[{Rational[7, 20], Rational[-1, 8]}, {0.35, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[7, 40], 0.175]], 
+       Rational[7, 60], 0.11666666666666667`]], 
      RectangleBox[NCache[{Rational[7, 20], Rational[-1, 4]}, {0.35, -0.25}], 
       NCache[{Rational[9, 25], Rational[-1, 8]}, {0.36, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[9, 50], 0.18]], 
+       Rational[3, 25], 0.12]], 
      RectangleBox[NCache[{Rational[9, 25], Rational[-1, 4]}, {0.36, -0.25}], 
       NCache[{Rational[37, 100], Rational[-1, 8]}, {0.37, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[37, 200], 0.185]], 
+       Rational[37, 300], 0.12333333333333334`]], 
      RectangleBox[NCache[{Rational[37, 100], Rational[-1, 4]}, {0.37, -0.25}],
        NCache[{Rational[19, 50], Rational[-1, 8]}, {0.38, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[19, 100], 0.19]], 
+       Rational[19, 150], 0.12666666666666668`]], 
      RectangleBox[NCache[{Rational[19, 50], Rational[-1, 4]}, {0.38, -0.25}], 
       NCache[{Rational[39, 100], Rational[-1, 8]}, {0.39, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[39, 200], 0.195]], 
+       Rational[13, 100], 0.13]], 
      RectangleBox[NCache[{Rational[39, 100], Rational[-1, 4]}, {0.39, -0.25}],
        NCache[{Rational[2, 5], Rational[-1, 8]}, {0.4, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[1, 5], 0.2]], 
+       Rational[2, 15], 0.13333333333333333`]], 
      RectangleBox[NCache[{Rational[2, 5], Rational[-1, 4]}, {0.4, -0.25}], 
       NCache[{Rational[41, 100], Rational[-1, 8]}, {0.41, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[41, 200], 0.205]], 
+       Rational[41, 300], 0.13666666666666666`]], 
      RectangleBox[NCache[{Rational[41, 100], Rational[-1, 4]}, {0.41, -0.25}],
        NCache[{Rational[21, 50], Rational[-1, 8]}, {0.42, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[21, 100], 0.21]], 
+       Rational[7, 50], 0.14]], 
      RectangleBox[NCache[{Rational[21, 50], Rational[-1, 4]}, {0.42, -0.25}], 
       NCache[{Rational[43, 100], Rational[-1, 8]}, {0.43, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[43, 200], 0.215]], 
+       Rational[43, 300], 0.14333333333333334`]], 
      RectangleBox[NCache[{Rational[43, 100], Rational[-1, 4]}, {0.43, -0.25}],
        NCache[{Rational[11, 25], Rational[-1, 8]}, {0.44, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[11, 50], 0.22]], 
+       Rational[11, 75], 0.14666666666666667`]], 
      RectangleBox[NCache[{Rational[11, 25], Rational[-1, 4]}, {0.44, -0.25}], 
       NCache[{Rational[9, 20], Rational[-1, 8]}, {0.45, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[9, 40], 0.225]], 
+       Rational[3, 20], 0.15]], 
      RectangleBox[NCache[{Rational[9, 20], Rational[-1, 4]}, {0.45, -0.25}], 
       NCache[{Rational[23, 50], Rational[-1, 8]}, {0.46, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[23, 100], 0.23]], 
+       Rational[23, 150], 0.15333333333333332`]], 
      RectangleBox[NCache[{Rational[23, 50], Rational[-1, 4]}, {0.46, -0.25}], 
       NCache[{Rational[47, 100], Rational[-1, 8]}, {0.47, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[47, 200], 0.235]], 
+       Rational[47, 300], 0.15666666666666668`]], 
      RectangleBox[NCache[{Rational[47, 100], Rational[-1, 4]}, {0.47, -0.25}],
        NCache[{Rational[12, 25], Rational[-1, 8]}, {0.48, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[6, 25], 0.24]], 
+       Rational[4, 25], 0.16]], 
      RectangleBox[NCache[{Rational[12, 25], Rational[-1, 4]}, {0.48, -0.25}], 
       NCache[{Rational[49, 100], Rational[-1, 8]}, {0.49, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[49, 200], 0.245]], 
+       Rational[49, 300], 0.16333333333333333`]], 
      RectangleBox[NCache[{Rational[49, 100], Rational[-1, 4]}, {0.49, -0.25}],
        NCache[{Rational[1, 2], Rational[-1, 8]}, {0.5, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[1, 4], 0.25]], 
+       Rational[1, 6], 0.16666666666666666`]], 
      RectangleBox[NCache[{Rational[1, 2], Rational[-1, 4]}, {0.5, -0.25}], 
       NCache[{Rational[51, 100], Rational[-1, 8]}, {0.51, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[51, 200], 0.255]], 
+       Rational[17, 100], 0.17]], 
      RectangleBox[NCache[{Rational[51, 100], Rational[-1, 4]}, {0.51, -0.25}],
        NCache[{Rational[13, 25], Rational[-1, 8]}, {0.52, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[13, 50], 0.26]], 
+       Rational[13, 75], 0.17333333333333334`]], 
      RectangleBox[NCache[{Rational[13, 25], Rational[-1, 4]}, {0.52, -0.25}], 
       NCache[{Rational[53, 100], Rational[-1, 8]}, {0.53, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[53, 200], 0.265]], 
+       Rational[53, 300], 0.17666666666666667`]], 
      RectangleBox[NCache[{Rational[53, 100], Rational[-1, 4]}, {0.53, -0.25}],
        NCache[{Rational[27, 50], Rational[-1, 8]}, {0.54, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[27, 100], 0.27]], 
+       Rational[9, 50], 0.18]], 
      RectangleBox[NCache[{Rational[27, 50], Rational[-1, 4]}, {0.54, -0.25}], 
       NCache[{Rational[11, 20], Rational[-1, 8]}, {0.55, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[11, 40], 0.275]], 
+       Rational[11, 60], 0.18333333333333332`]], 
      RectangleBox[NCache[{Rational[11, 20], Rational[-1, 4]}, {0.55, -0.25}], 
       NCache[{Rational[14, 25], Rational[-1, 8]}, {0.56, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[7, 25], 0.28]], 
+       Rational[14, 75], 0.18666666666666668`]], 
      RectangleBox[NCache[{Rational[14, 25], Rational[-1, 4]}, {0.56, -0.25}], 
       NCache[{Rational[57, 100], Rational[-1, 8]}, {0.57, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[57, 200], 0.285]], 
+       Rational[19, 100], 0.19]], 
      RectangleBox[NCache[{Rational[57, 100], Rational[-1, 4]}, {0.57, -0.25}],
        NCache[{Rational[29, 50], Rational[-1, 8]}, {0.58, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[29, 100], 0.29]], 
+       Rational[29, 150], 0.19333333333333333`]], 
      RectangleBox[NCache[{Rational[29, 50], Rational[-1, 4]}, {0.58, -0.25}], 
       NCache[{Rational[59, 100], Rational[-1, 8]}, {0.59, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[59, 200], 0.295]], 
+       Rational[59, 300], 0.19666666666666666`]], 
      RectangleBox[NCache[{Rational[59, 100], Rational[-1, 4]}, {0.59, -0.25}],
        NCache[{Rational[3, 5], Rational[-1, 8]}, {0.6, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[3, 10], 0.3]], 
+       Rational[1, 5], 0.2]], 
      RectangleBox[NCache[{Rational[3, 5], Rational[-1, 4]}, {0.6, -0.25}], 
       NCache[{Rational[61, 100], Rational[-1, 8]}, {0.61, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[61, 200], 0.305]], 
+       Rational[61, 300], 0.20333333333333334`]], 
      RectangleBox[NCache[{Rational[61, 100], Rational[-1, 4]}, {0.61, -0.25}],
        NCache[{Rational[31, 50], Rational[-1, 8]}, {0.62, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[31, 100], 0.31]], 
+       Rational[31, 150], 0.20666666666666667`]], 
      RectangleBox[NCache[{Rational[31, 50], Rational[-1, 4]}, {0.62, -0.25}], 
       NCache[{Rational[63, 100], Rational[-1, 8]}, {0.63, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[63, 200], 0.315]], 
+       Rational[21, 100], 0.21]], 
      RectangleBox[NCache[{Rational[63, 100], Rational[-1, 4]}, {0.63, -0.25}],
        NCache[{Rational[16, 25], Rational[-1, 8]}, {0.64, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[8, 25], 0.32]], 
+       Rational[16, 75], 0.21333333333333335`]], 
      RectangleBox[NCache[{Rational[16, 25], Rational[-1, 4]}, {0.64, -0.25}], 
       NCache[{Rational[13, 20], Rational[-1, 8]}, {0.65, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[13, 40], 0.325]], 
+       Rational[13, 60], 0.21666666666666667`]], 
      RectangleBox[NCache[{Rational[13, 20], Rational[-1, 4]}, {0.65, -0.25}], 
       NCache[{Rational[33, 50], Rational[-1, 8]}, {0.66, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[33, 100], 0.33]], 
+       Rational[11, 50], 0.22]], 
      RectangleBox[NCache[{Rational[33, 50], Rational[-1, 4]}, {0.66, -0.25}], 
       NCache[{Rational[67, 100], Rational[-1, 8]}, {0.67, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[67, 200], 0.335]], 
+       Rational[67, 300], 0.22333333333333333`]], 
      RectangleBox[NCache[{Rational[67, 100], Rational[-1, 4]}, {0.67, -0.25}],
        NCache[{Rational[17, 25], Rational[-1, 8]}, {0.68, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[17, 50], 0.34]], 
+       Rational[17, 75], 0.22666666666666666`]], 
      RectangleBox[NCache[{Rational[17, 25], Rational[-1, 4]}, {0.68, -0.25}], 
       NCache[{Rational[69, 100], Rational[-1, 8]}, {0.69, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[69, 200], 0.345]], 
+       Rational[23, 100], 0.23]], 
      RectangleBox[NCache[{Rational[69, 100], Rational[-1, 4]}, {0.69, -0.25}],
        NCache[{Rational[7, 10], Rational[-1, 8]}, {0.7, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[7, 20], 0.35]], 
+       Rational[7, 30], 0.23333333333333334`]], 
      RectangleBox[NCache[{Rational[7, 10], Rational[-1, 4]}, {0.7, -0.25}], 
       NCache[{Rational[71, 100], Rational[-1, 8]}, {0.71, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[71, 200], 0.355]], 
+       Rational[71, 300], 0.23666666666666666`]], 
      RectangleBox[NCache[{Rational[71, 100], Rational[-1, 4]}, {0.71, -0.25}],
        NCache[{Rational[18, 25], Rational[-1, 8]}, {0.72, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[9, 25], 0.36]], 
+       Rational[6, 25], 0.24]], 
      RectangleBox[NCache[{Rational[18, 25], Rational[-1, 4]}, {0.72, -0.25}], 
       NCache[{Rational[73, 100], Rational[-1, 8]}, {0.73, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[73, 200], 0.365]], 
+       Rational[73, 300], 0.24333333333333335`]], 
      RectangleBox[NCache[{Rational[73, 100], Rational[-1, 4]}, {0.73, -0.25}],
        NCache[{Rational[37, 50], Rational[-1, 8]}, {0.74, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[37, 100], 0.37]], 
+       Rational[37, 150], 0.24666666666666667`]], 
      RectangleBox[NCache[{Rational[37, 50], Rational[-1, 4]}, {0.74, -0.25}], 
       NCache[{Rational[3, 4], Rational[-1, 8]}, {0.75, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[3, 8], 0.375]], 
+       Rational[1, 4], 0.25]], 
      RectangleBox[NCache[{Rational[3, 4], Rational[-1, 4]}, {0.75, -0.25}], 
       NCache[{Rational[19, 25], Rational[-1, 8]}, {0.76, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[19, 50], 0.38]], 
+       Rational[19, 75], 0.25333333333333335`]], 
      RectangleBox[NCache[{Rational[19, 25], Rational[-1, 4]}, {0.76, -0.25}], 
       NCache[{Rational[77, 100], Rational[-1, 8]}, {0.77, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[77, 200], 0.385]], 
+       Rational[77, 300], 0.25666666666666665`]], 
      RectangleBox[NCache[{Rational[77, 100], Rational[-1, 4]}, {0.77, -0.25}],
        NCache[{Rational[39, 50], Rational[-1, 8]}, {0.78, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[39, 100], 0.39]], 
+       Rational[13, 50], 0.26]], 
      RectangleBox[NCache[{Rational[39, 50], Rational[-1, 4]}, {0.78, -0.25}], 
       NCache[{Rational[79, 100], Rational[-1, 8]}, {0.79, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[79, 200], 0.395]], 
+       Rational[79, 300], 0.2633333333333333]], 
      RectangleBox[NCache[{Rational[79, 100], Rational[-1, 4]}, {0.79, -0.25}],
        NCache[{Rational[4, 5], Rational[-1, 8]}, {0.8, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[2, 5], 0.4]], 
+       Rational[4, 15], 0.26666666666666666`]], 
      RectangleBox[NCache[{Rational[4, 5], Rational[-1, 4]}, {0.8, -0.25}], 
       NCache[{Rational[81, 100], Rational[-1, 8]}, {0.81, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[81, 200], 0.405]], 
+       Rational[27, 100], 0.27]], 
      RectangleBox[NCache[{Rational[81, 100], Rational[-1, 4]}, {0.81, -0.25}],
        NCache[{Rational[41, 50], Rational[-1, 8]}, {0.82, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[41, 100], 0.41]], 
+       Rational[41, 150], 0.2733333333333333]], 
      RectangleBox[NCache[{Rational[41, 50], Rational[-1, 4]}, {0.82, -0.25}], 
       NCache[{Rational[83, 100], Rational[-1, 8]}, {0.83, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[83, 200], 0.415]], 
+       Rational[83, 300], 0.27666666666666667`]], 
      RectangleBox[NCache[{Rational[83, 100], Rational[-1, 4]}, {0.83, -0.25}],
        NCache[{Rational[21, 25], Rational[-1, 8]}, {0.84, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[21, 50], 0.42]], 
+       Rational[7, 25], 0.28]], 
      RectangleBox[NCache[{Rational[21, 25], Rational[-1, 4]}, {0.84, -0.25}], 
       NCache[{Rational[17, 20], Rational[-1, 8]}, {0.85, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[17, 40], 0.425]], 
+       Rational[17, 60], 0.2833333333333333]], 
      RectangleBox[NCache[{Rational[17, 20], Rational[-1, 4]}, {0.85, -0.25}], 
       NCache[{Rational[43, 50], Rational[-1, 8]}, {0.86, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[43, 100], 0.43]], 
+       Rational[43, 150], 0.2866666666666667]], 
      RectangleBox[NCache[{Rational[43, 50], Rational[-1, 4]}, {0.86, -0.25}], 
       NCache[{Rational[87, 100], Rational[-1, 8]}, {0.87, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[87, 200], 0.435]], 
+       Rational[29, 100], 0.29]], 
      RectangleBox[NCache[{Rational[87, 100], Rational[-1, 4]}, {0.87, -0.25}],
        NCache[{Rational[22, 25], Rational[-1, 8]}, {0.88, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[11, 25], 0.44]], 
+       Rational[22, 75], 0.29333333333333333`]], 
      RectangleBox[NCache[{Rational[22, 25], Rational[-1, 4]}, {0.88, -0.25}], 
       NCache[{Rational[89, 100], Rational[-1, 8]}, {0.89, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[89, 200], 0.445]], 
+       Rational[89, 300], 0.2966666666666667]], 
      RectangleBox[NCache[{Rational[89, 100], Rational[-1, 4]}, {0.89, -0.25}],
        NCache[{Rational[9, 10], Rational[-1, 8]}, {0.9, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[9, 20], 0.45]], 
+       Rational[3, 10], 0.3]], 
      RectangleBox[NCache[{Rational[9, 10], Rational[-1, 4]}, {0.9, -0.25}], 
       NCache[{Rational[91, 100], Rational[-1, 8]}, {0.91, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[91, 200], 0.455]], 
+       Rational[91, 300], 0.30333333333333334`]], 
      RectangleBox[NCache[{Rational[91, 100], Rational[-1, 4]}, {0.91, -0.25}],
        NCache[{Rational[23, 25], Rational[-1, 8]}, {0.92, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[23, 50], 0.46]], 
+       Rational[23, 75], 0.30666666666666664`]], 
      RectangleBox[NCache[{Rational[23, 25], Rational[-1, 4]}, {0.92, -0.25}], 
       NCache[{Rational[93, 100], Rational[-1, 8]}, {0.93, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[93, 200], 0.465]], 
+       Rational[31, 100], 0.31]], 
      RectangleBox[NCache[{Rational[93, 100], Rational[-1, 4]}, {0.93, -0.25}],
        NCache[{Rational[47, 50], Rational[-1, 8]}, {0.94, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[47, 100], 0.47]], 
+       Rational[47, 150], 0.31333333333333335`]], 
      RectangleBox[NCache[{Rational[47, 50], Rational[-1, 4]}, {0.94, -0.25}], 
       NCache[{Rational[19, 20], Rational[-1, 8]}, {0.95, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[19, 40], 0.475]], 
+       Rational[19, 60], 0.31666666666666665`]], 
      RectangleBox[NCache[{Rational[19, 20], Rational[-1, 4]}, {0.95, -0.25}], 
       NCache[{Rational[24, 25], Rational[-1, 8]}, {0.96, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[12, 25], 0.48]], 
+       Rational[8, 25], 0.32]], 
      RectangleBox[NCache[{Rational[24, 25], Rational[-1, 4]}, {0.96, -0.25}], 
       NCache[{Rational[97, 100], Rational[-1, 8]}, {0.97, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[97, 200], 0.485]], 
+       Rational[97, 300], 0.3233333333333333]], 
      RectangleBox[NCache[{Rational[97, 100], Rational[-1, 4]}, {0.97, -0.25}],
        NCache[{Rational[49, 50], Rational[-1, 8]}, {0.98, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[49, 100], 0.49]], 
+       Rational[49, 150], 0.32666666666666666`]], 
      RectangleBox[NCache[{Rational[49, 50], Rational[-1, 4]}, {0.98, -0.25}], 
       NCache[{Rational[99, 100], Rational[-1, 8]}, {0.99, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[99, 200], 0.495]], 
+       Rational[33, 100], 0.33]], 
      RectangleBox[NCache[{Rational[99, 100], Rational[-1, 4]}, {0.99, -0.25}],
        NCache[{1, Rational[-1, 8]}, {1, -0.125}]]}, 
     {Hue[
       NCache[
-       Rational[1, 2], 0.5]], 
+       Rational[1, 3], 0.3333333333333333]], 
      RectangleBox[NCache[{1, Rational[-1, 4]}, {1, -0.25}], 
       NCache[{Rational[101, 100], Rational[-1, 8]}, {1.01, -0.125}]]}, 
     InsetBox[
@@ -1033,11 +949,157 @@ Cell[BoxData[
  CellChangeTimes->{
   3.636910573633195*^9, 3.63691151591546*^9, 3.6369130942591467`*^9, {
    3.636913185288981*^9, 3.6369132191572847`*^9}, {3.636913844282454*^9, 
-   3.63691386184394*^9}, {3.636918431246318*^9, 3.636918436242565*^9}}]
+   3.63691386184394*^9}, {3.636918431246318*^9, 3.6369184358461657`*^9}, {
+   3.6369821736717854`*^9, 3.636982181490878*^9}, 3.636982242779114*^9, 
+   3.636985462663355*^9, 3.636987667404234*^9, {3.6369877075661507`*^9, 
+   3.636987769209034*^9}, {3.636987816994957*^9, 3.636987833709846*^9}}]
 }, Open  ]],
 
-Cell[BoxData[""], "Input",
- CellChangeTimes->{{3.6369115304255743`*^9, 3.636911585689269*^9}}],
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", "Manipulate", " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"Manipulate", "[", 
+   RowBox[{
+    RowBox[{"(", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"resitev", "=", 
+       RowBox[{"ResiPalicje", "[", 
+        RowBox[{"vozlisca", ",", "povezave", ",", "podpore", ",", 
+         RowBox[{"{", 
+          RowBox[{"{", 
+           RowBox[{"3", ",", 
+            RowBox[{
+             RowBox[{"-", "F0"}], 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"Sin", "[", "fi", "]"}], ",", 
+               RowBox[{"Cos", "[", "fi", "]"}]}], "}"}]}]}], "}"}], "}"}]}], 
+        "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"Show", "[", " ", 
+       RowBox[{"(*", " ", 
+        RowBox[{
+        "options", " ", "from", " ", "the", " ", "first", " ", "graphics"}], 
+        " ", "*)"}], "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"Graphics", "[", 
+         RowBox[{
+          RowBox[{"Arrow", "[", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"vozlisca", "[", 
+              RowBox[{"[", "3", "]"}], "]"}], ",", " ", 
+             RowBox[{
+              RowBox[{"vozlisca", "[", 
+               RowBox[{"[", "3", "]"}], "]"}], "-", 
+              RowBox[{
+               RowBox[{"F0", "/", "3"}], 
+               RowBox[{"{", 
+                RowBox[{
+                 RowBox[{"Sin", "[", "fi", "]"}], ",", 
+                 RowBox[{"Cos", "[", "fi", "]"}]}], "}"}]}]}]}], "}"}], "]"}],
+           ",", " ", 
+          RowBox[{"PlotRange", "\[Rule]", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"-", "0.1"}], ",", "2"}], "}"}], ",", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"-", "0.4"}], ",", "1.3"}], "}"}]}], "}"}]}]}], "]"}], 
+        ",", "\[IndentingNewLine]", 
+        RowBox[{"NarisiBarvnoPalicje", "[", 
+         RowBox[{"vozlisca", ",", "povezave", ",", "resitev", ",", 
+          RowBox[{"-", "1.5"}], ",", " ", "1.5"}], "]"}]}], 
+       "\[IndentingNewLine]", "]"}]}], ")"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"F0", ",", "1"}], "}"}], ",", " ", "0", ",", " ", "5"}], "}"}],
+     ",", " ", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"fi", ",", "0"}], "}"}], ",", " ", 
+      RowBox[{
+       RowBox[{"-", "2"}], "Pi"}], ",", 
+      RowBox[{"2", "Pi"}]}], "}"}]}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.6369822462355957`*^9, 3.636982281161965*^9}, {
+  3.636982344986135*^9, 3.6369824054036283`*^9}, {3.636982449579836*^9, 
+  3.636982467875444*^9}, {3.6369825588511343`*^9, 3.636982631747789*^9}, {
+  3.6369827343882923`*^9, 3.636982844868778*^9}, {3.636982981694178*^9, 
+  3.6369829966526117`*^9}, {3.636983251613377*^9, 3.6369833013011923`*^9}, {
+  3.636983382838187*^9, 3.636983401381369*^9}, {3.6369834398052998`*^9, 
+  3.636983449870246*^9}, {3.63698350230868*^9, 3.636983538645144*^9}, {
+  3.636985486695846*^9, 3.636985491934168*^9}, {3.636985585783379*^9, 
+  3.6369855860622168`*^9}, {3.6369857202784023`*^9, 3.6369857243662*^9}, {
+  3.636985758742651*^9, 3.636985763789797*^9}, {3.6369878862253103`*^9, 
+  3.6369878880796347`*^9}}],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`F0$$ = 1, $CellContext`fi$$ = 0, 
+    Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
+    Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ = 
+    1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{{
+       Hold[$CellContext`F0$$], 1}, 0, 5}, {{
+       Hold[$CellContext`fi$$], 0}, (-2) Pi, 2 Pi}}, Typeset`size$$ = {
+    360., {143., 148.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    Typeset`skipInitDone$$ = True, $CellContext`F0$2696$$ = 
+    0, $CellContext`fi$2697$$ = 0}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, 
+      "Variables" :> {$CellContext`F0$$ = 1, $CellContext`fi$$ = 0}, 
+      "ControllerVariables" :> {
+        Hold[$CellContext`F0$$, $CellContext`F0$2696$$, 0], 
+        Hold[$CellContext`fi$$, $CellContext`fi$2697$$, 0]}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, 
+      "Body" :> ($CellContext`resitev = 
+        Palicje`ResiPalicje[$CellContext`vozlisca, $CellContext`povezave, \
+$CellContext`podpore, {{3, (-$CellContext`F0$$) {
+              Sin[$CellContext`fi$$], 
+              Cos[$CellContext`fi$$]}}}]; Show[
+         Graphics[
+          Arrow[{
+            Part[$CellContext`vozlisca, 3], 
+            Part[$CellContext`vozlisca, 3] - ($CellContext`F0$$/3) {
+              Sin[$CellContext`fi$$], 
+              Cos[$CellContext`fi$$]}}], 
+          PlotRange -> {{-0.1, 2}, {-0.4, 1.3}}], 
+         Palicje`NarisiBarvnoPalicje[$CellContext`vozlisca, \
+$CellContext`povezave, $CellContext`resitev, -1.5, 1.5]]), 
+      "Specifications" :> {{{$CellContext`F0$$, 1}, 0, 
+         5}, {{$CellContext`fi$$, 0}, (-2) Pi, 2 Pi}}, "Options" :> {}, 
+      "DefaultOptions" :> {}],
+     ImageSizeCache->{407., {198., 205.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{
+  3.636982405941731*^9, {3.636982461936922*^9, 3.636982468337996*^9}, {
+   3.636982617052896*^9, 3.636982633166918*^9}, {3.6369827385876083`*^9, 
+   3.636982747944392*^9}, {3.636982785671612*^9, 3.63698284520571*^9}, {
+   3.636982978501932*^9, 3.636982997106846*^9}, {3.6369832815989513`*^9, 
+   3.636983295929915*^9}, {3.636983362155575*^9, 3.636983411132987*^9}, {
+   3.636983441910014*^9, 3.63698345104352*^9}, {3.636983506931121*^9, 
+   3.6369835388991947`*^9}, {3.636985467114182*^9, 3.636985492425495*^9}, 
+   3.636985586865213*^9, 3.6369856927984877`*^9, 3.63698572481672*^9, 
+   3.636985764722875*^9, 3.636987837628284*^9, 3.636987888750225*^9}]
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -1115,7 +1177,7 @@ Cell[BoxData[
       RowBox[{"-", "1.7863916792357193`"}]}]}], "}"}]}], "}"}]], "Output",
  CellChangeTimes->{{3.636913100697055*^9, 3.636913105925321*^9}, {
    3.636913157202651*^9, 3.63691318018012*^9}, 3.6369136392491827`*^9, {
-   3.636913836541424*^9, 3.63691384076507*^9}}],
+   3.636913836541424*^9, 3.63691384076507*^9}, 3.636982195702135*^9}],
 
 Cell[BoxData[
  RowBox[{"{", 
@@ -1145,7 +1207,7 @@ Cell[BoxData[
       RowBox[{"-", "1.7863916792357193`"}]}]}], "}"}]}], "}"}]], "Output",
  CellChangeTimes->{{3.636913100697055*^9, 3.636913105925321*^9}, {
    3.636913157202651*^9, 3.63691318018012*^9}, 3.6369136392491827`*^9, {
-   3.636913836541424*^9, 3.636913840830722*^9}}]
+   3.636913836541424*^9, 3.63691384076507*^9}, 3.636982195740139*^9}]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -1172,68 +1234,136 @@ Cell[BoxData[
           BaseStyle->"InformationLink",
           
           ButtonData:>{
-           "Info3636839145-1241806", {"DodajObremenitve", "Palicje`"}},
+           "Info3636989396-2175718", {"DodajObremenitve", "Palicje`"}},
           ButtonNote->"Palicje`"], 
-         ButtonBox["F",
-          BaseStyle->"InformationLink",
-          ButtonData:>{"Info3636839145-1241806", {"F", "Palicje`"}},
-          ButtonNote->"Palicje`"], 
-         ButtonBox["GenerirajNeznanke",
+         ButtonBox["GenerirajEnacbe",
           BaseStyle->"InformationLink",
           
           ButtonData:>{
-           "Info3636839145-1241806", {"GenerirajNeznanke", "Palicje`"}},
+           "Info3636989396-2175718", {"GenerirajEnacbe", "Palicje`"}},
+          ButtonNote->"Palicje`"], 
+         ButtonBox["GenerirajNeznankePomiki",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info3636989396-2175718", {"GenerirajNeznankePomiki", "Palicje`"}},
+          
+          ButtonNote->"Palicje`"], 
+         ButtonBox["NarisiBarvnePalice",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info3636989396-2175718", {"NarisiBarvnePalice", "Palicje`"}},
           ButtonNote->"Palicje`"], 
          ButtonBox["NarisiPaliceIzVozlisca",
           BaseStyle->"InformationLink",
           
           ButtonData:>{
-           "Info3636839145-1241806", {"NarisiPaliceIzVozlisca", "Palicje`"}},
+           "Info3636989396-2175718", {"NarisiPaliceIzVozlisca", "Palicje`"}},
           ButtonNote->"Palicje`"], 
-         ButtonBox["NarisiVozlisca",
+         ButtonBox["py",
+          BaseStyle->"InformationLink",
+          ButtonData:>{"Info3636989396-2175718", {"py", "Palicje`"}},
+          ButtonNote->"Palicje`"]},
+        {
+         ButtonBox["Dolzine",
+          BaseStyle->"InformationLink",
+          ButtonData:>{"Info3636989396-2175718", {"Dolzine", "Palicje`"}},
+          ButtonNote->"Palicje`"], 
+         ButtonBox["GenerirajEnergijsko",
+          BaseStyle->"InformationLink",
+          ButtonData:>{
+           "Info3636989396-2175718", {"GenerirajEnergijsko", "Palicje`"}},
+          ButtonNote->"Palicje`"], 
+         ButtonBox["GenerirajS",
+          BaseStyle->"InformationLink",
+          ButtonData:>{"Info3636989396-2175718", {"GenerirajS", "Palicje`"}},
+          ButtonNote->"Palicje`"], 
+         ButtonBox["NarisiBarvnePaliceIzVozlisca",
           BaseStyle->"InformationLink",
           
           ButtonData:>{
-           "Info3636839145-1241806", {"NarisiVozlisca", "Palicje`"}},
+           "Info3636989396-2175718", {
+            "NarisiBarvnePaliceIzVozlisca", "Palicje`"}},
+          ButtonNote->"Palicje`"], 
+         ButtonBox["NarisiPalicje",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info3636989396-2175718", {"NarisiPalicje", "Palicje`"}},
+          ButtonNote->"Palicje`"], 
+         ButtonBox["ResiPalicje",
+          BaseStyle->"InformationLink",
+          ButtonData:>{"Info3636989396-2175718", {"ResiPalicje", "Palicje`"}},
+          
           ButtonNote->"Palicje`"]},
         {
          ButtonBox["EnotskiVektor",
           BaseStyle->"InformationLink",
           
           ButtonData:>{
-           "Info3636839145-1241806", {"EnotskiVektor", "Palicje`"}},
+           "Info3636989396-2175718", {"EnotskiVektor", "Palicje`"}},
           ButtonNote->"Palicje`"], 
-         ButtonBox["GenerirajEnacbe",
+         ButtonBox["GenerirajK",
+          BaseStyle->"InformationLink",
+          ButtonData:>{"Info3636989396-2175718", {"GenerirajK", "Palicje`"}},
+          ButtonNote->"Palicje`"], 
+         ButtonBox["GenerirajVezi",
           BaseStyle->"InformationLink",
           
           ButtonData:>{
-           "Info3636839145-1241806", {"GenerirajEnacbe", "Palicje`"}},
+           "Info3636989396-2175718", {"GenerirajVezi", "Palicje`"}},
           ButtonNote->"Palicje`"], 
-         ButtonBox["NarisiPalice",
-          BaseStyle->"InformationLink",
-          ButtonData:>{"Info3636839145-1241806", {"NarisiPalice", "Palicje`"}},
-          ButtonNote->"Palicje`"], 
-         ButtonBox["NarisiPalicje",
+         ButtonBox["NarisiBarvnoPalicje",
           BaseStyle->"InformationLink",
           
           ButtonData:>{
-           "Info3636839145-1241806", {"NarisiPalicje", "Palicje`"}},
+           "Info3636989396-2175718", {"NarisiBarvnoPalicje", "Palicje`"}},
+          ButtonNote->"Palicje`"], 
+         ButtonBox["NarisiVozlisca",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info3636989396-2175718", {"NarisiVozlisca", "Palicje`"}},
           ButtonNote->"Palicje`"], 
          ButtonBox["SileNaVozlisce",
           BaseStyle->"InformationLink",
           
           ButtonData:>{
-           "Info3636839145-1241806", {"SileNaVozlisce", "Palicje`"}},
-          ButtonNote->"Palicje`"]}
+           "Info3636989396-2175718", {"SileNaVozlisce", "Palicje`"}},
+          ButtonNote->"Palicje`"]},
+        {
+         ButtonBox["F",
+          BaseStyle->"InformationLink",
+          ButtonData:>{"Info3636989396-2175718", {"F", "Palicje`"}},
+          ButtonNote->"Palicje`"], 
+         ButtonBox["GenerirajNeznanke",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info3636989396-2175718", {"GenerirajNeznanke", "Palicje`"}},
+          ButtonNote->"Palicje`"], 
+         ButtonBox["GenerirajY",
+          BaseStyle->"InformationLink",
+          ButtonData:>{"Info3636989396-2175718", {"GenerirajY", "Palicje`"}},
+          ButtonNote->"Palicje`"], 
+         ButtonBox["NarisiPalice",
+          BaseStyle->"InformationLink",
+          ButtonData:>{"Info3636989396-2175718", {"NarisiPalice", "Palicje`"}},
+          ButtonNote->"Palicje`"], 
+         ButtonBox["px",
+          BaseStyle->"InformationLink",
+          ButtonData:>{"Info3636989396-2175718", {"px", "Palicje`"}},
+          ButtonNote->"Palicje`"], ""}
        },
        DefaultBaseStyle->"InfoGrid",
        GridBoxItemSize->{"Columns" -> {{
-            Scaled[0.19]}}}]}
+            Scaled[0.15833333333333333`]}}}]}
     },
     GridBoxAlignment->{"Columns" -> {{Left}}, "Rows" -> {{Baseline}}}]}, 
    Dynamic[Typeset`open$$],
    ImageSize->Automatic]]], "Print", "InfoCell",
- CellChangeTimes->{3.636831945129608*^9}]
+ CellChangeTimes->{3.636982196995058*^9}]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -1245,18 +1375,16 @@ Cell[BoxData[{
 
 Cell[CellGroupData[{
 
-Cell[BoxData[
- StyleBox["\<\"Neznanka, uporabljena za notranje sile.\"\>", "MSG"]], "Print",\
- "PrintUsage",
- CellChangeTimes->{3.636831977435679*^9},
- CellTags->"Info3636839177-1241806"],
+Cell["Palicje`F", "Print", "PrintUsage",
+ CellChangeTimes->{3.636982206378006*^9},
+ CellTags->"Info3636989406-2175718"],
 
 Cell[BoxData[
  StyleBox["\<\"Vrne sistem ravnovesnih ena\[CHacek]b za vsa vozli\[SHacek]\
 \[CHacek]a, upo\[SHacek]tevajo\[CHacek] obremenitve, podpore in notranje sile\
 \"\>", "MSG"]], "Print", "PrintUsage",
- CellChangeTimes->{3.636831977489216*^9},
- CellTags->"Info3636839177-1241806"],
+ CellChangeTimes->{3.636982206475953*^9},
+ CellTags->"Info3636989406-2175718"],
 
 Cell[BoxData[
  InterpretationBox[GridBox[{
@@ -1265,8 +1393,8 @@ Cell[BoxData[
         RowBox[{
          RowBox[{"GenerirajEnacbe", "[", 
           RowBox[{
-          "Private`Vozlisca_", ",", "Private`Povezave_", ",", 
-           "Private`Obremenitve_", ",", "Private`Podpore_"}], "]"}], ":=", 
+          "Private`Vozlisca_List", ",", "Private`Povezave_List", ",", 
+           "Private`Podpore_List", ",", "Private`Obremenitve_List"}], "]"}], ":=", 
          RowBox[{"Module", "[", 
           RowBox[{
            RowBox[{"{", 
@@ -1317,13 +1445,10 @@ Cell[BoxData[
      "RowsIndexed" -> {}}],
   Definition[Palicje`GenerirajEnacbe],
   Editable->False]], "Print",
- CellChangeTimes->{3.6368319775111217`*^9},
- CellTags->"Info3636839177-1241806"]
+ CellChangeTimes->{3.636982206517055*^9},
+ CellTags->"Info3636989406-2175718"]
 }, Open  ]]
-}, Open  ]],
-
-Cell[BoxData[""], "Input",
- CellChangeTimes->{{3.636884514778294*^9, 3.636884529715147*^9}}]
+}, Open  ]]
 },
 WindowSize->{1680, 1030},
 WindowMargins->{{Automatic, 0}, {Automatic, 0}},
@@ -1335,54 +1460,55 @@ StyleDefinitions->"Default.nb"
 (* Internal cache information *)
 (*CellTagsOutline
 CellTagsIndex->{
- "Info3636839177-1241806"->{
-  Cell[51187, 1247, 187, 4, 42, "Print",
-   CellTags->"Info3636839177-1241806"],
-  Cell[51377, 1253, 286, 5, 42, "Print",
-   CellTags->"Info3636839177-1241806"],
-  Cell[51666, 1260, 2436, 60, 100, "Print",
-   CellTags->"Info3636839177-1241806"]}
+ "Info3636989406-2175718"->{
+  Cell[56225, 1377, 119, 2, 42, "Print",
+   CellTags->"Info3636989406-2175718"],
+  Cell[56347, 1381, 286, 5, 42, "Print",
+   CellTags->"Info3636989406-2175718"],
+  Cell[56636, 1388, 2450, 60, 100, "Print",
+   CellTags->"Info3636989406-2175718"]}
  }
 *)
 (*CellTagsIndex
 CellTagsIndex->{
- {"Info3636839177-1241806", 54527, 1337}
+ {"Info3636989406-2175718", 59416, 1462}
  }
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[558, 20, 2915, 75, 121, "Input"],
+Cell[558, 20, 3051, 78, 143, "Input"],
 Cell[CellGroupData[{
-Cell[3498, 99, 2086, 38, 165, "Input"],
-Cell[5587, 139, 9080, 159, 243, 2168, 44, "CachedBoxData", "BoxData", \
-"Output"],
-Cell[14670, 300, 1399, 45, 55, "Output"],
-Cell[16072, 347, 1401, 45, 55, "Output"],
-Cell[17476, 394, 1254, 35, 32, "Output"],
-Cell[18733, 431, 24835, 604, 323, "Output"]
-}, Open  ]],
-Cell[43583, 1038, 94, 1, 32, "Input"],
-Cell[CellGroupData[{
-Cell[43702, 1043, 2032, 44, 165, "Input"],
-Cell[45737, 1089, 1108, 28, 32, "Output"],
-Cell[46848, 1119, 1109, 28, 32, "Output"]
+Cell[3634, 102, 2417, 47, 187, "Input"],
+Cell[6054, 151, 2627, 51, 243, "Output"],
+Cell[8684, 204, 1621, 48, 55, "Output"],
+Cell[10308, 254, 1621, 48, 55, "Output"],
+Cell[11932, 304, 1474, 38, 32, "Output"],
+Cell[13409, 344, 26160, 610, 290, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[47994, 1152, 117, 2, 32, "Input"],
-Cell[48114, 1156, 2839, 79, 78, "Print"]
+Cell[39606, 959, 3259, 79, 187, "Input"],
+Cell[42868, 1040, 3075, 60, 420, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[50990, 1240, 172, 3, 55, "Input"],
+Cell[45980, 1105, 2032, 44, 165, "Input"],
+Cell[48015, 1151, 1130, 28, 32, "Output"],
+Cell[49148, 1181, 1130, 28, 32, "Output"]
+}, Open  ]],
 Cell[CellGroupData[{
-Cell[51187, 1247, 187, 4, 42, "Print",
- CellTags->"Info3636839177-1241806"],
-Cell[51377, 1253, 286, 5, 42, "Print",
- CellTags->"Info3636839177-1241806"],
-Cell[51666, 1260, 2436, 60, 100, "Print",
- CellTags->"Info3636839177-1241806"]
+Cell[50315, 1214, 117, 2, 32, "Input"],
+Cell[50435, 1218, 5556, 147, 124, "Print"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[56028, 1370, 172, 3, 55, "Input"],
+Cell[CellGroupData[{
+Cell[56225, 1377, 119, 2, 42, "Print",
+ CellTags->"Info3636989406-2175718"],
+Cell[56347, 1381, 286, 5, 42, "Print",
+ CellTags->"Info3636989406-2175718"],
+Cell[56636, 1388, 2450, 60, 100, "Print",
+ CellTags->"Info3636989406-2175718"]
 }, Open  ]]
-}, Open  ]],
-Cell[54129, 1324, 92, 1, 32, "Input"]
+}, Open  ]]
 }
 ]
 *)
