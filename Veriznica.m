@@ -16,14 +16,24 @@ točk verižnice. T1 mora biti levo od T2 in seznama dolžin in mas morata biti 
 DiskretnaVeriznica[a, A, b, B, dolzine, mase] vrne seznam n+1 koordinat \
 točk verižnice. Veljati mora a < b in seznama dolžin in mas morata biti enako dolga."
 
-DiskretnaVeriznica::NapacneDolzine = "Dolžini seznamov dolžin in mas se ne ujemata (`1` != `2`)";
+Brahistokrona::usage = "Brahistokrona[a, A, b, B] vrne parametrizacijo in največjo vrednost\
+parametra brahistokrone med točkama (a, A) in (b, B). Veljati mora a < b in A > B.\n\n\
+Brahistokrona[T1, T2] je enaka funkcija, samo da sprejme dve točki, T1 = {a, A} in T2 = {b, B}."
+
+(* eroors *)
+
+DiskretnaVeriznica::NapacneDolzine = "Dolžini seznamov dolžin in mas se ne ujemata (`1` != `2`)"
+DiskretnaVeriznica::NapacneDolzine = "Veriznica je prekratka, vsota dolzin je `1`, razdalja med \
+levim in desnim krajiščem je `2`."
+Brahistokrona::abSwap = "Koordinati sta narobe obrnjeni, zamenjaj a in b. (`1` >= `2`)"
+Brahistokrona::ABSwap = "Spust ne gre navzdol, A <= B! Prezrcali problem. (`1` <= `2`)"
 
 Begin["Private`"]
 
 (* ***** PATTERNS ***** *)
 $N = _?NumericQ
 $PT = {$N, $N}
-$LN = _List /; VectorQ[x, NumericQ]_
+$LN = {__?NumericQ}
 
 (* ***** IMPLEMENTATION ***** *)
 
@@ -48,7 +58,9 @@ DiskretnaVeriznica[levo:$PT, desno:$PT, dolzine:$LN, mase:$LN] :=  Module[
   {x, y, rez, n = Length[dolzine]},
 
   If[Length[dolzine] == Length[mase], Null,
-    Message[DiskretnaVeriznica::NapacneDolzine, Length[dolzine], Length[mase]]]
+    Message[DiskretnaVeriznica::NapacneDolzine, Length[dolzine], Length[mase]]; Return[$Failed]];
+  If[Total[dolzine] < Norm[levo - desno],
+    Message[DiskretnaVeriznica::PrekratkaVeriznica, Total[dolzine], Norm[levo-desno]]; Return[$Failed]];
 
   rez = NMinimize[{
       Sum[mase[[i + 1]] * (y[i] + y[i + 1]) / 2, {i, 0, n - 1}], (* expressions *)
@@ -60,6 +72,25 @@ DiskretnaVeriznica[levo:$PT, desno:$PT, dolzine:$LN, mase:$LN] :=  Module[
   Table[{x[i], y[i]}, {i, 0, n}] /. rez[[2]] (* return value *)
 ];
 DiskretnaVeriznica[a_, A_, b_, B_, dolzine_, mase_] :=  DiskretnaVeriznica[{a, A}, {b, B}, dolzine, mase]
+
+Brahistokrona[a_, A_, b_, B_] := Module[
+  {r1, r2, thmax, kk, x, y},
+
+  If[a < b, Null, Message[Brahistokrona::abSwap, a, b]; Return[$Failed]];
+  If[A > B, Null, Message[Brahistokrona::ABSwap, A, B]; Return[$Failed]];
+
+  r1 = First[NSolve[1 - Cos[tz] + (B - A)/(b - a)*(tz - Sin[tz]) == 0 && tz > 10^-7, tz, Reals]];
+  r2 = FindRoot[(1/2*k^2 (tz - Sin[tz]) == (b - a) /. r1), {k, 1}];
+
+  thmax = tz /. r1;
+  kk = k /. r2;
+
+  x[th_] := 1/2*kk^2 (th - Sin[th]) + a;
+  y[th_] := -1/2*kk^2 (1 - Cos[th]) + A;
+
+  {{x[#], y[#]} &, thmax} (* return value *)
+]
+Brahistokrona[T1_, T2_] := Brahistokrona[T1[[1]], T1[[2]], T2[[1]], T2[[2]]]
 
 End[]
 EndPackage[]
