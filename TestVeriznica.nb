@@ -1,0 +1,16 @@
+seme = 29;
+SeedRandom[seme];
+x1 = RandomReal[] + 1;
+y1 = RandomReal[] + 1;
+T1 = {1, 1};
+T2 = {x1, y1};
+T3 = {2, -2};
+dol = 3;
+v0 = 10;
+g = 9.81;
+
+Needs["Veriznica`"]
+f = ZveznaVeriznica[T1, T2, dol];
+CasPotovanja[f, 1, x1]
+
+Plot[f[x], {x, 1, x1}, AspectRatio -> Automatic]
