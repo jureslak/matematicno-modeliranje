@@ -6,7 +6,7 @@ Paket podpira:
 * modeliranje elastičnega paličja prek minimizacije energije
 * grafično upodobitev paličja
 * direktno reševanje problema brahistokrone 
-* reševanje zvezne verižnice prek minimizacije energije
+* direktno reševanje zvezne verižnice
 * reševaje diskretne verižnice prek minimizacije energije
 
 _Mathemathica libraries used in Mathematical Modelling course in the 3rd year of Mathemathics course at Faculty of Mathemathics and Physics, University of Ljubljana._
