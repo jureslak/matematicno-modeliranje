@@ -20,13 +20,17 @@ Brahistokrona::usage = "Brahistokrona[a, A, b, B] vrne parametrizacijo in najve�
 parametra brahistokrone med točkama (a, A) in (b, B). Veljati mora a < b in A > B.\n\n\
 Brahistokrona[T1, T2] je enaka funkcija, samo da sprejme dve točki, T1 = {a, A} in T2 = {b, B}."
 
-(* eroors *)
+TezisceVeriznice::uasge = "TezisceVeriznice[pts, mase] vrne tezisce veriznice s točkami pts in
+masami mase. Senam mas mora biti za ena krajši kot seznam točk."
+
+(* errors *)
 
 DiskretnaVeriznica::NapacneDolzine = "Dolžini seznamov dolžin in mas se ne ujemata (`1` != `2`)"
-DiskretnaVeriznica::NapacneDolzine = "Veriznica je prekratka, vsota dolzin je `1`, razdalja med \
+DiskretnaVeriznica::PrekratkaVeriznica = "Veriznica je prekratka, vsota dolzin je `1`, razdalja med \
 levim in desnim krajiščem je `2`."
 Brahistokrona::abSwap = "Koordinati sta narobe obrnjeni, zamenjaj a in b. (`1` >= `2`)"
 Brahistokrona::ABSwap = "Spust ne gre navzdol, A <= B! Prezrcali problem. (`1` <= `2`)"
+TezisceVeriznice::NapacneDolzine = "Seznama mas in točk nista pravih dolžin. (`1` != `2` + 1)."
 
 Begin["Private`"]
 
@@ -34,6 +38,7 @@ Begin["Private`"]
 $N = _?NumericQ
 $PT = {$N, $N}
 $LN = {__?NumericQ}
+$LP = {{_, _} .. };
 
 (* ***** IMPLEMENTATION ***** *)
 
@@ -72,6 +77,14 @@ DiskretnaVeriznica[levo:$PT, desno:$PT, dolzine:$LN, mase:$LN] :=  Module[
   Table[{x[i], y[i]}, {i, 0, n}] /. rez[[2]] (* return value *)
 ];
 DiskretnaVeriznica[a_, A_, b_, B_, dolzine_, mase_] :=  DiskretnaVeriznica[{a, A}, {b, B}, dolzine, mase]
+
+TezisceVeriznice[pts:$LP, mase:$LN] := Module[
+  {M = Total[mase]},
+  If[Length[pts] == Length[mase] + 1, Null,
+    Message[TezisceVeriznice::NapacneDolzine, Length[pts], Length[mase]]; Return[$Failed]];
+
+  Sum[(pts[[i]] + pts[[i + 1]])/2*mase[[i]], {i, 1, Length[mase]}]/M
+]
 
 Brahistokrona[a_, A_, b_, B_] := Module[
   {r1, r2, thmax, kk, x, y},

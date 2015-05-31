@@ -17,6 +17,7 @@ Plot[f[x], {x, x0, x1}, AspectRatio -> Automatic]
 n = 10;
 pts = DiskretnaVeriznica[{0,2}, {2,2}, Table[1, {i, 1, n}], Table[1, {i, 1, n}]];
 ListLinePlot[pts]
+TezisceVeriznice[pts, Table[1, {i, 1 n}]]
 
 {f, tm} = Brahistokrona[1,1,2,0]
 ParametricPlot[f[t],{t,0,tm}]
