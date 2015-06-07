@@ -1,16 +1,71 @@
+(* Direktna metoda, do nx = 30, z nekaj potrpljenja *)
 nx = 30;
 dx = 1/nx;
-tmax = 7;
+tmax = 4;
 
 Clear[ww, d4w]
 
 (* deljene diference *)
 d4w[t_, k_ /; 1  <= k <= nx-1] := (ww[k-2][t] - 4 ww[k-1][t] + 6 ww[k][t] - 4 ww[k+1][t] + ww[k+2][t]) / dx^4
-d4w[t_, k_ /; 0  == k] := 0 (* FIXME (ww[t, k+0] - 4 ww[t, k+1] + 6 ww[t, k+2] - 4 ww[t, k+3] + ww[t, k+4]) / dx^4*)
-d4w[t_, k_ /; nx == k] := 0 (* FIXME (ww[t, k-0] - 4 ww[t, k-1] + 6 ww[t, k-2] - 4 ww[t, k-3] + ww[t, k-4]) / dx^4*)
+d4w[t_, k_ /; 0  == k] := 0 (* (ww[k+0][t] - 4 ww[k+1][t] + 6 ww[k+2][t] - 4 ww[k+3][t] + ww[k+4][t, k+4]) / dx^4*)
+d4w[t_, k_ /; nx == k] := 0 (* (ww[k-0][t] - 4 ww[k-1][t] + 6 ww[k-2][t] - 4 ww[k-3][t] + ww[k-4][t, k-4]) / dx^4*)
 
 (* zacetni pogoji *)
-q[x_] := Piecewise[{{5, x < 0.2},{0, True}}]
+q[x_] := 1 (* Piecewise[{{5, x < 0.2},{0, True}}]*)
+g[x_] := 0
+h[x_] := (x-1/2)
+
+(* prosti robni pogoji *)
+ww[0][t_] := 0;
+ww[nx][t_] := 0;
+ww[-1][t_] := -ww[1][t];
+ww[nx+1][t_] := -ww[nx-1][t];
+
+
+(* generiranje sistema NDE *)
+deq = d4w[t, x] + D[ww[x][t], {t, 2}] == q[x dx];
+sistem = Table[deq /. {x -> i}, {i, 1, nx-1}]
+
+(* generiranje zacetnih pogojev *)
+pogoji = {
+    Table[ww[k][0] == g[k dx], {k, 1, nx-1}],
+    Table[ww[k]'[0] == h[k dx], {k, 1, nx-1}]
+};
+
+vars = Table[ww[i], {i, 1, nx-1}];
+
+(* resimo sistem *)
+r = NDSolveValue[{sistem, pogoji}, vars, {t, 0, tmax}];
+
+(* dodamo robne rešitve *)
+r = Join[{ww[0]}, r, {ww[nx]}];
+
+(* upodobimo resitev *)
+func = Table[-f[t], {f, r}];
+Plot[func, {t, 0, tmax}]
+
+parfunc = Table[{(i-1) dx, t, - 10 r[[i]][t]}, {i, 1, nx+1}];
+ParametricPlot3D[parfunc, {t, 0, tmax}, PlotRange -> All, AxesLabel -> {"t", "x", "u"}] (* PlotRange -> {{0, 1}, {0, 5}, {0, 0.05}}] *)
+
+Manipulate[ListLinePlot[Table[-r[[i]][cas], {i, 1, nx+1}], PlotRange -> {-0.05, 0.05}], {cas, 0, tmax}]
+
+Print["Največji odmik od ravnovesne lege:"]
+Max[Table[First[NMaximize[{Abs[f[t]], 0 <= t <= tmax}, t]], {f, r}]]
+
+(* Pametna metoda *)
+nx = 10;
+dx = 1/nx;
+tmax = 4;
+
+Clear[ww, d4w]
+
+(* deljene diference *)
+d4w[t_, k_ /; 1  <= k <= nx-1] := (ww[k-2][t] - 4 ww[k-1][t] + 6 ww[k][t] - 4 ww[k+1][t] + ww[k+2][t]) / dx^4
+d4w[t_, k_ /; 0  == k] := 0 (* FIXME (ww[k+0][t] - 4 ww[k+1][t] + 6 ww[k+2][t] - 4 ww[k+3][t] + ww[k+4][t, k+4]) / dx^4*)
+d4w[t_, k_ /; nx == k] := 0 (* FIXME (ww[k-0][t] - 4 ww[k-1][t] + 6 ww[k-2][t] - 4 ww[k-3][t] + ww[k-4][t, k-4]) / dx^4*)
+
+(* zacetni pogoji *)
+q[x_] := 1 (* Piecewise[{{5, x < 0.2},{0, True}}] *)
 g[x_] := 0
 h[x_] := 0
 
@@ -20,23 +75,31 @@ ww[nx][t_] := 0;
 ww[-1][t_] := -ww[1][t];
 ww[nx+1][t_] := -ww[nx-1][t];
 
-(* generiranje sistema NDE *)
-deq = d4w[t, x] + D[ww[x][t], {t, 2}] == q[x dx];
-sistem = Table[deq /. {x -> i}, {i, 1, nx-1}];
+rhs = Table[q[i dx] - d4w[t, i] == 0., {i, 1, nx - 1}];
+{b, A} = CoefficientArrays[rhs, vars]
 
-(* generiranje zacetnih pogojev *)
-pogoji = {
-    Table[ww[k][0] == g[k dx], {k, 1, nx-1}],
-    Table[ww[k]'[0] == h[k dx], {k, 1, nx-1}]
-};
+(*generiranje zacetnih pogojev*)
 
+pogoji = {w[0] == Table[g[k dx], {k, 1, nx - 1}],
+          w'[0] == Table[h[k dx], {k, 1, nx - 1}]};
+r = NDSolveValue[{w''[t] == A.w[t], pogoji}, w, {t, 0, tmax}]
+Manipulate[ListLinePlot[r[t]], {t, 0, tmax}]
+
+ (*
 (* resimo sistem *)
-r = NDSolveValue[{sistem, pogoji}, Table[ww[i], {i, 1, nx-1}], {t, 0, tmax}];
+  r = NDSolveValue[{sistem, pogoji}, vars, {t, 0, tmax}];
 
-(* dodamo robne pogoje *)
-r = Join[{ww[0]}, r, {ww[nx]}];
+  (* dodamo robne rešitve *)
+  r = Join[{ww[0]}, r, {ww[nx]}];
 
-(* upodobimo resitev *)
-Plot[Table[-f[t], {f, r}], {t, 0, tmax}]
-ParametricPlot3D[Table[{(i-1) dx, t, -r[[i]][t]}, {i, 1, nx+1}], {t, 0, tmax}, PlotRange -> All, AxesLabel -> {"t", "x", "u"}] (* PlotRange -> {{0, 1}, {0, 5}, {0, 0.05}}] *)
-Manipulate[ListLinePlot[Table[-r[[i]][cas], {i, 1, nx+1}], PlotRange -> {-0.05, 0.05}], {cas, 0, tmax}]
+  (* upodobimo resitev *)
+  func = Table[-f[t], {f, r}];
+  Plot[func, {t, 0, tmax}]
+
+  parfunc = Table[{(i-1) dx, t, - 10 r[[i]][t]}, {i, 1, nx+1}];
+  ParametricPlot3D[parfunc, {t, 0, tmax}, PlotRange -> All, AxesLabel -> {"t", "x", "u"}] (* PlotRange -> {{0, 1}, {0, 5}, {0, 0.05}}] *)
+
+  Manipulate[ListLinePlot[Table[-r[[i]][cas], {i, 1, nx+1}], PlotRange -> {-0.05, 0.05}], {cas, 0, tmax}]
+
+  Print["Največji odmik od ravnovesne lege:"]
+  Max[Table[First[NMaximize[{Abs[f[t]], 0 <= t <= tmax}, t]], {f, r}]]*)
