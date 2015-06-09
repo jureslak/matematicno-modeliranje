@@ -1,105 +1,1855 @@
-(* Direktna metoda, do nx = 30, z nekaj potrpljenja *)
-nx = 30;
-dx = 1/nx;
-tmax = 4;
+(* Content-type: application/vnd.wolfram.mathematica *)
 
-Clear[ww, d4w]
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
 
-(* deljene diference *)
-d4w[t_, k_ /; 1  <= k <= nx-1] := (ww[k-2][t] - 4 ww[k-1][t] + 6 ww[k][t] - 4 ww[k+1][t] + ww[k+2][t]) / dx^4
-d4w[t_, k_ /; 0  == k] := 0 (* (ww[k+0][t] - 4 ww[k+1][t] + 6 ww[k+2][t] - 4 ww[k+3][t] + ww[k+4][t, k+4]) / dx^4*)
-d4w[t_, k_ /; nx == k] := 0 (* (ww[k-0][t] - 4 ww[k-1][t] + 6 ww[k-2][t] - 4 ww[k-3][t] + ww[k-4][t, k-4]) / dx^4*)
+(* CreatedBy='Mathematica 10.0' *)
 
-(* zacetni pogoji *)
-q[x_] := 1 (* Piecewise[{{5, x < 0.2},{0, True}}]*)
-g[x_] := 0
-h[x_] := (x-1/2)
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     60355,       1846]
+NotebookOptionsPosition[     58966,       1794]
+NotebookOutlinePosition[     59304,       1809]
+CellTagsIndexPosition[     59261,       1806]
+WindowFrame->Normal*)
 
-(* prosti robni pogoji *)
-ww[0][t_] := 0;
-ww[nx][t_] := 0;
-ww[-1][t_] := -ww[1][t];
-ww[nx+1][t_] := -ww[nx-1][t];
+(* Beginning of Notebook Content *)
+Notebook[{
 
+Cell[CellGroupData[{
+Cell["Nihanje nosilca", "Title",
+ CellChangeTimes->{{3.642874272599942*^9, 3.6428742761285458`*^9}}],
 
-(* generiranje sistema NDE *)
-deq = d4w[t, x] + D[ww[x][t], {t, 2}] == q[x dx];
-sistem = Table[deq /. {x -> i}, {i, 1, nx-1}]
+Cell[CellGroupData[{
 
-(* generiranje zacetnih pogojev *)
-pogoji = {
-    Table[ww[k][0] == g[k dx], {k, 1, nx-1}],
-    Table[ww[k]'[0] == h[k dx], {k, 1, nx-1}]
-};
+Cell["Direktna metoda", "Section",
+ CellChangeTimes->{{3.642874291103477*^9, 3.6428742944873943`*^9}}],
 
-vars = Table[ww[i], {i, 1, nx-1}];
+Cell[TextData[{
+ "Ena\[CHacek]bo ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{
+     SubscriptBox["w", "xxxx"], "+", 
+     SubscriptBox["w", "tt"]}], "=", "q"}], TraditionalForm]]],
+ ", ki opisuje nihanje nosilca, re\[SHacek]ujemo z metodo delne itegracije. \
+Odvode po x aproksimiramo z deljenimi diferencami, na\[SHacek]a PDE\npa se \
+prevede v sistem linearnih NDE s konstantnimi koeficienti. Funkcijo, ki jo \
+dobimo v i-ti to\[CHacek]ki diskretizacije, bomo ozna\[CHacek]ili z w[i].\n\n\
+Interval, na katerem le\[ZHacek]i x koordinata, diskretiziramo. Razdelimo ga \
+na nx pointervalov dol\[ZHacek]ine dx=1/nx in odvode po x aproksimiramo s \
+formulo za kon\[CHacek]ne diference drugega reda.\nPri tem \[ZHacek]e upo\
+\[SHacek]tevamo robne pogoje enostavno podprtega nosilca: v kraji\[SHacek]\
+\[CHacek]ih sta funkcijski vrednosti in drga odvoda enaka 0.\nZa\[CHacek]etni \
+polo\[ZHacek]aj je dan s funkcijo g, za\[CHacek]etna hitrost pa s funkcijo \
+h."
+}], "Text",
+ CellChangeTimes->{{3.642874362669331*^9, 3.642874397566016*^9}}],
 
-(* resimo sistem *)
-r = NDSolveValue[{sistem, pogoji}, vars, {t, 0, tmax}];
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Clear", "[", 
+   RowBox[{
+   "ww", ",", "d4w", ",", "w", ",", "nx", ",", "dx", ",", "tmax", ",", "deq", 
+    ",", "sistem", ",", "vars", ",", "r", ",", "rSimple", ",", "func", ",", 
+    "parfunc", ",", "pltSimple"}], "]"}], "\n", "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{"DIREKTNA", " ", "METODA"}], ",", 
+    RowBox[{
+     RowBox[{"do", " ", "nx"}], "=", "30"}], ",", 
+    RowBox[{"z", " ", "nekaj", " ", "potrpljenja"}]}], " ", 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"nx", "=", "30"}], ";"}], 
+  RowBox[{"(*", 
+   RowBox[{"stevilo", " ", "tock", " ", "diskretizacije"}], 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dx", "=", 
+   RowBox[{"1", "/", "nx"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"tmax", "=", "4"}], ";"}], 
+  RowBox[{"(*", 
+   RowBox[{
+   "do", " ", "katerega", " ", "casa", " ", "naj", " ", "izracuna", " ", 
+    "resitev"}], "*)"}], 
+  RowBox[{"(*", 
+   RowBox[{"deljene", " ", "diference"}], "*)"}], "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{"deljene", " ", "diference"}], " ", 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"d4w", "[", 
+   RowBox[{"t_", ",", 
+    RowBox[{"k_", "/;", 
+     RowBox[{"1", "\[LessEqual]", "k", "\[LessEqual]", 
+      RowBox[{"nx", "-", "1"}]}]}]}], "]"}], ":=", 
+  RowBox[{
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"ww", "[", 
+       RowBox[{"k", "-", "2"}], "]"}], "[", "t", "]"}], "-", 
+     RowBox[{"4", " ", 
+      RowBox[{
+       RowBox[{"ww", "[", 
+        RowBox[{"k", "-", "1"}], "]"}], "[", "t", "]"}]}], "+", 
+     RowBox[{"6", " ", 
+      RowBox[{
+       RowBox[{"ww", "[", "k", "]"}], "[", "t", "]"}]}], "-", 
+     RowBox[{"4", " ", 
+      RowBox[{
+       RowBox[{"ww", "[", 
+        RowBox[{"k", "+", "1"}], "]"}], "[", "t", "]"}]}], "+", 
+     RowBox[{
+      RowBox[{"ww", "[", 
+       RowBox[{"k", "+", "2"}], "]"}], "[", "t", "]"}]}], ")"}], "/", 
+   RowBox[{"dx", "^", "4"}]}]}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"d4w", "[", 
+    RowBox[{"t_", ",", 
+     RowBox[{"k_", "/;", 
+      RowBox[{"0", "\[Equal]", "k"}]}]}], "]"}], ":=", "0"}], " ", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"ww", "[", 
+        RowBox[{"k", "+", "0"}], "]"}], "[", "t", "]"}], "-", 
+      RowBox[{"4", " ", 
+       RowBox[{
+        RowBox[{"ww", "[", 
+         RowBox[{"k", "+", "1"}], "]"}], "[", "t", "]"}]}], "+", 
+      RowBox[{"6", " ", 
+       RowBox[{
+        RowBox[{"ww", "[", 
+         RowBox[{"k", "+", "2"}], "]"}], "[", "t", "]"}]}], "-", 
+      RowBox[{"4", " ", 
+       RowBox[{
+        RowBox[{"ww", "[", 
+         RowBox[{"k", "+", "3"}], "]"}], "[", "t", "]"}]}], "+", 
+      RowBox[{
+       RowBox[{"ww", "[", 
+        RowBox[{"k", "+", "4"}], "]"}], "[", 
+       RowBox[{"t", ",", 
+        RowBox[{"k", "+", "4"}]}], "]"}]}], ")"}], "/", 
+    RowBox[{"dx", "^", "4"}]}], "*)"}]}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"d4w", "[", 
+    RowBox[{"t_", ",", 
+     RowBox[{"k_", "/;", 
+      RowBox[{"nx", "\[Equal]", "k"}]}]}], "]"}], ":=", "0"}], " ", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"ww", "[", 
+        RowBox[{"k", "-", "0"}], "]"}], "[", "t", "]"}], "-", 
+      RowBox[{"4", " ", 
+       RowBox[{
+        RowBox[{"ww", "[", 
+         RowBox[{"k", "-", "1"}], "]"}], "[", "t", "]"}]}], "+", 
+      RowBox[{"6", " ", 
+       RowBox[{
+        RowBox[{"ww", "[", 
+         RowBox[{"k", "-", "2"}], "]"}], "[", "t", "]"}]}], "-", 
+      RowBox[{"4", " ", 
+       RowBox[{
+        RowBox[{"ww", "[", 
+         RowBox[{"k", "-", "3"}], "]"}], "[", "t", "]"}]}], "+", 
+      RowBox[{
+       RowBox[{"ww", "[", 
+        RowBox[{"k", "-", "4"}], "]"}], "[", 
+       RowBox[{"t", ",", 
+        RowBox[{"k", "-", "4"}]}], "]"}]}], ")"}], "/", 
+    RowBox[{"dx", "^", "4"}]}], "*)"}], "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{"zacetni", " ", "pogoji"}], " ", "*)"}]}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"q", "[", "x_", "]"}], ":=", "1"}], " ", 
+  RowBox[{"(*", 
+   RowBox[{"Piecewise", "[", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"5", ",", 
+        RowBox[{"x", "<", "0.2"}]}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"0", ",", "True"}], "}"}]}], "}"}], "]"}], "*)"}]}], "\n", 
+ RowBox[{
+  RowBox[{"g", "[", "x_", "]"}], ":=", "0"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"h", "[", "x_", "]"}], ":=", 
+   RowBox[{"2", " ", "x", " ", 
+    RowBox[{"(", 
+     RowBox[{"x", "-", 
+      RowBox[{"1", "/", "2"}]}], ")"}], " ", 
+    RowBox[{"(", 
+     RowBox[{"x", "-", "1"}], ")"}]}]}], " ", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+    "malo", " ", "ga", " ", "sunemo", " ", "na", " ", "levi", " ", "gor", " ",
+      "in", " ", "na", " ", "desni", " ", "dol"}], ",", 
+    RowBox[{"da", " ", "je", " ", "bolj", " ", "zanimivo"}]}], " ", "*)"}], 
+  "\[IndentingNewLine]", "\n", 
+  RowBox[{"(*", " ", 
+   RowBox[{"prosti", " ", "robni", " ", "pogoji"}], " ", 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"ww", "[", "0", "]"}], "[", "t_", "]"}], ":=", "0"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"ww", "[", "nx", "]"}], "[", "t_", "]"}], ":=", "0"}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"ww", "[", 
+     RowBox[{"-", "1"}], "]"}], "[", "t_", "]"}], ":=", 
+   RowBox[{"-", 
+    RowBox[{
+     RowBox[{"ww", "[", "1", "]"}], "[", "t", "]"}]}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"ww", "[", 
+     RowBox[{"nx", "+", "1"}], "]"}], "[", "t_", "]"}], ":=", 
+   RowBox[{"-", 
+    RowBox[{
+     RowBox[{"ww", "[", 
+      RowBox[{"nx", "-", "1"}], "]"}], "[", "t", "]"}]}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.642874437289689*^9, 3.642874497021185*^9}, {
+  3.6428745500541058`*^9, 3.6428745513698874`*^9}}],
 
-(* dodamo robne rešitve *)
-r = Join[{ww[0]}, r, {ww[nx]}];
+Cell[CellGroupData[{
 
-(* upodobimo resitev *)
-func = Table[-f[t], {f, r}];
-Plot[func, {t, 0, tmax}]
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{"generiranje", " ", "sistema", " ", "NDE", " ", "po", " ", "MOL"}],
+    "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"deq", "=", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"d4w", "[", 
+        RowBox[{"t", ",", "x"}], "]"}], "+", 
+       RowBox[{"D", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"ww", "[", "x", "]"}], "[", "t", "]"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"t", ",", "2"}], "}"}]}], "]"}]}], "\[Equal]", 
+      RowBox[{"q", "[", 
+       RowBox[{"x", " ", "dx"}], "]"}]}]}], ";"}], 
+   RowBox[{"(*", " ", 
+    RowBox[{
+    "diskretizirana", " ", "ena\[CHacek]ba", " ", "v", " ", "smeri", " ", 
+     "x"}], " ", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"sistem", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"deq", "/.", 
+        RowBox[{"{", 
+         RowBox[{"x", "\[Rule]", "i"}], "}"}]}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "1", ",", 
+         RowBox[{"nx", "-", "1"}]}], "}"}]}], "]"}]}], ";"}], 
+   RowBox[{"(*", " ", 
+    RowBox[{"po", " ", "vsaki", " ", "to\[CHacek]ki", " ", "diskretizacije"}],
+     " ", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{"Print", "[", 
+    RowBox[{"\"\<Dol\[ZHacek]ina sistema: \>\"", ",", 
+     RowBox[{"Length", "[", "sistem", "]"}]}], "]"}], "\n", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"generiranje", " ", "zacetnih", " ", "pogojev"}], " ", "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"pogoji", "=", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"ww", "[", "k", "]"}], "[", "0", "]"}], "\[Equal]", 
+          RowBox[{"g", "[", 
+           RowBox[{"k", " ", "dx"}], "]"}]}], ",", 
+         RowBox[{"{", 
+          RowBox[{"k", ",", "1", ",", 
+           RowBox[{"nx", "-", "1"}]}], "}"}]}], "]"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"ww", "[", "k", "]"}], "'"}], "[", "0", "]"}], "\[Equal]", 
+          RowBox[{"h", "[", 
+           RowBox[{"k", " ", "dx"}], "]"}]}], ",", 
+         RowBox[{"{", 
+          RowBox[{"k", ",", "1", ",", 
+           RowBox[{"nx", "-", "1"}]}], "}"}]}], "]"}]}], 
+      "\[IndentingNewLine]", "}"}]}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", "spremenljivke", " ", "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"vars", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"ww", "[", "i", "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "1", ",", 
+         RowBox[{"nx", "-", "1"}]}], "}"}]}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{"(*", " ", 
+    RowBox[{"resimo", " ", "sistem"}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"r", "=", 
+     RowBox[{"NDSolveValue", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"sistem", ",", "pogoji"}], "}"}], ",", "vars", ",", 
+       RowBox[{"{", 
+        RowBox[{"t", ",", "0", ",", "tmax"}], "}"}]}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+    "dodamo", " ", "robne", " ", "re\[SHacek]itve", " ", "za", " ", 
+     "prikaz"}], " ", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"rSimple", "=", 
+     RowBox[{"Join", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"ww", "[", "0", "]"}], "}"}], ",", "r", ",", 
+       RowBox[{"{", 
+        RowBox[{"ww", "[", "nx", "]"}], "}"}]}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{"Print", "[", 
+    RowBox[{"\"\<\[CapitalSHacek]tevilo re\[SHacek]itev: \>\"", ",", 
+     RowBox[{"Length", "[", "rSimple", "]"}]}], "]"}]}]}]], "Input",
+ CellChangeTimes->{{3.642874437289689*^9, 3.642874542290365*^9}}],
 
-parfunc = Table[{(i-1) dx, t, - 10 r[[i]][t]}, {i, 1, nx+1}];
-ParametricPlot3D[parfunc, {t, 0, tmax}, PlotRange -> All, AxesLabel -> {"t", "x", "u"}] (* PlotRange -> {{0, 1}, {0, 5}, {0, 0.05}}] *)
+Cell[CellGroupData[{
 
-Manipulate[ListLinePlot[Table[-r[[i]][cas], {i, 1, nx+1}], PlotRange -> {-0.05, 0.05}], {cas, 0, tmax}]
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Dol\[ZHacek]ina sistema: \"\>", "\[InvisibleSpace]", "29"}],
+  SequenceForm["Dol\[ZHacek]ina sistema: ", 29],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.64287455576962*^9, 3.64287457564773*^9}, {
+  3.642875229155775*^9, 3.6428752437087803`*^9}}],
 
-Print["Največji odmik od ravnovesne lege:"]
-Max[Table[First[NMaximize[{Abs[f[t]], 0 <= t <= tmax}, t]], {f, r}]]
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[CapitalSHacek]tevilo re\[SHacek]itev: \"\>", 
+   "\[InvisibleSpace]", "31"}],
+  SequenceForm["\[CapitalSHacek]tevilo re\[SHacek]itev: ", 31],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.64287455576962*^9, 3.64287457564773*^9}, {
+  3.642875229155775*^9, 3.6428752445800323`*^9}}]
+}, Open  ]]
+}, Open  ]],
 
-(* Pametna metoda *)
-nx = 10;
-dx = 1/nx;
-tmax = 4;
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"upodobimo", " ", "resitve"}], " ", "*)"}], "\[IndentingNewLine]", 
+  
+  RowBox[{
+   RowBox[{
+    RowBox[{"func", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"-", 
+        RowBox[{"f", "[", "t", "]"}]}], ",", 
+       RowBox[{"{", 
+        RowBox[{"f", ",", "rSimple"}], "}"}]}], "]"}]}], ";"}], "\n", 
+   RowBox[{"Plot", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"func", "[", 
+        RowBox[{"[", "2", "]"}], "]"}], ",", 
+       RowBox[{"func", "[", 
+        RowBox[{"[", 
+         RowBox[{
+          RowBox[{"nx", "/", "2"}], "-", "5"}], "]"}], "]"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"t", ",", "0", ",", "tmax"}], "}"}]}], "]"}], " ", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+     RowBox[{"to\[CHacek]ka", " ", "na", " ", "robu"}], ",", 
+     RowBox[{"to\[CHacek]ka", " ", "na", " ", "sredi"}]}], " ", "*)"}], "\n", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+    "nosilec", " ", "v", " ", "odvisnosti", " ", "od", " ", "\[CHacek]asa", 
+     " ", "kot", " ", "ploskev", " ", "v", " ", "ravnini", " ", 
+     RowBox[{"(", 
+      RowBox[{"x", ",", "t"}], ")"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"parfunc", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"i", "-", "1"}], ")"}], " ", "dx"}], ",", "t", ",", 
+         RowBox[{
+          RowBox[{"-", "10"}], " ", 
+          RowBox[{
+           RowBox[{"rSimple", "[", 
+            RowBox[{"[", "i", "]"}], "]"}], "[", "t", "]"}]}]}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "1", ",", 
+         RowBox[{"nx", "+", "1"}]}], "}"}]}], "]"}]}], ";"}], "\n", 
+   RowBox[{"ParametricPlot3D", "[", 
+    RowBox[{"parfunc", ",", 
+     RowBox[{"{", 
+      RowBox[{"t", ",", "0", ",", "tmax"}], "}"}], ",", 
+     RowBox[{"PlotRange", "\[Rule]", "All"}], ",", 
+     RowBox[{"AxesLabel", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"\"\<t\>\"", ",", "\"\<x\>\"", ",", "\"\<u\>\""}], "}"}]}]}], 
+    "]"}], " ", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"PlotRange", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"0", ",", "1"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"0", ",", "5"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"0", ",", "0.05"}], "}"}]}], "}"}]}], "]"}], "*)"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+    "nosilec", " ", "v", " ", "dejanski", " ", "odvisnosti", " ", "od", " ", 
+     "\[CHacek]asa"}], " ", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{"Animate", "[", 
+    RowBox[{
+     RowBox[{"ListLinePlot", "[", 
+      RowBox[{
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"(", 
+             RowBox[{"i", "-", "1"}], ")"}], " ", "dx"}], ",", 
+           RowBox[{"-", 
+            RowBox[{
+             RowBox[{"rSimple", "[", 
+              RowBox[{"[", "i", "]"}], "]"}], "[", "cas", "]"}]}]}], "}"}], 
+         ",", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "1", ",", 
+           RowBox[{"nx", "+", "1"}]}], "}"}]}], "]"}], ",", 
+       RowBox[{"PlotRange", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"-", "0.05"}], ",", "0.05"}], "}"}]}]}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"cas", ",", "0", ",", "tmax"}], "}"}], ",", 
+     RowBox[{"AnimationRate", "\[Rule]", ".25"}]}], "]"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+    "shranimo", " ", "si", " ", "graf", " ", "ob", " ", "\[CHacek]asu", " ", 
+     "1", " ", "za", " ", "naprej"}], " ", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"sampleSimple", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"i", "-", "1"}], ")"}], " ", "dx"}], ",", 
+         RowBox[{"-", 
+          RowBox[{
+           RowBox[{"rSimple", "[", 
+            RowBox[{"[", "i", "]"}], "]"}], "[", "1", "]"}]}]}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "1", ",", 
+         RowBox[{"nx", "+", "1"}]}], "}"}]}], "]"}]}], ";"}], "\n", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+    "najve\[CHacek]ji", " ", "odmik", " ", "od", " ", "ravnovesne", " ", 
+     "lege"}], " ", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+   "Print", "[", "\"\<Najve\[CHacek]ji odmik od ravnovesne lege:\>\"", "]"}], 
+   "\n", 
+   RowBox[{"Max", "[", 
+    RowBox[{"Table", "[", 
+     RowBox[{
+      RowBox[{"First", "[", 
+       RowBox[{"NMaximize", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"Abs", "[", 
+            RowBox[{"f", "[", "t", "]"}], "]"}], ",", 
+           RowBox[{"0", "\[LessEqual]", "t", "\[LessEqual]", "tmax"}]}], 
+          "}"}], ",", "t"}], "]"}], "]"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"f", ",", "rSimple"}], "}"}]}], "]"}], "]"}]}]}]], "Input",
+ CellChangeTimes->{{3.642874591644093*^9, 3.642874614667028*^9}}]
+}, Open  ]],
 
-Clear[ww, d4w]
+Cell[CellGroupData[{
 
-(* deljene diference *)
-d4w[t_, k_ /; 1  <= k <= nx-1] := (ww[k-2][t] - 4 ww[k-1][t] + 6 ww[k][t] - 4 ww[k+1][t] + ww[k+2][t]) / dx^4
-d4w[t_, k_ /; 0  == k] := 0 (* FIXME (ww[k+0][t] - 4 ww[k+1][t] + 6 ww[k+2][t] - 4 ww[k+3][t] + ww[k+4][t, k+4]) / dx^4*)
-d4w[t_, k_ /; nx == k] := 0 (* FIXME (ww[k-0][t] - 4 ww[k-1][t] + 6 ww[k-2][t] - 4 ww[k-3][t] + ww[k-4][t, k-4]) / dx^4*)
+Cell["Re\[SHacek]itev z redkimi sistemi", "Section",
+ CellChangeTimes->{{3.64287468109029*^9, 3.6428746833004513`*^9}}],
 
-(* zacetni pogoji *)
-q[x_] := 1 (* Piecewise[{{5, x < 0.2},{0, True}}] *)
-g[x_] := 0
-h[x_] := 0
+Cell["\<\
+Sistem, ki ga dobimo je redek, morda zna Mathematica to izkoristiti. Za\
+\[CHacek]etni in robni pogoji ter gereriranje sistema je enako kot prej.\
+\>", "Text",
+ CellChangeTimes->{3.6428746874607153`*^9}],
 
-(* prosti robni pogoji *)
-ww[0][t_] := 0;
-ww[nx][t_] := 0;
-ww[-1][t_] := -ww[1][t];
-ww[nx+1][t_] := -ww[nx-1][t];
+Cell[CellGroupData[{
 
-rhs = Table[q[i dx] - d4w[t, i] == 0., {i, 1, nx - 1}];
-{b, A} = CoefficientArrays[rhs, vars]
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Clear", "[", 
+   RowBox[{
+   "w", ",", "ww", ",", "d4w", ",", "q", ",", "h", ",", "g", ",", "nx", ",", 
+    "dx", ",", "tmax", ",", "deq", ",", "sistem", ",", "vars", ",", "r", ",", 
+    "rSimple", ",", "func", ",", "parfunc"}], "]"}], "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{"UCINKOVITEJSA", " ", 
+    RowBox[{"METODA", "--"}], " ", "redki", " ", "sistemi", " ", "in", " ", 
+    "NDSolve"}], " ", "*)"}]}], "\n", 
+ RowBox[{
+  RowBox[{"nx", "=", "70"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"dx", "=", 
+   RowBox[{"1", "/", "nx"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"tmax", "=", "4"}], ";"}], "\n", "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{"deljene", " ", "diference"}], " ", 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"d4w", "[", 
+   RowBox[{"t_", ",", 
+    RowBox[{"k_", "/;", 
+     RowBox[{"1", "\[LessEqual]", "k", "\[LessEqual]", 
+      RowBox[{"nx", "-", "1"}]}]}]}], "]"}], ":=", 
+  RowBox[{
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"ww", "[", 
+       RowBox[{"k", "-", "2"}], "]"}], "[", "t", "]"}], "-", 
+     RowBox[{"4", " ", 
+      RowBox[{
+       RowBox[{"ww", "[", 
+        RowBox[{"k", "-", "1"}], "]"}], "[", "t", "]"}]}], "+", 
+     RowBox[{"6", " ", 
+      RowBox[{
+       RowBox[{"ww", "[", "k", "]"}], "[", "t", "]"}]}], "-", 
+     RowBox[{"4", " ", 
+      RowBox[{
+       RowBox[{"ww", "[", 
+        RowBox[{"k", "+", "1"}], "]"}], "[", "t", "]"}]}], "+", 
+     RowBox[{
+      RowBox[{"ww", "[", 
+       RowBox[{"k", "+", "2"}], "]"}], "[", "t", "]"}]}], ")"}], "/", 
+   RowBox[{"dx", "^", "4"}]}]}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"d4w", "[", 
+    RowBox[{"t_", ",", 
+     RowBox[{"k_", "/;", 
+      RowBox[{"0", "\[Equal]", "k"}]}]}], "]"}], ":=", "0"}], " ", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"ww", "[", 
+        RowBox[{"k", "+", "0"}], "]"}], "[", "t", "]"}], "-", 
+      RowBox[{"4", " ", 
+       RowBox[{
+        RowBox[{"ww", "[", 
+         RowBox[{"k", "+", "1"}], "]"}], "[", "t", "]"}]}], "+", 
+      RowBox[{"6", " ", 
+       RowBox[{
+        RowBox[{"ww", "[", 
+         RowBox[{"k", "+", "2"}], "]"}], "[", "t", "]"}]}], "-", 
+      RowBox[{"4", " ", 
+       RowBox[{
+        RowBox[{"ww", "[", 
+         RowBox[{"k", "+", "3"}], "]"}], "[", "t", "]"}]}], "+", 
+      RowBox[{
+       RowBox[{"ww", "[", 
+        RowBox[{"k", "+", "4"}], "]"}], "[", 
+       RowBox[{"t", ",", 
+        RowBox[{"k", "+", "4"}]}], "]"}]}], ")"}], "/", 
+    RowBox[{"dx", "^", "4"}]}], "*)"}]}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"d4w", "[", 
+    RowBox[{"t_", ",", 
+     RowBox[{"k_", "/;", 
+      RowBox[{"nx", "\[Equal]", "k"}]}]}], "]"}], ":=", "0"}], " ", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"ww", "[", 
+        RowBox[{"k", "-", "0"}], "]"}], "[", "t", "]"}], "-", 
+      RowBox[{"4", " ", 
+       RowBox[{
+        RowBox[{"ww", "[", 
+         RowBox[{"k", "-", "1"}], "]"}], "[", "t", "]"}]}], "+", 
+      RowBox[{"6", " ", 
+       RowBox[{
+        RowBox[{"ww", "[", 
+         RowBox[{"k", "-", "2"}], "]"}], "[", "t", "]"}]}], "-", 
+      RowBox[{"4", " ", 
+       RowBox[{
+        RowBox[{"ww", "[", 
+         RowBox[{"k", "-", "3"}], "]"}], "[", "t", "]"}]}], "+", 
+      RowBox[{
+       RowBox[{"ww", "[", 
+        RowBox[{"k", "-", "4"}], "]"}], "[", 
+       RowBox[{"t", ",", 
+        RowBox[{"k", "-", "4"}]}], "]"}]}], ")"}], "/", 
+    RowBox[{"dx", "^", "4"}]}], "*)"}], "\[IndentingNewLine]", "\n", 
+  RowBox[{"(*", " ", 
+   RowBox[{"zacetni", " ", "pogoji"}], " ", "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"q", "[", "x_", "]"}], ":=", "1"}], " ", 
+  RowBox[{"(*", 
+   RowBox[{"Piecewise", "[", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"5", ",", 
+        RowBox[{"x", "<", "0.2"}]}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"0", ",", "True"}], "}"}]}], "}"}], "]"}], "*)"}]}], "\n", 
+ RowBox[{
+  RowBox[{"g", "[", "x_", "]"}], ":=", "0"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"h", "[", "x_", "]"}], ":=", 
+   RowBox[{"2", " ", "x", " ", 
+    RowBox[{"(", 
+     RowBox[{"x", "-", 
+      RowBox[{"1", "/", "2"}]}], ")"}], " ", 
+    RowBox[{"(", 
+     RowBox[{"x", "-", "1"}], ")"}]}]}], "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{"prosti", " ", "robni", " ", "pogoji"}], " ", "*)"}]}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"ww", "[", "0", "]"}], "[", "t_", "]"}], ":=", "0"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"ww", "[", "nx", "]"}], "[", "t_", "]"}], ":=", "0"}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"ww", "[", 
+     RowBox[{"-", "1"}], "]"}], "[", "t_", "]"}], ":=", 
+   RowBox[{"-", 
+    RowBox[{
+     RowBox[{"ww", "[", "1", "]"}], "[", "t", "]"}]}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"ww", "[", 
+      RowBox[{"nx", "+", "1"}], "]"}], "[", "t_", "]"}], ":=", 
+    RowBox[{"-", 
+     RowBox[{
+      RowBox[{"ww", "[", 
+       RowBox[{"nx", "-", "1"}], "]"}], "[", "t", "]"}]}]}], ";"}], 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", "spremenljivke", " ", "*)"}]}], "\n", 
+ RowBox[{
+  RowBox[{"vars", "=", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"ww", "[", "i", "]"}], "[", "t", "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"i", ",", "1", ",", 
+       RowBox[{"nx", "-", "1"}]}], "}"}]}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"wlist", "[", "t_", "]"}], ":=", 
+    RowBox[{"Table", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"ww", "[", "i", "]"}], "[", "t", "]"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"i", ",", "1", ",", 
+        RowBox[{"nx", "-", "1"}]}], "}"}]}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]", "\n", 
+  RowBox[{"(*", " ", 
+   RowBox[{"generiranje", " ", "redke", " ", "matrike"}], " ", 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"rhs", "=", 
+    RowBox[{"Table", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{
+        RowBox[{"q", "[", 
+         RowBox[{"i", " ", "dx"}], "]"}], "-", 
+        RowBox[{"d4w", "[", 
+         RowBox[{"t", ",", "i"}], "]"}]}], "\[Equal]", "0."}], ",", 
+      RowBox[{"{", 
+       RowBox[{"i", ",", "1", ",", 
+        RowBox[{"nx", "-", "1"}]}], "}"}]}], "]"}]}], ";", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"desna", " ", "stran", " ", "ena\[CHacek]be", " ", 
+      RowBox[{"w", "''"}]}], "=", 
+     RowBox[{"Aw", "+", "b"}]}], "*)"}], 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"b", ",", "A"}], "}"}], "=", 
+    RowBox[{"CoefficientArrays", "[", 
+     RowBox[{"rhs", ",", "vars"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "ena\[CHacek]ba", " ", "v", " ", "matri\[CHacek]ni", " ", "obliki"}], " ", 
+   "*)"}]}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"eq", "=", 
+    RowBox[{"Thread", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"wlist", "''"}], "[", "t", "]"}], "\[Equal]", 
+      RowBox[{
+       RowBox[{"A", ".", 
+        RowBox[{"wlist", "[", "t", "]"}]}], "+", "b"}]}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]", "\n", 
+  RowBox[{"(*", 
+   RowBox[{"generiranje", " ", "zacetnih", " ", "pogojev"}], 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"pogoji", "=", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"Thread", "[", 
+      RowBox[{
+       RowBox[{"wlist", "[", "0", "]"}], "\[Equal]", 
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{"g", "[", 
+          RowBox[{"k", " ", "dx"}], "]"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"k", ",", "1", ",", 
+           RowBox[{"nx", "-", "1"}]}], "}"}]}], "]"}]}], "]"}], ",", 
+     RowBox[{"Thread", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"wlist", "'"}], "[", "0", "]"}], "\[Equal]", 
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{"h", "[", 
+          RowBox[{"k", " ", "dx"}], "]"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"k", ",", "1", ",", 
+           RowBox[{"nx", "-", "1"}]}], "}"}]}], "]"}]}], "]"}]}], "}"}]}], 
+  ";"}], "\n", 
+ RowBox[{"Print", "[", 
+  RowBox[{"\"\<Stevilo ena\[CHacek]b: \>\"", ",", 
+   RowBox[{"Length", "[", "eq", "]"}]}], "]"}]}], "Input",
+ CellChangeTimes->{{3.642874702405546*^9, 3.642874736975224*^9}}],
 
-(*generiranje zacetnih pogojev*)
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Stevilo ena\[CHacek]b: \"\>", "\[InvisibleSpace]", "69"}],
+  SequenceForm["Stevilo ena\[CHacek]b: ", 69],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.642874776970318*^9, 3.642875251493617*^9}]
+}, Open  ]],
 
-pogoji = {w[0] == Table[g[k dx], {k, 1, nx - 1}],
-          w'[0] == Table[h[k dx], {k, 1, nx - 1}]};
-r = NDSolveValue[{w''[t] == A.w[t], pogoji}, w, {t, 0, tmax}]
-Manipulate[ListLinePlot[r[t]], {t, 0, tmax}]
+Cell[CellGroupData[{
 
- (*
-(* resimo sistem *)
-  r = NDSolveValue[{sistem, pogoji}, vars, {t, 0, tmax}];
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{"resimo", " ", "redek", " ", 
+     RowBox[{"sistem", "--"}], " ", "ni", " ", "dosti", " ", "boljse"}], ",", 
+    
+    RowBox[{
+    "ce", " ", "sploh", " ", "resuje", " ", "kot", " ", "redek", " ", 
+     "sistem"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"r", "=", 
+     RowBox[{"NDSolveValue", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"eq", ",", "pogoji"}], "}"}], ",", 
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{"ww", "[", "i", "]"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "1", ",", 
+           RowBox[{"nx", "-", "1"}]}], "}"}]}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"t", ",", "0", ",", "tmax"}], "}"}]}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+    "dodamo", " ", "robne", " ", "re\[SHacek]itve", " ", "za", " ", 
+     "prikaz"}], " ", "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"rSparse", "=", 
+     RowBox[{"Join", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"ww", "[", "0", "]"}], "}"}], ",", "r", ",", 
+       RowBox[{"{", 
+        RowBox[{"ww", "[", "nx", "]"}], "}"}]}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{"Print", "[", 
+    RowBox[{"\"\<\[CapitalSHacek]tevilo re\[SHacek]itev: \>\"", ",", 
+     RowBox[{"Length", "[", "rSparse", "]"}]}], "]"}]}]}]], "Input",
+ CellChangeTimes->{{3.642874702405546*^9, 3.642874763607312*^9}}],
 
-  (* dodamo robne rešitve *)
-  r = Join[{ww[0]}, r, {ww[nx]}];
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"\[CapitalSHacek]tevilo re\[SHacek]itev: \"\>", 
+   "\[InvisibleSpace]", "71"}],
+  SequenceForm["\[CapitalSHacek]tevilo re\[SHacek]itev: ", 71],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.642874789916362*^9, 3.642875260257505*^9}]
+}, Open  ]],
 
-  (* upodobimo resitev *)
-  func = Table[-f[t], {f, r}];
-  Plot[func, {t, 0, tmax}]
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", "animacija", " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"Animate", "[", 
+    RowBox[{
+     RowBox[{"ListLinePlot", "[", 
+      RowBox[{
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"(", 
+             RowBox[{"i", "-", "1"}], ")"}], " ", "dx"}], ",", 
+           RowBox[{"-", 
+            RowBox[{
+             RowBox[{"rSparse", "[", 
+              RowBox[{"[", "i", "]"}], "]"}], "[", "cas", "]"}]}]}], "}"}], 
+         ",", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "1", ",", 
+           RowBox[{"nx", "+", "1"}]}], "}"}]}], "]"}], ",", 
+       RowBox[{"PlotRange", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"-", "0.05"}], ",", "0.05"}], "}"}]}]}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"cas", ",", "0", ",", "tmax"}], "}"}], ",", 
+     RowBox[{"AnimationRate", "\[Rule]", ".25"}]}], "]"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{
+    RowBox[{"sampleSparse", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"i", "-", "1"}], ")"}], " ", "dx"}], ",", 
+         RowBox[{"-", 
+          RowBox[{
+           RowBox[{"rSparse", "[", 
+            RowBox[{"[", "i", "]"}], "]"}], "[", "1", "]"}]}]}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "1", ",", 
+         RowBox[{"nx", "+", "1"}]}], "}"}]}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{"(*", " ", 
+    RowBox[{"Primerjamo", " ", "resitvi"}], " ", "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"Show", "[", 
+    RowBox[{
+     RowBox[{"ListLinePlot", "[", "sampleSimple", "]"}], ",", 
+     RowBox[{"ListLinePlot", "[", 
+      RowBox[{"sampleSparse", ",", 
+       RowBox[{"ColorFunction", "\[Rule]", 
+        RowBox[{"(", 
+         RowBox[{"Red", "&"}], ")"}]}]}], "]"}]}], "]"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+    "Razlika", " ", "se", " ", "pove\[CHacek]uje", " ", "s", " ", 
+     "\[CHacek]asom"}], " ", "*)"}], "\n", 
+   RowBox[{"Plot", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       RowBox[{"Interpolation", "[", "sampleSimple", "]"}], "[", "t", "]"}], 
+      "-", 
+      RowBox[{
+       RowBox[{"Interpolation", "[", "sampleSparse", "]"}], "[", "t", "]"}]}],
+      ",", 
+     RowBox[{"{", 
+      RowBox[{"t", ",", "0", ",", 
+       RowBox[{"tmax", "/", "2"}]}], "}"}]}], "]"}]}]}]], "Input",
+ CellChangeTimes->{{3.642874702405546*^9, 3.6428747706930943`*^9}, {
+  3.64287515287392*^9, 3.642875159057358*^9}}]
+}, Open  ]],
 
-  parfunc = Table[{(i-1) dx, t, - 10 r[[i]][t]}, {i, 1, nx+1}];
-  ParametricPlot3D[parfunc, {t, 0, tmax}, PlotRange -> All, AxesLabel -> {"t", "x", "u"}] (* PlotRange -> {{0, 1}, {0, 5}, {0, 0.05}}] *)
+Cell[CellGroupData[{
 
-  Manipulate[ListLinePlot[Table[-r[[i]][cas], {i, 1, nx+1}], PlotRange -> {-0.05, 0.05}], {cas, 0, tmax}]
+Cell["Re\[SHacek]itev na roko, z diagonalizacijo", "Section",
+ CellChangeTimes->{3.642874829134595*^9}],
 
-  Print["Največji odmik od ravnovesne lege:"]
-  Max[Table[First[NMaximize[{Abs[f[t]], 0 <= t <= tmax}, t]], {f, r}]]*)
+Cell["\<\
+Sistem oblike w\[CloseCurlyQuote]\[CloseCurlyQuote]=Aw+b digonaliziramo. Pi\
+\[SHacek]emo A=Q^T L Q  (A je namre\[CHacek] simetri\[CHacek]na) in ena\
+\[CHacek]bo prevedemo na Qw\[CloseCurlyQuote]\[CloseCurlyQuote] = LQw + Qb. \
+Po uvedbi spremenljivke v=Qw se ena\[CHacek]ba razklopi.
+S Q prevedemo tudi za\[CHacek]etne pogoje. Re\[SHacek]itev izra\[CHacek]unamo \
+v diagonalni obliki, potem pa jo s Q^T prenesemo nazaj. Matrika je redka in \
+pasovna, tako da je ra\[CHacek]unanje lastnih vrednosti hitro, 
+toda matrika Q ni ve\[CHacek] redka, tako da pri\[CHacek]akujemo omejitev \
+spomina in ra\[CHacek]unskih zmogljivosti okoli 5000 (vsaj pri meni). Ni \
+nujno, da se natan\[CHacek]nost s \[SHacek]tevilom to\[CHacek]k ve\[CHacek]a, \
+saj lahko pridobimo 
+preve\[CHacek] neodpravljive numeri\[CHacek]ne napake, ker delamo z zelo \
+velikimi \[SHacek]tevili (1/dx^4). Zato sem poskusil tudi zanemariti majhne \
+lastne vrednosti, ki k re\[SHacek]itvi ne prispevajo veliko.\
+\>", "Text",
+ CellChangeTimes->{3.6428748409022083`*^9}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Clear", "[", 
+   RowBox[{
+   "w", ",", "ww", ",", "d4w", ",", "q", ",", "h", ",", "g", ",", "nx", ",", 
+    "dx", ",", "tmax", ",", "deq", ",", "sistem", ",", "vars", ",", "r", ",", 
+    "rSparse", ",", "A", ",", "b", ",", "eq", ",", "wlist"}], "]"}], 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "\[CapitalSHacek]E", " ", "UCINKOVITEJSA", " ", "METODA", " ", "z", " ", 
+    "diagonalizacijo"}], " ", "*)"}]}], "\n", 
+ RowBox[{
+  RowBox[{"nx", "=", "1000"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"dx", "=", 
+   RowBox[{"1", "/", "nx"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"tmax", "=", "2"}], ";"}], "\n", "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{"deljene", " ", "diference"}], " ", 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"d4w", "[", 
+   RowBox[{"t_", ",", 
+    RowBox[{"k_", "/;", 
+     RowBox[{"1", "\[LessEqual]", "k", "\[LessEqual]", 
+      RowBox[{"nx", "-", "1"}]}]}]}], "]"}], ":=", 
+  RowBox[{
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"ww", "[", 
+       RowBox[{"k", "-", "2"}], "]"}], "[", "t", "]"}], "-", 
+     RowBox[{"4", " ", 
+      RowBox[{
+       RowBox[{"ww", "[", 
+        RowBox[{"k", "-", "1"}], "]"}], "[", "t", "]"}]}], "+", 
+     RowBox[{"6", " ", 
+      RowBox[{
+       RowBox[{"ww", "[", "k", "]"}], "[", "t", "]"}]}], "-", 
+     RowBox[{"4", " ", 
+      RowBox[{
+       RowBox[{"ww", "[", 
+        RowBox[{"k", "+", "1"}], "]"}], "[", "t", "]"}]}], "+", 
+     RowBox[{
+      RowBox[{"ww", "[", 
+       RowBox[{"k", "+", "2"}], "]"}], "[", "t", "]"}]}], ")"}], "/", 
+   RowBox[{"dx", "^", "4"}]}]}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"d4w", "[", 
+    RowBox[{"t_", ",", 
+     RowBox[{"k_", "/;", 
+      RowBox[{"0", "\[Equal]", "k"}]}]}], "]"}], ":=", "0"}], " ", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"ww", "[", 
+        RowBox[{"k", "+", "0"}], "]"}], "[", "t", "]"}], "-", 
+      RowBox[{"4", " ", 
+       RowBox[{
+        RowBox[{"ww", "[", 
+         RowBox[{"k", "+", "1"}], "]"}], "[", "t", "]"}]}], "+", 
+      RowBox[{"6", " ", 
+       RowBox[{
+        RowBox[{"ww", "[", 
+         RowBox[{"k", "+", "2"}], "]"}], "[", "t", "]"}]}], "-", 
+      RowBox[{"4", " ", 
+       RowBox[{
+        RowBox[{"ww", "[", 
+         RowBox[{"k", "+", "3"}], "]"}], "[", "t", "]"}]}], "+", 
+      RowBox[{
+       RowBox[{"ww", "[", 
+        RowBox[{"k", "+", "4"}], "]"}], "[", 
+       RowBox[{"t", ",", 
+        RowBox[{"k", "+", "4"}]}], "]"}]}], ")"}], "/", 
+    RowBox[{"dx", "^", "4"}]}], "*)"}]}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"d4w", "[", 
+    RowBox[{"t_", ",", 
+     RowBox[{"k_", "/;", 
+      RowBox[{"nx", "\[Equal]", "k"}]}]}], "]"}], ":=", "0"}], " ", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"ww", "[", 
+        RowBox[{"k", "-", "0"}], "]"}], "[", "t", "]"}], "-", 
+      RowBox[{"4", " ", 
+       RowBox[{
+        RowBox[{"ww", "[", 
+         RowBox[{"k", "-", "1"}], "]"}], "[", "t", "]"}]}], "+", 
+      RowBox[{"6", " ", 
+       RowBox[{
+        RowBox[{"ww", "[", 
+         RowBox[{"k", "-", "2"}], "]"}], "[", "t", "]"}]}], "-", 
+      RowBox[{"4", " ", 
+       RowBox[{
+        RowBox[{"ww", "[", 
+         RowBox[{"k", "-", "3"}], "]"}], "[", "t", "]"}]}], "+", 
+      RowBox[{
+       RowBox[{"ww", "[", 
+        RowBox[{"k", "-", "4"}], "]"}], "[", 
+       RowBox[{"t", ",", 
+        RowBox[{"k", "-", "4"}]}], "]"}]}], ")"}], "/", 
+    RowBox[{"dx", "^", "4"}]}], "*)"}], "\n", "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{"zacetni", " ", "pogoji"}], " ", "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"q", "[", "x_", "]"}], ":=", "1"}], " ", 
+  RowBox[{"(*", 
+   RowBox[{"Piecewise", "[", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"5", ",", 
+        RowBox[{"x", "<", "0.2"}]}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"0", ",", "True"}], "}"}]}], "}"}], "]"}], "*)"}]}], "\n", 
+ RowBox[{
+  RowBox[{"g", "[", "x_", "]"}], ":=", "0"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"h", "[", "x_", "]"}], ":=", 
+   RowBox[{"2", " ", "x", " ", 
+    RowBox[{"(", 
+     RowBox[{"x", "-", 
+      RowBox[{"1", "/", "2"}]}], ")"}], " ", 
+    RowBox[{"(", 
+     RowBox[{"x", "-", "1"}], ")"}]}]}], "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{"prosti", " ", "robni", " ", "pogoji"}], " ", "*)"}]}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"ww", "[", "0", "]"}], "[", "t_", "]"}], ":=", "0"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"ww", "[", "nx", "]"}], "[", "t_", "]"}], ":=", "0"}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"ww", "[", 
+      RowBox[{"-", "1"}], "]"}], "[", "t_", "]"}], ":=", 
+    RowBox[{"-", 
+     RowBox[{
+      RowBox[{"ww", "[", "1", "]"}], "[", "t", "]"}]}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"ww", "[", 
+      RowBox[{"nx", "+", "1"}], "]"}], "[", "t_", "]"}], ":=", 
+    RowBox[{"-", 
+     RowBox[{
+      RowBox[{"ww", "[", 
+       RowBox[{"nx", "-", "1"}], "]"}], "[", "t", "]"}]}]}], ";"}], 
+  "\[IndentingNewLine]", "\n", 
+  RowBox[{"(*", " ", "spremenljivke", " ", "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"vars", "=", 
+    RowBox[{"Table", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"ww", "[", "i", "]"}], "[", "t", "]"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"i", ",", "1", ",", 
+        RowBox[{"nx", "-", "1"}]}], "}"}]}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"rhs", "=", 
+    RowBox[{"Table", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{
+        RowBox[{"q", "[", 
+         RowBox[{"i", " ", "dx"}], "]"}], "-", 
+        RowBox[{"d4w", "[", 
+         RowBox[{"t", ",", "i"}], "]"}]}], "\[Equal]", "0."}], ",", 
+      RowBox[{"{", 
+       RowBox[{"i", ",", "1", ",", 
+        RowBox[{"nx", "-", "1"}]}], "}"}]}], "]"}]}], ";"}], 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"desna", " ", "stran", " ", "ena\[CHacek]be", " ", 
+     RowBox[{"w", "''"}]}], "=", 
+    RowBox[{"Aw", "+", "b"}]}], "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"b", ",", "A"}], "}"}], "=", 
+    RowBox[{"CoefficientArrays", "[", 
+     RowBox[{"rhs", ",", "vars"}], "]"}]}], ";"}], 
+  "\n"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Timing", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"L", ",", "Q"}], "}"}], "=", 
+     RowBox[{"Eigensystem", "[", "A", "]"}]}], ";"}], "]"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "oglejmo", " ", "si", " ", "lastne", " ", "vrednosti", " ", "in", " ", 
+    "lastne", " ", "vektorje"}], " ", "*)"}]}], "\n", 
+ RowBox[{"ListPlot", "[", 
+  RowBox[{"L", ",", 
+   RowBox[{"AspectRatio", "\[Rule]", "1"}]}], "]"}], "\n", 
+ RowBox[{"Manipulate", "[", 
+  RowBox[{
+   RowBox[{"ListPlot", "[", 
+    RowBox[{"Q", "[", 
+     RowBox[{"[", "i", "]"}], "]"}], "]"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"i", ",", "1", ",", 
+     RowBox[{"nx", "-", "1"}], ",", "1"}], "}"}]}], "]"}]}], "Input",
+ CellChangeTimes->{{3.642874863031756*^9, 3.642874884984877*^9}, 
+   3.642875263185103*^9, {3.642875620483474*^9, 3.6428756208346453`*^9}, 
+   3.6428757209003677`*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "resimo", " ", "diagonalno", " ", "ena\[CHacek]bo", " ", "v", " ", 
+    "splo\[SHacek]nem"}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"rSplosna", "=", 
+     RowBox[{"DSolveValue", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"v", "''"}], "[", "t", "]"}], "\[Equal]", 
+          RowBox[{
+           RowBox[{"l", " ", 
+            RowBox[{"v", "[", "t", "]"}]}], "+", "qb"}]}], ",", 
+         RowBox[{
+          RowBox[{"v", "[", "0", "]"}], "\[Equal]", "qg"}], ",", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"v", "'"}], "[", "0", "]"}], "\[Equal]", "qh"}]}], "}"}], 
+       ",", "v", ",", "t"}], "]"}]}], ";"}], "\n", "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{"za\[CHacek]etni", " ", "pogoji", " ", "kot", " ", "vektorji"}], 
+    " ", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"iPos", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"g", "[", 
+        RowBox[{"i", " ", "dx"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "1", ",", 
+         RowBox[{"nx", "-", "1"}]}], "}"}]}], "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"iVel", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"h", "[", 
+        RowBox[{"i", " ", "dx"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "1", ",", 
+         RowBox[{"nx", "-", "1"}]}], "}"}]}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+    "napisemo", " ", "resitev", " ", "v", " ", "diagonalni", " ", "obliki"}], 
+    " ", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{"Timing", "[", 
+    RowBox[{
+     RowBox[{"rDiag", "=", 
+      RowBox[{"rSplosna", "/.", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"l", "\[Rule]", "L"}], ",", 
+         RowBox[{"qb", "\[Rule]", 
+          RowBox[{"(", 
+           RowBox[{"Q", ".", "b"}], ")"}]}], ",", 
+         RowBox[{"qg", "\[Rule]", 
+          RowBox[{"(", 
+           RowBox[{"Q", ".", "iPos"}], ")"}]}], ",", 
+         RowBox[{"qh", "\[Rule]", 
+          RowBox[{"(", 
+           RowBox[{"Q", ".", "iVel"}], ")"}]}]}], "}"}]}]}], ";"}], "]"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+    "naredimo", " ", "100", " ", "grafov", " ", "ob", " ", 
+     "razli\[CHacek]nih", " ", "\[CHacek]asih", " ", "in", " ", "jih", " ", 
+     "transformiramo", " ", "nazaj"}], " ", "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"moviesol", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"-", 
+        RowBox[{
+         RowBox[{"Transpose", "[", "Q", "]"}], ".", 
+         RowBox[{"(", 
+          RowBox[{"Re", "[", 
+           RowBox[{"rDiag", "[", "t", "]"}], "]"}], ")"}]}]}], ",", 
+       RowBox[{"{", 
+        RowBox[{"t", ",", "0", ",", "tmax", ",", 
+         RowBox[{"tmax", "/", "100"}]}], "}"}]}], "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"movieplt1", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"ListLinePlot", "[", 
+        RowBox[{
+         RowBox[{"Join", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"ww", "[", "0", "]"}], "[", "t", "]"}], "}"}], ",", 
+           "sol", ",", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"ww", "[", "nx", "]"}], "[", "t", "]"}], "}"}]}], "]"}], 
+         ",", 
+         RowBox[{"PlotRange", "\[Rule]", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"-", "0.05"}], ",", "0.05"}], "}"}]}]}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"sol", ",", "moviesol"}], "}"}]}], "]"}]}], ";"}], "\n", 
+   RowBox[{"ListAnimate", "[", 
+    RowBox[{"movieplt1", ",", " ", 
+     RowBox[{"AnimationRate", "\[Rule]", ".25"}]}], "]"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{"Primerjava", " ", "re\[SHacek]itev"}], " ", "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"sampleDiagY", "=", 
+     RowBox[{"-", 
+      RowBox[{
+       RowBox[{"Transpose", "[", "Q", "]"}], ".", 
+       RowBox[{"(", 
+        RowBox[{"Re", "[", 
+         RowBox[{"rDiag", "[", "1", "]"}], "]"}], ")"}]}]}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"sampleDiag", " ", "=", " ", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"i", " ", "dx"}], ",", " ", 
+         RowBox[{"sampleDiagY", "[", 
+          RowBox[{"[", "i", "]"}], "]"}]}], "}"}], ",", " ", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "1", ",", 
+         RowBox[{"nx", "-", "1"}]}], "}"}]}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"Show", "[", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"ListLinePlot", "[", "sampleSimple", "]"}], ",", 
+      RowBox[{"ListLinePlot", "[", 
+       RowBox[{"sampleSparse", ",", 
+        RowBox[{"ColorFunction", "\[Rule]", 
+         RowBox[{"(", 
+          RowBox[{"Red", "&"}], ")"}]}]}], "]"}], ",", 
+      RowBox[{"ListLinePlot", "[", 
+       RowBox[{"sampleDiag", ",", 
+        RowBox[{"ColorFunction", "\[Rule]", 
+         RowBox[{"(", 
+          RowBox[{"Orange", "&"}], ")"}]}]}], "]"}]}], "}"}], "]"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{"(*", " ", 
+    RowBox[{"Je", " ", "nekaj", " ", "napake"}], " ", "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"Plot", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       RowBox[{"Interpolation", "[", "sampleSimple", "]"}], "[", "t", "]"}], 
+      "-", 
+      RowBox[{
+       RowBox[{"Interpolation", "[", "sampleDiag", "]"}], "[", "t", "]"}]}], 
+     ",", 
+     RowBox[{"{", 
+      RowBox[{"t", ",", "0", ",", 
+       RowBox[{"tmax", "/", "2"}]}], "}"}]}], "]"}]}]}]], "Input",
+ CellChangeTimes->{{3.642874959864974*^9, 3.642874985814563*^9}, {
+  3.6428750358791733`*^9, 3.642875058212823*^9}, {3.642875135498313*^9, 
+  3.6428752176974983`*^9}, {3.6428753196008253`*^9, 3.642875502800894*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Zanemarjanje majhnih lastnih vrednosti", "Section",
+ CellChangeTimes->{{3.642875513566642*^9, 3.642875553821547*^9}}],
+
+Cell["\<\
+V zapuk pri re\[SHacek]itvi vzamemo le prvih nekaj lastnih vrednosti in \
+lastnih vektorjev.\
+\>", "Text",
+ CellChangeTimes->{{3.6428755562136803`*^9, 3.642875571156814*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Clear", "[", 
+   RowBox[{
+   "w", ",", "ww", ",", "d4w", ",", "q", ",", "h", ",", "g", ",", "nx", ",", 
+    "dx", ",", "tmax", ",", "deq", ",", "sistem", ",", "vars", ",", "r", ",", 
+    "rSparse", ",", "A", ",", "b", ",", "eq", ",", "wlist"}], "]"}], "\n", 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{"Zanemarjanje", " ", "lastnih", " ", "vrednosti"}], " ", 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"nx", "=", "5000"}], ";", " ", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+    "itak", " ", "je", " ", "precej", " ", "vseeno", " ", "kak\[SHacek]en", 
+     " ", "n"}], " ", "..."}], " ", "*)"}], "\n", 
+  RowBox[{"dx", "=", 
+   RowBox[{"1", "/", "nx"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"tmax", "=", "2"}], ";"}], "\[IndentingNewLine]", "\n", 
+  RowBox[{"(*", " ", 
+   RowBox[{"deljene", " ", "diference"}], " ", 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"d4w", "[", 
+   RowBox[{"t_", ",", 
+    RowBox[{"k_", "/;", 
+     RowBox[{"1", "\[LessEqual]", "k", "\[LessEqual]", 
+      RowBox[{"nx", "-", "1"}]}]}]}], "]"}], ":=", 
+  RowBox[{
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"ww", "[", 
+       RowBox[{"k", "-", "2"}], "]"}], "[", "t", "]"}], "-", 
+     RowBox[{"4", " ", 
+      RowBox[{
+       RowBox[{"ww", "[", 
+        RowBox[{"k", "-", "1"}], "]"}], "[", "t", "]"}]}], "+", 
+     RowBox[{"6", " ", 
+      RowBox[{
+       RowBox[{"ww", "[", "k", "]"}], "[", "t", "]"}]}], "-", 
+     RowBox[{"4", " ", 
+      RowBox[{
+       RowBox[{"ww", "[", 
+        RowBox[{"k", "+", "1"}], "]"}], "[", "t", "]"}]}], "+", 
+     RowBox[{
+      RowBox[{"ww", "[", 
+       RowBox[{"k", "+", "2"}], "]"}], "[", "t", "]"}]}], ")"}], "/", 
+   RowBox[{"dx", "^", "4"}]}]}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"d4w", "[", 
+    RowBox[{"t_", ",", 
+     RowBox[{"k_", "/;", 
+      RowBox[{"0", "\[Equal]", "k"}]}]}], "]"}], ":=", "0"}], " ", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"ww", "[", 
+        RowBox[{"k", "+", "0"}], "]"}], "[", "t", "]"}], "-", 
+      RowBox[{"4", " ", 
+       RowBox[{
+        RowBox[{"ww", "[", 
+         RowBox[{"k", "+", "1"}], "]"}], "[", "t", "]"}]}], "+", 
+      RowBox[{"6", " ", 
+       RowBox[{
+        RowBox[{"ww", "[", 
+         RowBox[{"k", "+", "2"}], "]"}], "[", "t", "]"}]}], "-", 
+      RowBox[{"4", " ", 
+       RowBox[{
+        RowBox[{"ww", "[", 
+         RowBox[{"k", "+", "3"}], "]"}], "[", "t", "]"}]}], "+", 
+      RowBox[{
+       RowBox[{"ww", "[", 
+        RowBox[{"k", "+", "4"}], "]"}], "[", 
+       RowBox[{"t", ",", 
+        RowBox[{"k", "+", "4"}]}], "]"}]}], ")"}], "/", 
+    RowBox[{"dx", "^", "4"}]}], "*)"}]}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"d4w", "[", 
+    RowBox[{"t_", ",", 
+     RowBox[{"k_", "/;", 
+      RowBox[{"nx", "\[Equal]", "k"}]}]}], "]"}], ":=", "0"}], " ", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"ww", "[", 
+        RowBox[{"k", "-", "0"}], "]"}], "[", "t", "]"}], "-", 
+      RowBox[{"4", " ", 
+       RowBox[{
+        RowBox[{"ww", "[", 
+         RowBox[{"k", "-", "1"}], "]"}], "[", "t", "]"}]}], "+", 
+      RowBox[{"6", " ", 
+       RowBox[{
+        RowBox[{"ww", "[", 
+         RowBox[{"k", "-", "2"}], "]"}], "[", "t", "]"}]}], "-", 
+      RowBox[{"4", " ", 
+       RowBox[{
+        RowBox[{"ww", "[", 
+         RowBox[{"k", "-", "3"}], "]"}], "[", "t", "]"}]}], "+", 
+      RowBox[{
+       RowBox[{"ww", "[", 
+        RowBox[{"k", "-", "4"}], "]"}], "[", 
+       RowBox[{"t", ",", 
+        RowBox[{"k", "-", "4"}]}], "]"}]}], ")"}], "/", 
+    RowBox[{"dx", "^", "4"}]}], "*)"}], "\[IndentingNewLine]", "\n", 
+  RowBox[{"(*", " ", 
+   RowBox[{"zacetni", " ", "pogoji"}], " ", "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"q", "[", "x_", "]"}], ":=", "1"}], " ", 
+  RowBox[{"(*", 
+   RowBox[{"Piecewise", "[", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"5", ",", 
+        RowBox[{"x", "<", "0.2"}]}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"0", ",", "True"}], "}"}]}], "}"}], "]"}], "*)"}]}], "\n", 
+ RowBox[{
+  RowBox[{"g", "[", "x_", "]"}], ":=", "0"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"h", "[", "x_", "]"}], ":=", 
+   RowBox[{"2", " ", "x", " ", 
+    RowBox[{"(", 
+     RowBox[{"x", "-", 
+      RowBox[{"1", "/", "2"}]}], ")"}], " ", 
+    RowBox[{"(", 
+     RowBox[{"x", "-", "1"}], ")"}]}]}], "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{"prosti", " ", "robni", " ", "pogoji"}], " ", 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"ww", "[", "0", "]"}], "[", "t_", "]"}], ":=", "0"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"ww", "[", "nx", "]"}], "[", "t_", "]"}], ":=", "0"}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"ww", "[", 
+      RowBox[{"-", "1"}], "]"}], "[", "t_", "]"}], ":=", 
+    RowBox[{"-", 
+     RowBox[{
+      RowBox[{"ww", "[", "1", "]"}], "[", "t", "]"}]}]}], ";"}], 
+  "\n"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"ww", "[", 
+      RowBox[{"nx", "+", "1"}], "]"}], "[", "t_", "]"}], ":=", 
+    RowBox[{"-", 
+     RowBox[{
+      RowBox[{"ww", "[", 
+       RowBox[{"nx", "-", "1"}], "]"}], "[", "t", "]"}]}]}], ";"}], 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", "spremenljivke", " ", "*)"}]}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"vars", "=", 
+    RowBox[{"Table", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"ww", "[", "i", "]"}], "[", "t", "]"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"i", ",", "1", ",", 
+        RowBox[{"nx", "-", "1"}]}], "}"}]}], "]"}]}], ";"}], 
+  "\n"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"rhs", "=", 
+    RowBox[{"Table", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{
+        RowBox[{"q", "[", 
+         RowBox[{"i", " ", "dx"}], "]"}], "-", 
+        RowBox[{"d4w", "[", 
+         RowBox[{"t", ",", "i"}], "]"}]}], "\[Equal]", "0."}], ",", 
+      RowBox[{"{", 
+       RowBox[{"i", ",", "1", ",", 
+        RowBox[{"nx", "-", "1"}]}], "}"}]}], "]"}]}], ";", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"desna", " ", "stran", " ", "ena\[CHacek]be", " ", 
+      RowBox[{"w", "''"}]}], "=", 
+     RowBox[{"Aw", "+", "b"}]}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"b", ",", "A"}], "}"}], "=", 
+    RowBox[{"CoefficientArrays", "[", 
+     RowBox[{"rhs", ",", "vars"}], "]"}]}], ";"}], 
+  "\n"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"limit", " ", "=", " ", "50"}], ";", " ", 
+   RowBox[{"(*", " ", 
+    RowBox[{"vzamemo", " ", "najve\[CHacek]jih", " ", "50"}], " ", "*)"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{"izra\[CHacek]unamo", " ", "lastne", " ", "vektorje"}], " ", 
+    "*)"}], "\[IndentingNewLine]", 
+   RowBox[{"Timing", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"L", ",", "Q"}], "}"}], "=", 
+      RowBox[{"Eigensystem", "[", 
+       RowBox[{"A", ",", " ", 
+        RowBox[{"-", "limit"}]}], "]"}]}], ";"}], "]"}]}], 
+  "\[IndentingNewLine]", "\n", 
+  RowBox[{"(*", " ", 
+   RowBox[{"splo\[SHacek]na", " ", "resitev"}], " ", 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"rSplosna", "=", 
+    RowBox[{"DSolveValue", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{
+         RowBox[{
+          RowBox[{"v", "''"}], "[", "t", "]"}], "\[Equal]", 
+         RowBox[{
+          RowBox[{"l", " ", 
+           RowBox[{"v", "[", "t", "]"}]}], "+", "qb"}]}], ",", 
+        RowBox[{
+         RowBox[{"v", "[", "0", "]"}], "\[Equal]", "qg"}], ",", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"v", "'"}], "[", "0", "]"}], "\[Equal]", "qh"}]}], "}"}], 
+      ",", "v", ",", "t"}], "]"}]}], ";"}], "\n", "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{"za\[CHacek]etni", " ", "pogoji", " ", "kot", " ", "vektorji"}], 
+   " ", "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"iPos", "=", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"g", "[", 
+      RowBox[{"i", " ", "dx"}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"i", ",", "1", ",", 
+       RowBox[{"nx", "-", "1"}]}], "}"}]}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"iVel", "=", 
+    RowBox[{"Table", "[", 
+     RowBox[{
+      RowBox[{"h", "[", 
+       RowBox[{"i", " ", "dx"}], "]"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"i", ",", "1", ",", 
+        RowBox[{"nx", "-", "1"}]}], "}"}]}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]", "\n", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "napisemo", " ", "resitev", " ", "v", " ", "diagonalni", " ", "obliki"}], 
+   " ", "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Timing", "[", 
+   RowBox[{
+    RowBox[{"rDiag", "=", 
+     RowBox[{"rSplosna", "/.", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"l", "\[Rule]", "L"}], ",", 
+        RowBox[{"qb", "\[Rule]", 
+         RowBox[{"(", 
+          RowBox[{"Q", ".", "b"}], ")"}]}], ",", 
+        RowBox[{"qg", "\[Rule]", 
+         RowBox[{"(", 
+          RowBox[{"Q", ".", "iPos"}], ")"}]}], ",", 
+        RowBox[{"qh", "\[Rule]", 
+         RowBox[{"(", 
+          RowBox[{"Q", ".", "iVel"}], ")"}]}]}], "}"}]}]}], ";"}], "]"}], 
+  "\[IndentingNewLine]", "\n", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "naredimo", " ", "100", " ", "grafov", " ", "ob", " ", "razli\[CHacek]nih",
+     " ", "\[CHacek]asih", " ", "in", " ", "jih", " ", "transformiramo", " ", 
+    "nazaj"}], " ", "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"moviesol", "=", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"-", 
+      RowBox[{
+       RowBox[{"Transpose", "[", "Q", "]"}], ".", 
+       RowBox[{"(", 
+        RowBox[{"Re", "[", 
+         RowBox[{"rDiag", "[", "t", "]"}], "]"}], ")"}]}]}], ",", 
+     RowBox[{"{", 
+      RowBox[{"t", ",", "0", ",", "tmax", ",", 
+       RowBox[{"tmax", "/", "100"}]}], "}"}]}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"movieplt1", "=", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"ListLinePlot", "[", 
+      RowBox[{
+       RowBox[{"Join", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"ww", "[", "0", "]"}], "[", "t", "]"}], "}"}], ",", "sol", 
+         ",", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"ww", "[", "nx", "]"}], "[", "t", "]"}], "}"}]}], "]"}], 
+       ",", 
+       RowBox[{"PlotRange", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"-", "0.05"}], ",", "0.05"}], "}"}]}]}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"sol", ",", "moviesol"}], "}"}]}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"ListAnimate", "[", 
+   RowBox[{"movieplt1", ",", " ", 
+    RowBox[{"AnimationRate", "\[Rule]", ".25"}]}], "]"}], 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{"Primerjava", " ", "re\[SHacek]itev"}], " ", 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"sampleDiagCroppedY", "=", 
+   RowBox[{"-", 
+    RowBox[{
+     RowBox[{"Transpose", "[", "Q", "]"}], ".", 
+     RowBox[{"(", 
+      RowBox[{"Re", "[", 
+       RowBox[{"rDiag", "[", "1", "]"}], "]"}], ")"}]}]}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"sampleDiagCropped", " ", "=", " ", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"i", " ", "dx"}], ",", " ", 
+       RowBox[{"sampleDiagCroppedY", "[", 
+        RowBox[{"[", "i", "]"}], "]"}]}], "}"}], ",", " ", 
+     RowBox[{"{", 
+      RowBox[{"i", ",", "1", ",", 
+       RowBox[{"nx", "-", "1"}]}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Show", "[", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"ListLinePlot", "[", 
+      RowBox[{"sampleDiag", ",", 
+       RowBox[{"ColorFunction", "\[Rule]", 
+        RowBox[{"(", 
+         RowBox[{"Orange", "&"}], ")"}]}]}], "]"}], ",", 
+     RowBox[{"ListLinePlot", "[", 
+      RowBox[{"sampleDiagCropped", ",", 
+       RowBox[{"ColorFunction", "\[Rule]", 
+        RowBox[{"(", 
+         RowBox[{"Purple", "&"}], ")"}]}]}], "]"}]}], "}"}], "]"}], "\n", 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{"Pri\[CHacek]akovana", " ", "zelo", " ", "majhna", " ", "napaka"}],
+    " ", "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{"Plot", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"Interpolation", "[", "sampleDiagCropped", "]"}], "[", "t", 
+     "]"}], "-", 
+    RowBox[{
+     RowBox[{"Interpolation", "[", "sampleDiag", "]"}], "[", "t", "]"}]}], 
+   ",", 
+   RowBox[{"{", 
+    RowBox[{"t", ",", "0", ",", 
+     RowBox[{"tmax", "/", "2"}]}], "}"}]}], "]"}]}], "Input",
+ CellChangeTimes->{{3.642875663179908*^9, 3.642875873147806*^9}, {
+  3.642875923680767*^9, 3.642876029512538*^9}, {3.642876070139674*^9, 
+  3.642876118353301*^9}}]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{1920, 1011},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"10.0 for Linux x86 (64-bit) (September 9, 2014)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 100, 1, 92, "Title"],
+Cell[CellGroupData[{
+Cell[705, 27, 102, 1, 64, "Section"],
+Cell[810, 30, 1044, 20, 131, "Text"],
+Cell[1857, 52, 5956, 188, 495, "Input"],
+Cell[CellGroupData[{
+Cell[7838, 244, 3879, 109, 473, "Input"],
+Cell[CellGroupData[{
+Cell[11742, 357, 303, 6, 23, "Print"],
+Cell[12048, 365, 337, 7, 23, "Print"]
+}, Open  ]]
+}, Open  ]],
+Cell[12412, 376, 5138, 148, 385, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[17587, 529, 119, 1, 64, "Section"],
+Cell[17709, 532, 213, 4, 31, "Text"],
+Cell[CellGroupData[{
+Cell[17947, 540, 8415, 265, 803, "Input"],
+Cell[26365, 807, 248, 5, 23, "Print"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[26650, 817, 1510, 42, 165, "Input"],
+Cell[28163, 861, 286, 6, 23, "Print"]
+}, Open  ]],
+Cell[28464, 870, 2660, 77, 231, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[31161, 952, 103, 1, 64, "Section"],
+Cell[31267, 955, 1040, 16, 91, "Text"],
+Cell[32310, 973, 7405, 234, 759, "Input"],
+Cell[39718, 1209, 5972, 169, 495, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[45727, 1383, 123, 1, 64, "Section"],
+Cell[45853, 1386, 184, 4, 31, "Text"],
+Cell[46040, 1392, 12898, 398, 1265, "Input"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
