@@ -1,0 +1,1111 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 10.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     40436,       1102]
+NotebookOptionsPosition[     38306,       1031]
+NotebookOutlinePosition[     38644,       1046]
+CellTagsIndexPosition[     38601,       1043]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Nihanje nosilca", "Title",
+ CellChangeTimes->{{3.642874272599942*^9, 3.6428742761285458`*^9}}],
+
+Cell[BoxData[{
+ RowBox[{"Get", "[", "\"\<Nosilec`\>\"", "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"tCmp", " ", "=", " ", "1.8"}], ";"}]}], "Input",
+ CellChangeTimes->{{3.643366028432773*^9, 3.643366049042316*^9}, {
+  3.643366466839954*^9, 3.643366470329921*^9}, {3.643367221306118*^9, 
+  3.6433672297634706`*^9}, {3.6433731185326977`*^9, 3.643373129076829*^9}, {
+  3.64337316353028*^9, 3.643373163770612*^9}, {3.643373527712653*^9, 
+  3.643373528160655*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["Analiti\[CHacek]na re\[SHacek]itev", "Section",
+ CellChangeTimes->{{3.643373134865802*^9, 3.643373139041636*^9}}],
+
+Cell["\<\
+Zmislimo si funkcijo, ki ustreza robnim pogojem, jo vstavimo v \
+ena\[CHacek]bo, dobimo desno stran in za\[CHacek]etne pogoje. 
+Nato re\[SHacek]imo ena\[CHacek]bo s temi pogoji in preverimo, ali nazaj \
+dobimo funkcijo, ki smo si jo izmislili. (Ta trik mi je zelo v\[SHacek]e\
+\[CHacek]!)
+
+Desna stran q je odvisna tudi od t, ampak to na\[SHacek]ih metod ne ovira. \
+\>", "Text",
+ CellChangeTimes->{3.643373155892537*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+    "izra\[CHacek]uanmo", " ", "polinom", " ", "cetrte", " ", "stopnje"}], 
+    ",", " ", 
+    RowBox[{"ki", " ", "ustreza", " ", "robnim", " ", "pogojem"}]}], " ", 
+   "*)"}], "\n", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"polinom", "[", "x_", "]"}], " ", ":=", " ", 
+    RowBox[{
+     RowBox[{"aaa", " ", 
+      RowBox[{"x", "^", "6"}]}], " ", "+", " ", 
+     RowBox[{"bbb", " ", 
+      RowBox[{"x", "^", "5"}]}], " ", "+", " ", 
+     RowBox[{"ccc", " ", 
+      RowBox[{"x", "^", "4"}]}], " ", "+", " ", 
+     RowBox[{"ddd", " ", 
+      RowBox[{"x", " ", "^", "3"}]}], "+", " ", 
+     RowBox[{"eee", " ", 
+      RowBox[{"x", "^", "2"}]}], " ", "+", " ", 
+     RowBox[{"fff", " ", "x"}], " ", "+", " ", "ggg"}]}], "\n", 
+   RowBox[{
+    RowBox[{"resitevPolinoma", " ", "=", " ", 
+     RowBox[{"First", "[", 
+      RowBox[{"Solve", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"polinom", "''"}], "[", "0", "]"}], " ", "==", " ", "0"}], 
+         " ", "&&", " ", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"polinom", "''"}], "[", "1", "]"}], " ", "==", " ", "0"}], 
+         " ", "&&", " ", 
+         RowBox[{
+          RowBox[{"polinom", "[", "0", "]"}], " ", "==", " ", "0"}], " ", "&&",
+          " ", 
+         RowBox[{
+          RowBox[{"polinom", "[", "1", "]"}], " ", "==", " ", "0"}], " ", "&&",
+          " ", 
+         RowBox[{"(*", " ", "pogoji", " ", "*)"}], "\[IndentingNewLine]", " ", 
+         RowBox[{
+          RowBox[{"polinom", "[", 
+           RowBox[{"1", "/", "2"}], "]"}], " ", "==", " ", 
+          RowBox[{"1", "/", "100"}]}], "&&", " ", 
+         RowBox[{
+          RowBox[{"polinom", "[", 
+           RowBox[{"1", "/", "3"}], "]"}], " ", "==", " ", 
+          RowBox[{"3", "/", "200"}]}], " ", "&&", " ", 
+         RowBox[{
+          RowBox[{"polinom", "[", 
+           RowBox[{"2", "/", "3"}], "]"}], "\[Equal]", 
+          RowBox[{"2", "/", "100"}]}]}], ",", " ", 
+        RowBox[{"{", 
+         RowBox[{
+         "aaa", ",", " ", "bbb", ",", " ", "ccc", ",", " ", "ddd", ",", " ", 
+          "eee", ",", "fff", ",", "ggg"}], "}"}]}], "]"}], "]"}]}], ";"}], 
+   "\n", 
+   RowBox[{
+    RowBox[{"iskaniPolinom", "[", "x_", "]"}], " ", ":=", " ", 
+    RowBox[{"Evaluate", "[", 
+     RowBox[{
+      RowBox[{"polinom", "[", "x", "]"}], " ", "/.", " ", "resitevPolinoma"}],
+      "]"}]}], "\[IndentingNewLine]", "\n", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+     RowBox[{"na\[SHacek]a", " ", 
+      RowBox[{"re\[SHacek]itev", " ", "--"}], " ", "mora", " ", "biti", " ", 
+      "produkt"}], ",", " ", 
+     RowBox[{
+     "ker", " ", "lahko", " ", "resujemo", " ", "s", " ", "separacijo"}]}], 
+    " ", "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"T", "[", "t_", "]"}], ":=", 
+    RowBox[{"Sin", "[", 
+     RowBox[{"4", "t"}], "]"}]}], "\n", 
+   RowBox[{
+    RowBox[{"u", "[", 
+     RowBox[{"x_", ",", " ", "t_"}], "]"}], " ", ":=", " ", 
+    RowBox[{"2", 
+     RowBox[{"iskaniPolinom", "[", "x", "]"}], " ", 
+     RowBox[{"T", "[", "t", "]"}]}]}], "\n", 
+   RowBox[{"Plot3D", "[", 
+    RowBox[{
+     RowBox[{"u", "[", 
+      RowBox[{"x", ",", " ", "t"}], "]"}], ",", " ", 
+     RowBox[{"{", 
+      RowBox[{"x", ",", " ", "0", ",", " ", "1"}], "}"}], ",", " ", 
+     RowBox[{"{", 
+      RowBox[{"t", ",", " ", "0", ",", " ", "4"}], "}"}]}], "]"}], "\n", 
+   RowBox[{
+    RowBox[{"g", "[", "x_", "]"}], " ", ":=", " ", 
+    RowBox[{"u", "[", 
+     RowBox[{"x", ",", " ", "0"}], "]"}]}], "\n", 
+   RowBox[{
+    RowBox[{"h", "[", "x_", "]"}], " ", ":=", " ", 
+    RowBox[{
+     SuperscriptBox["u", 
+      TagBox[
+       RowBox[{"(", 
+        RowBox[{"0", ",", "1"}], ")"}],
+       Derivative],
+      MultilineFunction->None], "[", 
+     RowBox[{"x", ",", " ", "0"}], "]"}]}], "\n", 
+   RowBox[{
+    RowBox[{"q", "[", 
+     RowBox[{"x_", ",", " ", "t_"}], "]"}], " ", ":=", " ", 
+    RowBox[{"Evaluate", "[", 
+     RowBox[{"Simplify", "[", 
+      RowBox[{
+       RowBox[{"D", "[", 
+        RowBox[{
+         RowBox[{"u", "[", 
+          RowBox[{"x", ",", " ", "t"}], "]"}], ",", " ", 
+         RowBox[{"{", 
+          RowBox[{"x", ",", " ", "4"}], "}"}]}], "]"}], " ", "+", " ", 
+       RowBox[{"D", "[", 
+        RowBox[{
+         RowBox[{"u", "[", 
+          RowBox[{"x", ",", " ", "t"}], "]"}], ",", " ", 
+         RowBox[{"{", 
+          RowBox[{"t", ",", " ", "2"}], "}"}]}], "]"}]}], "]"}], "]"}]}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"q", "[", 
+    RowBox[{"x", ",", "t"}], "]"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"X", "[", "x_", "]"}], ":=", 
+    RowBox[{"Simplify", "[", 
+     RowBox[{
+      RowBox[{"q", "[", 
+       RowBox[{"x", ",", "t"}], "]"}], "/", 
+      RowBox[{"T", "[", "t", "]"}]}], "]"}]}], "\[IndentingNewLine]", 
+   RowBox[{"X", "[", "x", "]"}]}]}]], "Input",
+ CellChangeTimes->{{3.643366028432773*^9, 3.643366049042316*^9}, {
+   3.643366466839954*^9, 3.643366470329921*^9}, {3.643367221306118*^9, 
+   3.6433672297634706`*^9}, {3.6433731185326977`*^9, 3.643373129076829*^9}, 
+   3.643373161986944*^9, {3.6433733822211246`*^9, 3.643373510194104*^9}, {
+   3.643373872977077*^9, 3.6433738894402027`*^9}, 3.643373921092292*^9, {
+   3.643375291906427*^9, 3.6433753343052387`*^9}, {3.643376529641674*^9, 
+   3.643376555504118*^9}, {3.643377776416422*^9, 3.643377787103633*^9}, {
+   3.6433779237010527`*^9, 3.6433779259960318`*^9}, 3.6433782259572*^9, {
+   3.643382179446878*^9, 3.643382379043347*^9}, {3.643382924361267*^9, 
+   3.6433829448663683`*^9}, 3.6433830646668253`*^9, {3.643383128020709*^9, 
+   3.6433832943176193`*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Direktna metoda", "Section",
+ CellChangeTimes->{{3.642874291103477*^9, 3.6428742944873943`*^9}, {
+  3.643366021035144*^9, 3.643366024075032*^9}}],
+
+Cell[TextData[{
+ "Ena\[CHacek]bo ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{
+     SubscriptBox["w", "xxxx"], "+", 
+     SubscriptBox["w", "tt"]}], "=", "q"}], TraditionalForm]]],
+ ", ki opisuje nihanje nosilca, re\[SHacek]ujemo z metodo delne itegracije. \
+Odvode po x aproksimiramo z deljenimi diferencami, na\[SHacek]a PDE\npa se \
+prevede v sistem linearnih NDE s konstantnimi koeficienti. Funkcijo, ki jo \
+dobimo v i-ti to\[CHacek]ki diskretizacije, bomo ozna\[CHacek]ili z w[i].\n\n\
+Interval, na katerem le\[ZHacek]i x koordinata, diskretiziramo. Razdelimo ga \
+na nx pointervalov dol\[ZHacek]ine dx=1/nx in odvode po x aproksimiramo s \
+formulo za kon\[CHacek]ne diference drugega reda.\nPri tem \[ZHacek]e upo\
+\[SHacek]tevamo robne pogoje enostavno podprtega nosilca: v kraji\[SHacek]\
+\[CHacek]ih sta funkcijski vrednosti in druga odvoda enaka 0.\n\
+Za\[CHacek]etni polo\[ZHacek]aj je dan s funkcijo g, za\[CHacek]etna hitrost \
+pa s funkcijo h."
+}], "Text",
+ CellChangeTimes->{{3.642874362669331*^9, 3.642874397566016*^9}, 
+   3.643366379193665*^9}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"nx", "=", "50"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"tmax", " ", "=", " ", "4"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"rSimple", " ", "=", " ", 
+   RowBox[{"ResiNosilec", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"q", "[", 
+       RowBox[{"#1", ",", "#2"}], "]"}], "&"}], ",", " ", 
+     RowBox[{
+      RowBox[{"g", "[", "#", "]"}], "&"}], ",", " ", 
+     RowBox[{
+      RowBox[{"h", "[", "#", "]"}], "&"}], ",", " ", "nx", ",", " ", "tmax"}],
+     "]"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.643366073422552*^9, 3.6433661191458673`*^9}, {
+  3.6433661542568493`*^9, 3.643366196111745*^9}, {3.643367218541411*^9, 
+  3.643367218890595*^9}, {3.643373632814698*^9, 3.643373634414304*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "nosilec", " ", "v", " ", "odvisnosti", " ", "od", " ", "\[CHacek]asa", 
+    " ", "kot", " ", "ploskev", " ", "v", " ", "ravnini", " ", 
+    RowBox[{"(", 
+     RowBox[{"x", ",", "t"}], ")"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"parfuncSimple", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"i", "-", "1"}], ")"}], " ", "/", "nx"}], ",", "t", ",", 
+         RowBox[{"5", " ", 
+          RowBox[{
+           RowBox[{"rSimple", "[", 
+            RowBox[{"[", "i", "]"}], "]"}], "[", "t", "]"}]}]}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "1", ",", 
+         RowBox[{"nx", "+", "1"}]}], "}"}]}], "]"}]}], ";"}], "\n", 
+   RowBox[{"ParametricPlot3D", "[", 
+    RowBox[{"parfuncSimple", ",", 
+     RowBox[{"{", 
+      RowBox[{"t", ",", "0", ",", "tmax"}], "}"}], ",", 
+     RowBox[{"PlotRange", "\[Rule]", "All"}], ",", 
+     RowBox[{"AxesLabel", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"\"\<t\>\"", ",", "\"\<x\>\"", ",", "\"\<u\>\""}], "}"}]}]}], 
+    "]"}], " ", "\[IndentingNewLine]"}]}]], "Input",
+ CellChangeTimes->{{3.6433667154508257`*^9, 3.643366789840378*^9}, 
+   3.6433669001567707`*^9, {3.643367079258892*^9, 3.64336707972838*^9}, {
+   3.643369256890864*^9, 3.643369260648443*^9}, 3.64337385766507*^9, {
+   3.643373911463313*^9, 3.6433739148788157`*^9}, 3.643377842791201*^9, {
+   3.643382427067667*^9, 3.6433824275262947`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "nosilec", " ", "v", " ", "dejanski", " ", "odvisnosti", " ", "od", " ", 
+    "\[CHacek]asa"}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"Animate", "[", 
+   RowBox[{
+    RowBox[{"ListLinePlot", "[", 
+     RowBox[{
+      RowBox[{"DobiNosilec", "[", 
+       RowBox[{"rSimple", ",", "cas"}], "]"}], ",", 
+      RowBox[{"PlotRange", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"-", "0.1"}], ",", "0.1"}], "}"}]}]}], "]"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"cas", ",", "0", ",", "tmax"}], "}"}], ",", 
+    RowBox[{"AnimationRate", "\[Rule]", ".25"}]}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.6433669117586308`*^9, 3.6433669189956627`*^9}, {
+  3.6433669745651283`*^9, 3.643366974918202*^9}, {3.6433824360808*^9, 
+  3.6433824475988503`*^9}, {3.6433833205805187`*^9, 3.643383321693029*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "shranimo", " ", "si", " ", "graf", " ", "ob", " ", "\[CHacek]asu", " ", 
+    "tCmp", " ", "za", " ", "naprej"}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"sampleSimple", "=", 
+    RowBox[{"DobiNosilec", "[", 
+     RowBox[{"rSimple", ",", "tCmp"}], "]"}]}], ";"}]}]], "Input",
+ CellChangeTimes->{{3.643366423528844*^9, 3.643366431144738*^9}, {
+   3.6433664909237957`*^9, 3.643366494895495*^9}, {3.643366989026328*^9, 
+   3.6433670004094343`*^9}, {3.6433779053003273`*^9, 3.643377946491469*^9}, 
+   3.643378218333049*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Re\[SHacek]itev z redkimi sistemi", "Section",
+ CellChangeTimes->{3.643367177098378*^9}],
+
+Cell["\<\
+Sistem, ki ga dobimo je redek, morda zna Mathematica to izkoristiti. Za\
+\[CHacek]etni in robni pogoji ter gereriranje sistema je enako kot prej.\
+\>", "Text",
+ CellChangeTimes->{{3.643367185714388*^9, 3.643367197057476*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"nx", "=", "30"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"tmax", " ", "=", " ", "4"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"rSparse", " ", "=", " ", 
+   RowBox[{"ResiNosilecRedek", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"q", "[", 
+       RowBox[{"#1", ",", "#2"}], "]"}], "&"}], ",", " ", 
+     RowBox[{
+      RowBox[{"g", "[", "#", "]"}], "&"}], ",", " ", 
+     RowBox[{
+      RowBox[{"h", "[", "#", "]"}], "&"}], ",", " ", "nx", ",", " ", "tmax"}],
+     "]"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.643369118115489*^9, 3.6433691222917347`*^9}, {
+  3.6433691764023*^9, 3.643369176610078*^9}, {3.643373980836781*^9, 
+  3.643373983220797*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"upodobimo", " ", "resitve"}], " ", "*)"}], "\[IndentingNewLine]", 
+  
+  RowBox[{
+   RowBox[{
+    RowBox[{"funcSparse", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"-", 
+        RowBox[{"f", "[", "t", "]"}]}], ",", 
+       RowBox[{"{", 
+        RowBox[{"f", ",", "rSparse"}], "}"}]}], "]"}]}], ";"}], "\n", 
+   RowBox[{"Plot", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"funcSparse", "[", 
+        RowBox[{"[", "2", "]"}], "]"}], ",", 
+       RowBox[{"funcSparse", "[", 
+        RowBox[{"[", 
+         RowBox[{
+          RowBox[{"nx", "/", "2"}], "-", "5"}], "]"}], "]"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"t", ",", "0", ",", "tmax"}], "}"}]}], "]"}], " ", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+     RowBox[{"to\[CHacek]ka", " ", "na", " ", "robu"}], ",", 
+     RowBox[{"to\[CHacek]ka", " ", "na", " ", "sredi"}]}], " ", 
+    "*)"}]}]}]], "Input",
+ CellChangeTimes->{{3.643366261517338*^9, 3.6433662619502373`*^9}, {
+  3.643369144987624*^9, 3.6433691459316597`*^9}, {3.6433692274756536`*^9, 
+  3.643369236408897*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "nosilec", " ", "v", " ", "odvisnosti", " ", "od", " ", "\[CHacek]asa", 
+    " ", "kot", " ", "ploskev", " ", "v", " ", "ravnini", " ", 
+    RowBox[{"(", 
+     RowBox[{"x", ",", "t"}], ")"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"parfuncSparse", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"i", "-", "1"}], ")"}], " ", "/", "nx"}], ",", "t", ",", 
+         RowBox[{"5", " ", 
+          RowBox[{
+           RowBox[{"rSparse", "[", 
+            RowBox[{"[", "i", "]"}], "]"}], "[", "t", "]"}]}]}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "1", ",", 
+         RowBox[{"nx", "+", "1"}]}], "}"}]}], "]"}]}], ";"}], "\n", 
+   RowBox[{"ParametricPlot3D", "[", 
+    RowBox[{"parfuncSparse", ",", 
+     RowBox[{"{", 
+      RowBox[{"t", ",", "0", ",", "tmax"}], "}"}], ",", 
+     RowBox[{"PlotRange", "\[Rule]", "All"}], ",", 
+     RowBox[{"AxesLabel", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"\"\<t\>\"", ",", "\"\<x\>\"", ",", "\"\<u\>\""}], "}"}]}]}], 
+    "]"}], " ", "\[IndentingNewLine]"}]}]], "Input",
+ CellChangeTimes->{{3.6433667154508257`*^9, 3.643366789840378*^9}, 
+   3.6433669001567707`*^9, {3.643367079258892*^9, 3.64336707972838*^9}, {
+   3.643369148396112*^9, 3.643369149307201*^9}, {3.64336924356992*^9, 
+   3.6433692485365057`*^9}, {3.643382475550961*^9, 3.643382476700333*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "nosilec", " ", "v", " ", "dejanski", " ", "odvisnosti", " ", "od", " ", 
+    "\[CHacek]asa"}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"Animate", "[", 
+   RowBox[{
+    RowBox[{"ListLinePlot", "[", 
+     RowBox[{
+      RowBox[{"DobiNosilec", "[", 
+       RowBox[{"rSparse", ",", "cas"}], "]"}], ",", 
+      RowBox[{"PlotRange", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"-", "0.1"}], ",", "0.1"}], "}"}]}]}], "]"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"cas", ",", "0", ",", "tmax"}], "}"}], ",", 
+    RowBox[{"AnimationRate", "\[Rule]", ".25"}]}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.6433669117586308`*^9, 3.6433669189956627`*^9}, {
+  3.6433669745651283`*^9, 3.643366974918202*^9}, {3.643369153376603*^9, 
+  3.643369154674816*^9}, {3.64338248511767*^9, 3.6433824875919533`*^9}, {
+  3.643383332751124*^9, 3.643383333790739*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "shranimo", " ", "si", " ", "graf", " ", "ob", " ", "\[CHacek]asu", " ", 
+    "tCmp", " ", "za", " ", "naprej"}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"sampleSparse", "=", 
+    RowBox[{"DobiNosilec", "[", 
+     RowBox[{"rSparse", ",", "tCmp"}], "]"}]}], ";"}]}]], "Input",
+ CellChangeTimes->{{3.643366423528844*^9, 3.643366431144738*^9}, {
+  3.6433664909237957`*^9, 3.643366494895495*^9}, {3.643366989026328*^9, 
+  3.6433670004094343`*^9}, {3.643369158586504*^9, 3.643369169285836*^9}, {
+  3.643379576929058*^9, 3.643379577088434*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Re\[SHacek]itev na roko, z diagonalizacijo", "Section",
+ CellChangeTimes->{3.6433693905160847`*^9, 3.64337461837005*^9}],
+
+Cell["\<\
+Sistem oblike w\[CloseCurlyQuote]\[CloseCurlyQuote]=Aw+b digonaliziramo. Pi\
+\[SHacek]emo A=Q^T L Q (A je namre\[CHacek] simetri\[CHacek]na) in ena\
+\[CHacek]bo prevedemo na Qw\[CloseCurlyQuote]\[CloseCurlyQuote]=LQw+Qb. Po \
+uvedbi spremenljivke v=Qw se ena\[CHacek]ba razklopi .S Q prevedemo tudi za\
+\[CHacek]etne pogoje .Re\[SHacek]itev izra\[CHacek]unamo v diagonalni obliki, \
+potem pa jo s Q^T prenesemo nazaj. Matrika je redka in pasovna, tako da je ra\
+\[CHacek]unanje lastnih vrednosti hitro, toda matrika Q ni ve\[CHacek] redka, \
+tako da pri\[CHacek]akujemo omejitev spomina in ra\[CHacek]unskih \
+zmogljivosti okoli 5000 (vsaj pri meni). Ni nujno,da se natan\[CHacek]nost s \
+\[SHacek]tevilom to\[CHacek]k ve\[CHacek]a, saj lahko pridobimo
+preve\[CHacek] neodpravljive numeri\[CHacek]ne napake, ker delamo z zelo \
+velikimi \[SHacek]tevili (1/dx^4). Zato sem poskusil tudi zanemariti majhne \
+lastne vrednosti, ki k re\[SHacek]itvi ne prispevajo veliko.\
+\>", "Text",
+ CellChangeTimes->{
+  3.643369397139885*^9, {3.6433746234339857`*^9, 3.64337465314528*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"nx", "=", "1000"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"tmax", "=", "2"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"QT", ",", "rDiag"}], "}"}], "=", 
+   RowBox[{"ResiNosilecDiagTX", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"T", "[", "#", "]"}], "&"}], ",", 
+     RowBox[{
+      RowBox[{"X", "[", "#", "]"}], "&"}], ",", " ", 
+     RowBox[{
+      RowBox[{"g", "[", "#", "]"}], "&"}], ",", " ", 
+     RowBox[{
+      RowBox[{"h", "[", "#", "]"}], "&"}], ",", "nx", ",", "tmax"}], "]"}]}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.6433715656199913`*^9, 3.643371605132453*^9}, 
+   3.6433718269505653`*^9, {3.643371946619226*^9, 3.643371946883524*^9}, {
+   3.6433720266328*^9, 3.643372029281083*^9}, {3.643372246291173*^9, 
+   3.643372249522929*^9}, {3.643372359833014*^9, 3.6433723760565166`*^9}, {
+   3.643376647533201*^9, 3.64337666058914*^9}, 3.643376700867794*^9, {
+   3.643376820769473*^9, 3.643376822576784*^9}, {3.6433780301218653`*^9, 
+   3.6433780545849047`*^9}, 3.643379580776877*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"Eigensystem", "::", "arh"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"Because finding \[NoBreak]\\!\\(999\\)\[NoBreak] out of \
+the \[NoBreak]\\!\\(999\\)\[NoBreak] eigenvalues and/or eigenvectors is \
+likely to be faster with dense matrix methods, the sparse input matrix will \
+be converted. If fewer eigenvalues and/or eigenvectors would be sufficient, \
+consider restricting this number using the second argument to \
+\[NoBreak]\\!\\(Eigensystem\\)\[NoBreak]. \\!\\(\\*ButtonBox[\\\"\
+\[RightSkeleton]\\\", ButtonStyle->\\\"Link\\\", ButtonFrame->None, \
+ButtonData:>\\\"paclet:ref/Eigensystem\\\", ButtonNote -> \
+\\\"Eigensystem::arh\\\"]\\)\"\>"}]], "Message", "MSG",
+ CellChangeTimes->{{3.643378054975278*^9, 3.643378067993806*^9}, 
+   3.64337882487685*^9, {3.643379600310714*^9, 3.64337962491442*^9}, 
+   3.643382501834091*^9, 3.6433833388866034`*^9, 3.643384775018585*^9}]
+}, Open  ]],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"moviesol", "=", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"ListLinePlot", "[", 
+      RowBox[{
+       RowBox[{"DobiNosilec", "[", 
+        RowBox[{"rDiag", ",", "t", ",", "QT"}], "]"}], ",", 
+       RowBox[{"PlotRange", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"-", "0.1"}], ",", "0.1"}], "}"}]}]}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"t", ",", "0", ",", "tmax", ",", 
+       RowBox[{"tmax", "/", "30"}]}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"ListAnimate", "[", "moviesol", "]"}]}], "Input",
+ CellChangeTimes->{{3.643371641882354*^9, 3.6433716776348877`*^9}, {
+  3.643371773376354*^9, 3.6433718042555532`*^9}, {3.6433833473723097`*^9, 
+  3.643383350586914*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"sampleDiag", " ", "=", " ", 
+   RowBox[{"DobiNosilec", "[", 
+    RowBox[{"rDiag", ",", "tCmp", ",", "QT"}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.643372269314345*^9, 3.643372284513749*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Zanemarjanje majhnih lastnih vrednosti", "Section",
+ CellChangeTimes->{3.643372315296091*^9}],
+
+Cell["\<\
+V zakup pri re\[SHacek]itvi vzamemo le prvih nekaj lastnih vrednosti in \
+lastnih vektorjev.\
+\>", "Text",
+ CellChangeTimes->{{3.6433723249316263`*^9, 3.643372327295269*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"nx", "=", "1000"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"tmax", "=", "2"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"limit", "=", "50"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"QTCropped", ",", "rDiagCropped"}], "}"}], "=", 
+   RowBox[{"ResiNosilecDiagTX", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"T", "[", "#", "]"}], "&"}], ",", 
+     RowBox[{
+      RowBox[{"X", "[", "#", "]"}], "&"}], ",", " ", 
+     RowBox[{
+      RowBox[{"g", "[", "#", "]"}], "&"}], ",", " ", 
+     RowBox[{
+      RowBox[{"h", "[", "#", "]"}], "&"}], ",", "nx", ",", "tmax", ",", 
+     "limit"}], "]"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.6433715656199913`*^9, 3.643371605132453*^9}, 
+   3.6433718269505653`*^9, {3.643371946619226*^9, 3.643371946883524*^9}, {
+   3.6433720266328*^9, 3.643372029281083*^9}, {3.643372246291173*^9, 
+   3.643372249522929*^9}, {3.6433723491681223`*^9, 3.643372356040266*^9}, {
+   3.6433723872969503`*^9, 3.643372393935203*^9}, {3.643372490397375*^9, 
+   3.643372495476715*^9}, {3.643378178837058*^9, 3.643378194340982*^9}, 
+   3.643382554283722*^9}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"moviesolCropped", "=", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"ListLinePlot", "[", 
+      RowBox[{
+       RowBox[{"DobiNosilec", "[", 
+        RowBox[{"rDiagCropped", ",", "t", ",", "QTCropped"}], "]"}], ",", 
+       RowBox[{"PlotRange", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"-", "0.05"}], ",", "0.05"}], "}"}]}]}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"t", ",", "0", ",", "tmax", ",", 
+       RowBox[{"tmax", "/", "30"}]}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"ListAnimate", "[", "moviesolCropped", "]"}]}], "Input",
+ CellChangeTimes->{{3.643371641882354*^9, 3.6433716776348877`*^9}, {
+  3.643371773376354*^9, 3.6433718042555532`*^9}, {3.64337249861294*^9, 
+  3.6433725133483963`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"sampleDiagCropped", " ", "=", " ", 
+   RowBox[{"DobiNosilec", "[", 
+    RowBox[{"rDiagCropped", ",", "tCmp", ",", "QTCropped"}], "]"}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.6433725184917393`*^9, 3.643372531547303*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Aproksimacija vi\[SHacek]jega reda", "Section",
+ CellChangeTimes->{3.643372802434985*^9}],
+
+Cell["\<\
+Poskusimo \[SHacek]e aproksimacjio s shemo \[CHacek]etrtega reda. Tudi na \
+robu aproksimiramo z enostanskimi diferencami.\
+\>", "Text",
+ CellChangeTimes->{{3.643372807873307*^9, 3.643372809834564*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"nx", "=", "50"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"tmax", " ", "=", " ", "4"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"rSimpleHigh", " ", "=", " ", 
+    RowBox[{"ResiNosilec", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"q", "[", 
+        RowBox[{"#1", ",", "#2"}], "]"}], "&"}], ",", " ", 
+      RowBox[{
+       RowBox[{"g", "[", "#", "]"}], "&"}], ",", " ", 
+      RowBox[{
+       RowBox[{"h", "[", "#", "]"}], "&"}], ",", " ", "nx", ",", " ", "tmax", 
+      ",", "4"}], "]"}]}], ";"}], " ", 
+  RowBox[{"(*", " ", 
+   RowBox[{"zadnji", " ", "parameter", " ", "pove", " ", "red"}], " ", 
+   "*)"}]}]}], "Input",
+ CellChangeTimes->{{3.643366073422552*^9, 3.6433661191458673`*^9}, {
+  3.6433661542568493`*^9, 3.643366196111745*^9}, {3.643367218541411*^9, 
+  3.643367218890595*^9}, {3.643372944920785*^9, 3.643372961424201*^9}, {
+  3.643374057242703*^9, 3.643374060058758*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"upodobimo", " ", "resitve"}], " ", "*)"}], "\[IndentingNewLine]", 
+  
+  RowBox[{
+   RowBox[{
+    RowBox[{"funcHigh", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"-", 
+        RowBox[{"f", "[", "t", "]"}]}], ",", 
+       RowBox[{"{", 
+        RowBox[{"f", ",", "rSimpleHigh"}], "}"}]}], "]"}]}], ";"}], "\n", 
+   RowBox[{"Plot", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"funcHigh", "[", 
+        RowBox[{"[", "2", "]"}], "]"}], ",", 
+       RowBox[{"funcHigh", "[", 
+        RowBox[{"[", 
+         RowBox[{
+          RowBox[{"nx", "/", "2"}], "-", "5"}], "]"}], "]"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"t", ",", "0", ",", "tmax"}], "}"}]}], "]"}], " ", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+     RowBox[{"to\[CHacek]ka", " ", "na", " ", "robu"}], ",", 
+     RowBox[{"to\[CHacek]ka", " ", "na", " ", "sredi"}]}], " ", 
+    "*)"}]}]}]], "Input",
+ CellChangeTimes->{{3.643366261517338*^9, 3.6433662619502373`*^9}, {
+  3.643372965497126*^9, 3.643372975496359*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "nosilec", " ", "v", " ", "odvisnosti", " ", "od", " ", "\[CHacek]asa", 
+    " ", "kot", " ", "ploskev", " ", "v", " ", "ravnini", " ", 
+    RowBox[{"(", 
+     RowBox[{"x", ",", "t"}], ")"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"parfuncHigh", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"i", "-", "1"}], ")"}], " ", "/", "nx"}], ",", "t", ",", 
+         RowBox[{"5", " ", 
+          RowBox[{
+           RowBox[{"rSimpleHigh", "[", 
+            RowBox[{"[", "i", "]"}], "]"}], "[", "t", "]"}]}]}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "1", ",", 
+         RowBox[{"nx", "+", "1"}]}], "}"}]}], "]"}]}], ";"}], "\n", 
+   RowBox[{"ParametricPlot3D", "[", 
+    RowBox[{"parfuncHigh", ",", 
+     RowBox[{"{", 
+      RowBox[{"t", ",", "0", ",", "tmax"}], "}"}], ",", 
+     RowBox[{"PlotRange", "\[Rule]", "All"}], ",", 
+     RowBox[{"AxesLabel", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"\"\<t\>\"", ",", "\"\<x\>\"", ",", "\"\<u\>\""}], "}"}]}]}], 
+    "]"}], " ", "\[IndentingNewLine]"}]}]], "Input",
+ CellChangeTimes->{{3.6433667154508257`*^9, 3.643366789840378*^9}, 
+   3.6433669001567707`*^9, {3.643367079258892*^9, 3.64336707972838*^9}, {
+   3.643369256890864*^9, 3.643369260648443*^9}, {3.6433729791211233`*^9, 
+   3.6433729977440367`*^9}, 3.643382581931245*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "nosilec", " ", "v", " ", "dejanski", " ", "odvisnosti", " ", "od", " ", 
+    "\[CHacek]asa"}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"Animate", "[", 
+   RowBox[{
+    RowBox[{"ListLinePlot", "[", 
+     RowBox[{
+      RowBox[{"DobiNosilec", "[", 
+       RowBox[{"rSimpleHigh", ",", "cas"}], "]"}], ",", 
+      RowBox[{"PlotRange", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"-", "0.12"}], ",", "0.12"}], "}"}]}]}], "]"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"cas", ",", "0", ",", "tmax"}], "}"}], ",", 
+    RowBox[{"AnimationRate", "\[Rule]", ".25"}]}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.6433669117586308`*^9, 3.6433669189956627`*^9}, {
+  3.6433669745651283`*^9, 3.643366974918202*^9}, {3.643373000838752*^9, 
+  3.643373001206995*^9}, {3.643382592265065*^9, 3.6433825945477552`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "shranimo", " ", "si", " ", "graf", " ", "ob", " ", "\[CHacek]asu", " ", 
+    "tCmp", " ", "za", " ", "naprej"}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"sampleSimpleHigh", "=", 
+    RowBox[{"DobiNosilec", "[", 
+     RowBox[{"rSimpleHigh", ",", "tCmp"}], "]"}]}], ";"}]}]], "Input",
+ CellChangeTimes->{{3.643366423528844*^9, 3.643366431144738*^9}, {
+  3.6433664909237957`*^9, 3.643366494895495*^9}, {3.643366989026328*^9, 
+  3.6433670004094343`*^9}, {3.643373005079473*^9, 3.643373012334875*^9}, {
+  3.64338338428308*^9, 3.6433833844745913`*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Primerjava re\[SHacek]itev", "Section",
+ CellChangeTimes->{{3.643378861921855*^9, 3.6433788690176373`*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"f", "[", "1", "]"}], "=", 
+   RowBox[{"Function", "[", 
+    RowBox[{"x", ",", 
+     RowBox[{"u", "[", 
+      RowBox[{"x", ",", "tCmp"}], "]"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"f", "[", "2", "]"}], "=", 
+   RowBox[{"Interpolation", "[", "sampleSimple", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"f", "[", "3", "]"}], "=", 
+   RowBox[{"Interpolation", "[", "sampleSparse", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"f", "[", "4", "]"}], "=", 
+   RowBox[{"Interpolation", "[", "sampleDiag", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"f", "[", "5", "]"}], "=", 
+   RowBox[{"Interpolation", "[", "sampleDiagCropped", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"f", "[", "6", "]"}], "=", 
+   RowBox[{"Interpolation", "[", "sampleSimpleHigh", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"all", "=", 
+    RowBox[{"Table", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"f", "[", "i", "]"}], "[", "x", "]"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"i", ",", "1", ",", "6"}], "}"}]}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"odli\[CHacek]no", "!"}], " ", "--"}], " ", "vse", " ", "so", 
+    " ", "pribli\[ZHacek]no", " ", "enake"}], " ", 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{"Plot", "[", 
+  RowBox[{"all", ",", 
+   RowBox[{"{", 
+    RowBox[{"x", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"PlotLegends", "\[Rule]", "Automatic"}]}], "]"}]}], "Input",
+ CellChangeTimes->{{3.643378873651417*^9, 3.643379075550798*^9}, {
+  3.643382663118802*^9, 3.6433826734106092`*^9}, {3.643382706399646*^9, 
+  3.643382723741357*^9}, {3.6433828131018143`*^9, 3.643382820851234*^9}, {
+  3.643384824934721*^9, 3.6433848297905083`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{"NAPAKE", " ", "--"}], " ", "lastne", " ", "vrednosti", " ", "so",
+     " ", "najbolj", " ", 
+    RowBox[{"natan\[CHacek]ne", " ", "--"}], " ", "saj", " ", "smo", " ", 
+    "tudi", " ", "uporabili", " ", "1000", " ", "delilnih", " ", 
+    "to\[CHacek]k"}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"Plot", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{
+         RowBox[{"f", "[", "1", "]"}], "[", "x", "]"}], "-", 
+        RowBox[{
+         RowBox[{"f", "[", "i", "]"}], "[", "x", "]"}]}], ",", 
+       RowBox[{"{", 
+        RowBox[{"x", ",", "0", ",", "1"}], "}"}]}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"i", ",", "2", ",", "6"}], "}"}]}], "]"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"NMaximize", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"Abs", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"f", "[", "1", "]"}], "[", "x", "]"}], "-", 
+           RowBox[{
+            RowBox[{"f", "[", "i", "]"}], "[", "x", "]"}]}], "]"}], ",", 
+         RowBox[{"0", "\[LessEqual]", "x", "\[LessEqual]", "1"}]}], "}"}], 
+       ",", "x"}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"i", ",", "2", ",", "6"}], "}"}]}], "]"}]}]}]], "Input",
+ CellChangeTimes->{{3.6433790403305473`*^9, 3.643379042548637*^9}, {
+  3.6433790806052237`*^9, 3.643379110724826*^9}, {3.6433791435237417`*^9, 
+  3.643379160972142*^9}, {3.643379237674597*^9, 3.643379299937594*^9}, {
+  3.643382729285675*^9, 3.6433827561171618`*^9}, {3.643384837542798*^9, 
+  3.643384839030033*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"napakaSimple", "[", 
+   RowBox[{"nx_", "?", "NumericQ"}], "]"}], ":=", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", "resitev", "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"resitev", " ", "=", " ", 
+      RowBox[{"ResiNosilec", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"q", "[", 
+          RowBox[{"#1", ",", "#2"}], "]"}], "&"}], ",", " ", 
+        RowBox[{
+         RowBox[{"g", "[", "#", "]"}], "&"}], ",", " ", 
+        RowBox[{
+         RowBox[{"h", "[", "#", "]"}], "&"}], ",", " ", "nx", ",", " ", 
+        "tmax"}], "]"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"ff", "=", 
+      RowBox[{"Interpolation", "[", 
+       RowBox[{"DobiNosilec", "[", 
+        RowBox[{"resitev", ",", "tCmp"}], "]"}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"NMaximize", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"Abs", "[", 
+          RowBox[{
+           RowBox[{"ff", "[", "x", "]"}], "-", 
+           RowBox[{
+            RowBox[{"f", "[", "0", "]"}], "[", "x", "]"}]}], "]"}], ",", 
+         RowBox[{"0", "\[LessEqual]", "x", "\[LessEqual]", "1"}]}], "}"}], 
+       ",", "x"}], "]"}]}]}], "\[IndentingNewLine]", 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"napakaListSimple", "=", 
+  RowBox[{"Table", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"WriteString", "[", 
+      RowBox[{"\"\<stdout\>\"", ",", "i", ",", "\"\< \>\""}], "]"}], ";", 
+     RowBox[{"First", "[", 
+      RowBox[{"napakaSimple", "[", "i", "]"}], "]"}]}], ",", 
+    RowBox[{"{", 
+     RowBox[{"i", ",", "2", ",", "30"}], "}"}]}], 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"ListPlot", "[", "napakaListSimple", "]"}]}], "Input",
+ CellChangeTimes->{{3.643383528472384*^9, 3.643383537705518*^9}, {
+   3.643383604333444*^9, 3.64338370121918*^9}, {3.64338374611451*^9, 
+   3.643383763057938*^9}, {3.6433838206643*^9, 3.643383828095725*^9}, {
+   3.643383987069976*^9, 3.643384028202938*^9}, 3.64338414416914*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"zanimivo", ",", " ", 
+    RowBox[{"verjetno", " ", "zato"}], ",", " ", 
+    RowBox[{"ker", " ", "je", " ", "amo", " ", "en", " ", "sinus"}], ",", " ", 
+    RowBox[{
+    "in", " ", "takoj", " ", "najde", " ", "to", " ", "lastno", " ", 
+     "frekvenco"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"napakaDiag", "[", 
+     RowBox[{"nx_", "?", "NumericQ"}], "]"}], ":=", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"QT1", ",", "rDiag1", ",", "ff"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"QT1", ",", "rDiag1"}], "}"}], "=", 
+        RowBox[{"ResiNosilecDiagTX", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"T", "[", "#", "]"}], "&"}], ",", 
+          RowBox[{
+           RowBox[{"X", "[", "#", "]"}], "&"}], ",", " ", 
+          RowBox[{
+           RowBox[{"g", "[", "#", "]"}], "&"}], ",", " ", 
+          RowBox[{
+           RowBox[{"h", "[", "#", "]"}], "&"}], ",", "nx", ",", "tmax"}], 
+         "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"ff", "=", 
+        RowBox[{"Interpolation", "[", 
+         RowBox[{"DobiNosilec", "[", 
+          RowBox[{"rDiag", ",", "tCmp", ",", "QT"}], "]"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"NMaximize", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"Abs", "[", 
+            RowBox[{
+             RowBox[{"ff", "[", "x", "]"}], "-", 
+             RowBox[{
+              RowBox[{"f", "[", "0", "]"}], "[", "x", "]"}]}], "]"}], ",", 
+           RowBox[{"0", "\[LessEqual]", "x", "\[LessEqual]", "1"}]}], "}"}], 
+         ",", "x"}], "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"napakaListDiag", "=", 
+    RowBox[{"Table", "[", 
+     RowBox[{
+      RowBox[{"First", "[", 
+       RowBox[{"napakaDiag", "[", 
+        RowBox[{"2", "^", "i"}], "]"}], "]"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"i", ",", "1", ",", "10"}], "}"}]}], "]"}]}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"ListPlot", "[", "napakaListDiag", "]"}]}]}]], "Input",
+ CellChangeTimes->{{3.643379311951252*^9, 3.643379480021113*^9}, {
+  3.6433796795920887`*^9, 3.643379803020834*^9}, {3.643379858682938*^9, 
+  3.643379928127852*^9}, {3.643379980854641*^9, 3.643380028717327*^9}, {
+  3.6433834493393393`*^9, 3.6433834693468037`*^9}, {3.6433836532300177`*^9, 
+  3.6433836572922897`*^9}}]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{1680, 1021},
+WindowMargins->{{Automatic, 0}, {Automatic, 0}},
+FrontEndVersion->"10.0 for Linux x86 (64-bit) (September 9, 2014)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 100, 1, 92, "Title"],
+Cell[683, 25, 467, 8, 55, "Input"],
+Cell[CellGroupData[{
+Cell[1175, 37, 119, 1, 64, "Section"],
+Cell[1297, 40, 431, 9, 90, "Text"],
+Cell[1731, 51, 5604, 147, 363, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[7372, 203, 151, 2, 64, "Section"],
+Cell[7526, 207, 1071, 21, 131, "Text"],
+Cell[8600, 230, 762, 19, 77, "Input"],
+Cell[9365, 251, 1564, 38, 99, "Input"],
+Cell[10932, 291, 878, 21, 55, "Input"],
+Cell[11813, 314, 599, 13, 55, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[12449, 332, 94, 1, 64, "Section"],
+Cell[12546, 335, 235, 4, 31, "Text"],
+Cell[12784, 341, 717, 19, 77, "Input"],
+Cell[13504, 362, 1133, 33, 99, "Input"],
+Cell[14640, 397, 1514, 37, 99, "Input"],
+Cell[16157, 436, 926, 22, 55, "Input"],
+Cell[17086, 460, 618, 13, 55, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[17741, 478, 126, 1, 64, "Section"],
+Cell[17870, 481, 1082, 16, 91, "Text"],
+Cell[CellGroupData[{
+Cell[18977, 501, 1073, 26, 77, "Input"],
+Cell[20053, 529, 936, 16, 41, "Message"]
+}, Open  ]],
+Cell[21004, 548, 774, 20, 55, "Input"],
+Cell[21781, 570, 234, 5, 32, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[22052, 580, 99, 1, 64, "Section"],
+Cell[22154, 583, 184, 4, 31, "Text"],
+Cell[22341, 589, 1154, 28, 99, "Input"],
+Cell[23498, 619, 803, 20, 55, "Input"],
+Cell[24304, 641, 260, 6, 32, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[24601, 652, 95, 1, 64, "Section"],
+Cell[24699, 655, 212, 4, 31, "Text"],
+Cell[24914, 661, 961, 24, 77, "Input"],
+Cell[25878, 687, 1078, 32, 99, "Input"],
+Cell[26959, 721, 1493, 37, 99, "Input"],
+Cell[28455, 760, 884, 21, 55, "Input"],
+Cell[29342, 783, 627, 13, 55, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[30006, 801, 113, 1, 64, "Section"],
+Cell[30122, 804, 1942, 58, 209, "Input"],
+Cell[32067, 864, 1687, 44, 77, "Input"],
+Cell[33757, 910, 2005, 51, 165, "Input"],
+Cell[35765, 963, 2513, 64, 187, "Input"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
