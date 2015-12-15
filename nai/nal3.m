@@ -4,16 +4,16 @@ left = -1;
 right = 1;
 x = linspace(left, right, 11);
 
-n = 7;
+n = 6;
 enke = ones(1, length(x));
-Q = cell(n, 1);
-Q{1} = [];
+Q = cell(n+2, 1);
+Q{1} = [];  % Q_{-1}
 Q{2} = 1 / sqrt(skal(enke, enke));
 alfas = zeros(n, 1);
 betas = alfas;
 alfas(2) = skal(enke, x);
 betas(2) = 1 / Q{2};
-for i = 3:n
+for i = 3:n+2
   Q{i} = conv([1, -alfas(i-1)], Q{i-1}) - [0 0 betas(i-1)*Q{i-2}];
   betas(i) = sqrt(skal(polyval(Q{i}, x), polyval(Q{i}, x)));
   Q{i}  = Q{i} / betas(i);
@@ -24,9 +24,9 @@ Q
 alfas
 betas
 
-G = zeros(n-1, n-1);
-for i = 1:n-1
-  for j = 1:n-1
+G = zeros(n+1, n+1);
+for i = 1:n+1
+  for j = 1:n+1
     G(i, j) = skal(polyval(Q{i+1}, x), polyval(Q{j+1}, x));
   end
 end
@@ -34,9 +34,9 @@ fprintf('Gramova matrika: \n')
 G
 
 f = @(x) x .* cos(x);
-coef = zeros(1, n);
+coef = zeros(1, n+2);
 pol = [];
-for i = 1:n
+for i = 1:n+2
   coef(i) = skal(polyval(Q{i}, x), f(x));
   pol = [0 pol] + coef(i) * Q{i};
 end

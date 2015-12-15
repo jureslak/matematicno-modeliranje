@@ -34,15 +34,15 @@ for k = 0:3
     for j = 1:k
       appr = 1/(b-a) * polyder(appr);
     end
-    vals = polyval(appr, from11(x));
+    vals = polyval(appr, from01(x));
     newerr = max(abs(f(x) - vals));
-    alfa(k+1) = log(err(k+1)/newerr)/log(n/(n+1));
+    alfa(k+1) = log(newerr/err(k+1))/log((n+1)/n);
     fprintf('alfa_%d = %f\n', k, alfa(k+1));
     err(k+1) = newerr;
-    fprintf('error_%d (iter. %d) = %f\n', k, n, newerr);
-    % plot(x, f(x), x, vals);
-    % grid on
-    % pause
+%      fprintf('error_%d (iter. %d) = %f\n', k, n, newerr);
+%      plot(x, f(x), x, vals);
+%      grid on
+%      pause
     n = n+1;
   end
   if (n == 40)

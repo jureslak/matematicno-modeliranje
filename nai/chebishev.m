@@ -3,7 +3,7 @@ function p = chebishev(n)
   if n == 0, p = 1; return
   elseif n == 1, p = [1, 0]; return
   end
-  
+
   pp = 1;
   p = [1, 0];
   for i = 2:n
@@ -12,3 +12,5 @@ function p = chebishev(n)
     p = tmp;
   end
 end
+
+% vim: set ft=matlab:

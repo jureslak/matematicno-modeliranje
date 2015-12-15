@@ -5,3 +5,5 @@ function V = makematrix(E)
   first(1:2:length(E)) = -1;
   V = [first V(:, 1:(length(E)-1))];
 end
+
+% vim: set ft=matlab:

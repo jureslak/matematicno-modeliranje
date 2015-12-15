@@ -7,3 +7,5 @@ function bern = bernstein(n, i)
   bern = [bern zeros(1, i)];
   bern = bern * nchoosek(n, i);
 end
+
+% vim: set ft=matlab:

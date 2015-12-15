@@ -9,3 +9,5 @@ function coef = razvoj(p)
     p = p(2:end);
   end
 end
+
+% vim: set ft=matlab:

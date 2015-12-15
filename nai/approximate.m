@@ -5,3 +5,5 @@ function appr = approximate(f, n)
     appr = appr + f(i/n) * bernstein(n, i);
   end
 end
+
+% vim: set ft=matlab:
