@@ -8,6 +8,13 @@ Rešitve domače naloge 1:
 * generiranje ortogonalnih polinomov
 * generiranje in razvoj po Čebiševih polinomiv
 
+Rešitve domače naloge 2:
+* Lagrangeeva in Newtonova aproksimacija
+* Evalvacija v O(n) in pretvorba v standardno bazo
+* Baza iz hišk in interpolacija z odsekoma linearnimi funkcijami
+* Aproksimacija po metodi najmanjših kvadratov za vse baze zgoraj
+* Zelo lep abstrakten interface
+
 ## Matematično modeliranje
 
 Knjižnica za Mathematico pri predmetu Matematično modeliranje v tretjem letniku programa Matematika, FMF, Ljubljana.
