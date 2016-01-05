@@ -47,8 +47,7 @@ for k = 1:m
     plot(x, y, 'color', c{k})
     leg{k} = sprintf('k = %d', k);
 end
-legend('k = 1','k = 2','k = 3','k = 4','k = 5','k = 6','k = 7','k = 8',...
-             'k = 9','k = 10')
+legend(leg)
 hold off
 
 for i = 1:m

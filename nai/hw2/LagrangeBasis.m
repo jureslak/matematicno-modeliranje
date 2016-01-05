@@ -35,11 +35,11 @@ classdef LagrangeBasis < PolynomialBasis
         if ~(1 <= k && k <= obj.n)
             error('Index k=%d is out of range! n = %d, points = %s', k, n, mat2str(obj.points));
         end
-        y = zeros(size(x));
+        y = ones(size(x));
         xk = obj.points(k);
         obj.points(k) = [];
-        for i = 1:length(x)
-            y(i) = prod(x(i) - obj.points) / prod(xk - obj.points);
+        for xi = obj.points
+            y = y .* (x - xi) ./ (xk - xi);
         end
     end
 
