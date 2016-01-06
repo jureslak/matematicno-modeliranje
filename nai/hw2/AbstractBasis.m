@@ -10,7 +10,7 @@ classdef (Abstract) AbstractBasis
   end
   methods (Abstract)
     coef = interpolate(obj, values) % return interpolation coefficients in this basis
-    f = get_kth_basis(obj, k) % get k-th basis function 
+    f = get_kth_basis(obj, k) % get k-th basis function
   end
   methods
     function obj = AbstractBasis(points)
@@ -27,20 +27,12 @@ classdef (Abstract) AbstractBasis
             error('Three arguments are required, %d given.', nargin);
         end
         if ~(1 <= k && k <= obj.n)
-            error('Index k=%d is out of range! n = %d, points = %s', k, n, mat2str(obj.points));
+            error('Index k=%d is out of range! n = %d, points = %s', k,...
+                  obj.n, mat2str(obj.points));
         end
         % evaluates k-th basis
         fk = obj.get_kth_basis(k);
         y = fk(x);
-    end
-
-    function y = evaluate_basis(obj, x)
-        % evaluates basis polynomials in x -- return matrix with n
-        % rows and length(x) columns.
-        y = zeros(obj.n, length(x));
-        for i = 1:obj.n
-            y(i, :) = obj.evaluate_kth_basis(i, x);
-        end
     end
 
     function y = evaluate(obj, coef, x)
@@ -53,15 +45,19 @@ classdef (Abstract) AbstractBasis
             error('Coefficient array too short, expected %d, got %d, coef=%s',...
                   obj.n, length(coef), mat2str(coef));
         end
-        y = coef*obj.evaluate_basis(x);
+        y = 0;
+        for i = 1:obj.n
+            y = y + coef(i) * obj.evaluate_kth_basis(i, x);
+        end
     end
     
     function G = gram_matrix(obj, dot)
         % returns gram matrix for this basis
         G = zeros(obj.n);
         for i = 1:obj.n
-            for j = 1:obj.n
+            for j = 1:i
                 G(i, j) = dot(obj.get_kth_basis(i), obj.get_kth_basis(j));
+                G(j, i) = G(i, j);
             end
         end
     end
@@ -86,3 +82,4 @@ classdef (Abstract) AbstractBasis
   end
 end
 
+% vim: set ft=matlab:

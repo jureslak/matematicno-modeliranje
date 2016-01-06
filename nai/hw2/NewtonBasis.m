@@ -6,7 +6,7 @@ classdef NewtonBasis < PolynomialBasis
   % class representing Newton basis
   properties
     n    % number of points
-    points    % points
+    points    % points, if repeated, matching derivatives are assumed
   end
   methods
     function obj = NewtonBasis(pts), obj@PolynomialBasis(pts); end

@@ -31,7 +31,7 @@ classdef HatBasis < AbstractBasis
     end
     
     function coef = interpolate(~, values)
-        % return interpolation polynomial written in this basis
+        % return interpolation function written in this basis
         if nargin ~= 2
             error('Two arguments are required, %d given.', nargin);
         end
