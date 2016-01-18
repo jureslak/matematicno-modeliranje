@@ -17,7 +17,8 @@ classdef LagrangeBasis < PolynomialBasis
             error('Two arguments are required, %d given.', nargin);
         end
         if ~(1 <= k && k <= obj.n)
-            error('Index k=%d is out of range! n = %d, points = %s', k, n, mat2str(obj.points));
+            error('Index k=%d is out of range! n = %d, points = %s', k,...
+                  obj.n, mat2str(obj.points));
         end
         xk = obj.points(k);
         obj.points(k) = [];
