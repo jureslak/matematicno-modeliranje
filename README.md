@@ -1,12 +1,18 @@
 # Numerični predmeti na FMF
 
+## Numerično reševanje parcialnih diferencialnih enačb
+Rešitev domače naloge 1:
+* aproksimacija z diferenčnimi shemami
+* generiranje sistema enačb z diferenčno shemo
+* reševanje redkega sistema z Jacobijevo, Gauss Seidlovo in SOR metodo
+
 ## Numerična aproksimacija in interpolacija
 
 Rešitve domače naloge 1:
 * generiranje in aproksimacija z Bernsteinovimi polinomi na poljubnem intervalu
 * aproksimacija po Remezovem postopku
 * generiranje ortogonalnih polinomov
-* generiranje in razvoj po Čebiševih polinomiv
+* generiranje in razvoj po Čebiševih polinomih
 
 Rešitve domače naloge 2:
 * Lagrangeeva in Newtonova aproksimacija
