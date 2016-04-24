@@ -1,7 +1,7 @@
-function [sol, iter] = sor(A, b, prec, start, omega)
+function [sol, iter] = sor(A, b, omega, prec, start)
 % returns solution to Ax = b using SOR iteration
-if nargin < 3, error('Specify at least 3 arguments.'), end
-if nargin == 3, start = zeros(length(b), 1); end;
+if nargin < 4, error('Specify at least 4 arguments.'), end
+if nargin == 4, start = zeros(size(b)); end;
 
 sol = start;
 D = diag(diag(A));
