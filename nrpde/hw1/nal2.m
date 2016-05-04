@@ -183,11 +183,12 @@ err_sor = abs(sol_direct(nicidx) - sol_sor(nicidx))
 LAP = zeros(K, J);
 for j = 2:J+1
     for k = 2:K+1
-        LAP(k-1, j-1) = apply(SOL, [k, j], shema, [1, 1]);
+        % SOL' ker je shema v (x, y) in SOL v (y, x)
+        LAP(k-1, j-1) = apply(SOL', [j, k], shema, [1, 1]);
     end
 end
 
-x = (ax+dx):dx:(bx-dy);
+x = (ax+dx):dx:(bx-dx);
 y = (ay+dy):dy:(by-dy);
 [X, Y] = meshgrid(x, y);
 truelap = f(X, Y);
