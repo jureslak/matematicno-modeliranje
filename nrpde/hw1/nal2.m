@@ -143,9 +143,7 @@ time_sor = toc
 
 % plot
 SOL = zeros(K+2, J+2);
-sz = size(SOL)
 SOL(2:end-1, 2:end-1) = reshape(sol_direct, [J, K])';
-sz = size(SOL)
 
 % dostopaj kot SOL(y_k, x_j)
 % ko narises s sruf ali izpises z flipud zgleda prav
@@ -154,14 +152,12 @@ for j = 0:J+1
     SOL(1, j+1) = down(x);
     SOL(end, j+1) = up(x);
 end
-size(SOL)
 
 for k = 0:K+1
     y = ay + k*dy;
     SOL(k+1, 1) = left(y);
     SOL(k+1, end) = right(y);
 end
-size(SOL)
 
 x = (ax):dx:(bx);
 y = (ay):dy:(by);
@@ -171,10 +167,11 @@ xlabel('x')
 ylabel('y')
 zlabel('z')
 
-nicj = (0 - ax) / dx;
-nick = (0 - ay) / dy;
-if floor(nicj) ~= nicj, error('This points does not coincide with a node.'), end
-if floor(nick) ~= nick, error('This points does not coincide with a node.'), end
+[px, py] = deal([0, 0]);
+nicj = (px - ax) / dx;
+nick = (py - ay) / dy;
+if floor(nicj) ~= nicj, error('Point (%g, %g) does not coincide with a node.', px), end
+if floor(nick) ~= nick, error('Point (%g, %g) does not coincide with a node.', py), end
 
 nicidx = make_index(nicj, nick, J);
 fprintf('## Errors:\n');
