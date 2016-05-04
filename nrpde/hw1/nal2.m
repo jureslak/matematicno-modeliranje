@@ -12,6 +12,8 @@ dx = h;
 dy = h;
 J = (bx-ax)/dx - 1;  % spremenljivke u_jk za j = 1...J, k = 1...K
 K = (by-ay)/dy - 1;
+if floor(J) ~= J, error('Discretization step in x direction does not divide interval length.'), end
+if floor(K) ~= K, error('Discretization step in y direction does not divide interval length.'), end
 
 % enacba in robni pogoji
 f = @(x, y) - sin(x) .* cos(y);
@@ -19,6 +21,36 @@ up = @(x) x.*x; % u(x, 1) = x^2
 down = @(x) x; % u(x, -1) = x
 left = @(y) y; % u(-1, y) = y
 right = @(y) ones(size(y)); % u(-1, y) = 1
+
+% check boundary conditions for consistency
+if abs(down(ax) - left(ay)) > eps
+    error(['Down left corner boundary conditions are inconsistent, \n'...
+           'point = (%g, %g)\n'...
+           'value on down border = %.6f\n'...
+           'value on left border = %.6f'],...
+          ax, ay, up(ax), left(ay))
+end
+if abs(down(bx) - right(ay)) > eps
+    error(['Down right corner boundary conditions are inconsistent, \n'...
+           'point = (%g, %g)\n'...
+           'value on down border = %.6f\n'...
+           'value on right border = %.6f'],...
+          bx, ay, up(bx), left(ay))
+end
+if abs(up(ax) - left(by)) > eps
+    error(['Upper left corner boundary conditions are inconsistent, \n'...
+           'point = (%g, %g)\n'...
+           'value on up border = %.6f\n'...
+           'value on left border = %.6f'],...
+          ax, by, up(ax), left(by))
+end
+if abs(up(bx) - right(by)) > eps
+    error(['Upper right corner boundary conditions are inconsistent, \n'...
+           'point = (%g, %g)\n'...
+           'value on up border = %.6f\n'...
+           'value on right border = %.6f'],...
+          bx, by, up(bx), right(by))
+end
 
 % shema za laplaceov operator iz zapiskov
 shema = [
@@ -37,6 +69,9 @@ bb = zeros(n, 1);  % b je rezerviran za kviz
 tic
 disp('building system...')
 % po vrsticah
+% u_31 u_32 u_33       u_7 u_8 u_9
+% u_21 u_22 u_23  ===  u_4 u_5 u_6
+% u_11 u_12 u_13       u_1 u_2 u_3
 for k = 1:K
     for j = 1:J
         % za vsako spremenljivko imamo enačbo
@@ -45,7 +80,7 @@ for k = 1:K
         y = ay + k*dy;
         %fprintf('x: %g, y: %g\n', x, y);
         idx = make_index(j, k, J);
-        % fprintf('u_jk == u_%d,%d == u_%d at (%.2f %.2f)\n', j, k, idx, x, y);
+        %fprintf('u_jk == u_%d,%d == u_%d at (%.2f %.2f)\n', j, k, idx, x, y);
         for s = shema'
             mul = s(1);
             jidx = j+s(2);
@@ -57,11 +92,11 @@ for k = 1:K
             % robni pogoji, nesemo na drugo stran enakosti
             if jidx == 0,   bb(idx) = bb(idx) - mul * left(yoff);  end % u(-1, y)
             if jidx == J+1, bb(idx) = bb(idx) - mul * right(yoff); end % u(1, y)
-            if kidx == 0,   bb(idx) = bb(idx) - mul * down(xoff);  end  % u(x, -1)
+            if kidx == 0,   bb(idx) = bb(idx) - mul * down(xoff);  end % u(x, -1)
             if kidx == K+1, bb(idx) = bb(idx) - mul * up(xoff);    end % u(x, 1)
 
             if 1 <= jidx && jidx <= J && 1 <= kidx && kidx <= K
-                varidx = make_index(jidx, kidx, J, K);  % dejanska enačba
+                varidx = make_index(jidx, kidx, J, K);  % dejanska enacba
                 M(idx, varidx) = M(idx, varidx) + mul;
             end
         end
@@ -107,20 +142,26 @@ directdiff_sor = norm(sol_sor - sol_direct)
 time_sor = toc
 
 % plot
-SOL = zeros(J+2, K+2);
+SOL = zeros(K+2, J+2);
+sz = size(SOL)
 SOL(2:end-1, 2:end-1) = reshape(sol_direct, [J, K])';
+sz = size(SOL)
 
-% dostopaj kot SOL(x_j, y_k)
+% dostopaj kot SOL(y_k, x_j)
+% ko narises s sruf ali izpises z flipud zgleda prav
 for j = 0:J+1
     x = ax + j*dx;
     SOL(1, j+1) = down(x);
     SOL(end, j+1) = up(x);
 end
+size(SOL)
+
 for k = 0:K+1
     y = ay + k*dy;
     SOL(k+1, 1) = left(y);
     SOL(k+1, end) = right(y);
 end
+size(SOL)
 
 x = (ax):dx:(bx);
 y = (ay):dy:(by);
@@ -130,8 +171,11 @@ xlabel('x')
 ylabel('y')
 zlabel('z')
 
-nicj = (0 -ax) / dx;
-nick = (0 -ay) / dy;
+nicj = (0 - ax) / dx;
+nick = (0 - ay) / dy;
+if floor(nicj) ~= nicj, error('This points does not coincide with a node.'), end
+if floor(nick) ~= nick, error('This points does not coincide with a node.'), end
+
 nicidx = make_index(nicj, nick, J);
 fprintf('## Errors:\n');
 err_jac = abs(sol_direct(nicidx) - sol_jac(nicidx))
@@ -139,11 +183,10 @@ err_gs = abs(sol_direct(nicidx) - sol_gs(nicidx))
 err_sor = abs(sol_direct(nicidx) - sol_sor(nicidx))
 
 % check -- calculate back
-LAP = zeros(J, K);
+LAP = zeros(K, J);
 for j = 2:J+1
     for k = 2:K+1
-        LAP(j-1, k-1) = (SOL(j-1, k) + SOL(j+1, k) - 2*SOL(j, k))/dx^2 + ...
-                        (SOL(j, k-1) + SOL(j, k+1) - 2*SOL(j, k))/dy^2;
+        LAP(k-1, j-1) = apply(SOL, [k, j], shema, [1, 1]);
     end
 end
 
