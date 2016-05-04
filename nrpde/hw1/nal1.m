@@ -12,7 +12,7 @@ shema_basic = [
 [ -4,  1, 0];
 [  1,  2, 0];
 
-[  1, 0, -2];                                                                                                                                                                                                                           
+[  1, 0, -2];
 [ -4, 0, -1];
 [  6, 0,  0];
 [ -4, 0,  1];
@@ -44,12 +44,12 @@ for j = 1:trials
     dx = 1/j^2;   % se da bolj enostavno, ampak za lazjo spremembo
     dy = 1/j^2;
     shema = shema_basic;
-    
+
     % delimo posamezne faktorje
     shema(1:5,1) = shema(1:5,1) / dx^4;
     shema(6:10,1) = shema(6:10,1) / dy^4;
     shema(11:end,1) = shema(11:end,1) / dx^2 / dy^2;
-    
+
     appr = apply(u, point, shema, [dx, dy]);
     err(j) = abs(appr-realval);
     if err(j) < minerr
