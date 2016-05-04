@@ -41,7 +41,7 @@ minerr = 10000;
 bestj = 0;
 err = zeros(trials, 1);
 for j = 1:trials
-    dx = 1/j^2;   % se da bolj enostavno, ampak za lažjo spremembo
+    dx = 1/j^2;   % se da bolj enostavno, ampak za lazjo spremembo
     dy = 1/j^2;
     shema = shema_basic;
     
@@ -50,7 +50,7 @@ for j = 1:trials
     shema(6:10,1) = shema(6:10,1) / dy^4;
     shema(11:end,1) = shema(11:end,1) / dx^2 / dy^2;
     
-    appr = apply(U, point, shema, [dx, dy]);
+    appr = apply(u, point, shema, [dx, dy]);
     err(j) = abs(appr-realval);
     if err(j) < minerr
         minerr = err(j);

@@ -2,7 +2,8 @@ function value = apply(fn, point, shema, step)
 % Apply diference schema with discretizations specified by step to fn
 % at given point.
 % fn: function to apply the schema to, function of n args
-% point: n-dim vector where to apporximate the function
+% point: n-dim vector where to approximate the function -- does not work
+%        for a vector of points
 % schema: array of [multiplies, x1 offset, x2 offset, ...] of width n+1
 % step: scalar h or vector of length n: dx1, dx2, ...
 if nargin < 4
@@ -20,7 +21,8 @@ end
 value = 0;
 for s = shema'
     m = s(1);
-    value = value + m*fn(point+s(2:end)'.*step);
+    arg = num2cell(point+s(2:end)'.*step);
+    value = value + m*fn(arg{:});  % in python: v = v + m*fn(*(p + s*step))
 end
 end
 
