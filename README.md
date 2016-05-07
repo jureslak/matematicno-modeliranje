@@ -3,7 +3,8 @@
 ## Numerično reševanje parcialnih diferencialnih enačb
 Rešitev domače naloge 1:
 * aproksimacija z diferenčnimi shemami
-* generiranje sistema enačb z diferenčno shemo
+* reševanje eliptične PDE na pravokotniku z Dirichletovimi robnimi pogoji
+* generiranje sistema enačb s poljubno diferenčno shemo
 * reševanje redkega sistema z Jacobijevo, Gauss Seidlovo in SOR metodo
 
 ## Numerična aproksimacija in interpolacija
