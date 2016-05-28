@@ -1,11 +1,15 @@
 # Numerični predmeti na FMF
 
 ## Numerično reševanje parcialnih diferencialnih enačb
-Rešitev domače naloge 1:
+Rešitve domače naloge 1:
 * aproksimacija z diferenčnimi shemami
 * reševanje eliptične PDE na pravokotniku z Dirichletovimi robnimi pogoji
 * generiranje sistema enačb s poljubno diferenčno shemo
 * reševanje redkega sistema z Jacobijevo, Gauss Seidlovo in SOR metodo
+
+Rešitve domače naloge 2:
+* reševanje 1D robnega problema z metodo FEM
+* reševanje toplotne enačbe s Dirichletovimi robnimi pogoji
 
 ## Numerična aproksimacija in interpolacija
 
