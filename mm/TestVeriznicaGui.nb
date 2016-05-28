@@ -1,0 +1,39 @@
+(* Needs["Veriznica`"] *)
+<<Veriznica`
+In[372]:=
+x0 = 1;
+y0 = 1;
+x1 = 1.5;
+y1 = 1.5;
+T1 = {x0,y0};
+T2 = {x1,y1};
+dol = 1;
+v0 = 10;
+f = ZveznaVeriznica[T1, T2, dol];
+(* Ce je rezultat kompleksen, do cilja ni mogoce priti *)
+CasPotovanja[f, x0, x1, v0]
+Plot[f[x], {x, x0, x1}, AspectRatio -> Automatic]
+Out[382]= 0.100924
+
+In[384]:=
+n = 10; (* stevilo palic *)
+T1 = {0,2};
+T2 = {2,2};
+dolzine = Table[1, {i, 1, n}];
+mase = Table[1, {i, 1, n}];
+pts = DiskretnaVeriznica[T1, T2, dolzine, mase];
+ListLinePlot[pts]
+TezisceVeriznice[pts, mase]
+
+Out[391]= {0.999973,-0.4707}
+In[343]:=
+
+a = 1;
+A = 1;
+b = 2;
+B = 0;
+(* Gremo od tocke (a, A) do (b, B) *)
+{f, tmax} = Brahistokrona[a,A,b,B]
+ParametricPlot[f[t],{t,0,tmax}]
+
+Out[349]= {{Private`x$19614[#1],Private`y$19614[#1]}&,2.41201}
