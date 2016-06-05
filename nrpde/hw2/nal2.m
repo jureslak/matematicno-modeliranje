@@ -1,3 +1,4 @@
+format long
 % PROBLEM
 p.ta = 0;  % casovni interval [ta, tb]
 p.tb = 1;

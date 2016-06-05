@@ -1,3 +1,4 @@
+format long
 % PROBLEM
 p.a = 0;
 p.b = 5;
@@ -15,7 +16,7 @@ n.h = (p.b-p.a) / n.n;
 for i = 1:5
     n.n = 10*i;
     n.h = (p.b-p.a) / n.n;
-    
+
     alfa = solve_fem(p, n);
     hold on
     x = p.a:n.h:p.b;
