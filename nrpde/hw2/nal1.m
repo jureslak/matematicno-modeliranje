@@ -1,4 +1,6 @@
 format long
+format compact
+
 % PROBLEM
 p.a = 0;
 p.b = 5;
@@ -13,6 +15,9 @@ p.desni = 3;
 n.n = 10;
 n.h = (p.b-p.a) / n.n;
 
+% HATS
+point = pi;  % lahko tudi vektor
+
 for i = 1:5
     n.n = 10*i;
     n.h = (p.b-p.a) / n.n;
@@ -21,13 +26,10 @@ for i = 1:5
     hold on
     x = p.a:n.h:p.b;
     plot(x, alfa)
+
+    hats = make_hats(p, n);
+    value = get_value(alfa, hats, point)
 end
-
-
-% HATS
-hats = make_hats(p, n);
-point = pi;  % lahko tudi vektor
-value = get_value(alfa, hats, point)
 
 tocna = @(x) ...
   (1/7).*((-1)+exp(1).^(10.*(7/3).^(1/2))).^(-1).*((-1)+(-15).*exp( ...
@@ -35,7 +37,11 @@ tocna = @(x) ...
   1/2).*((-5)+x))+15.*exp(1).^((7/3).^(1/2).*x)+40.*exp(1).^((7/3) ...
   .^(1/2).*(5+x))+exp(1).^(10.*(7/3).^(1/2)).*(1+(-4).*x)+4.*x);
 
+value = tocna(pi)
+
 xx = p.a:0.001:p.b;
 plot(xx, tocna(xx))
 legend('n = 10', 'n = 20', 'n = 30', 'n = 40', 'n = 50', 'exact')
 hold off
+
+% vim: set ft=matlab:
