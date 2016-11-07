@@ -1,5 +1,12 @@
 # Numerični predmeti na FMF
 
+## Numerična integracija in navadne diferencialne enačbe
+Rešitev domače naloge 1:
+* integracija z uporabo sestavljenega trapeznega in Simpsonovega pravila
+* računanje dvojnih integralov z zgornjima metodama
+* integracija a adaptivnim Simpsonovim pravilom in Richardsonovo ekstrapolacijo
+* integracija po metodi Monte Carlo po splošnem d-dimenzionalnem kvadru
+
 ## Numerično reševanje parcialnih diferencialnih enačb
 Rešitve domače naloge 1:
 * aproksimacija z diferenčnimi shemami
