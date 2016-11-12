@@ -1,1 +1,133 @@
-/home/jureslak/faks/2_stopnja/ninde/dn1/porocilo.tex
+\documentclass[a4paper,oneside,12pt]{article}
+
+\usepackage[slovene]{babel}    % slovenian language and hyphenation
+\usepackage[utf8]{inputenc}    % make čšž work on input
+\usepackage[T1]{fontenc}       % make čšž work on output
+\usepackage[reqno]{amsmath}    % basic ams math environments and symbols
+\usepackage{amssymb,amsthm}    % ams symbols and theorems
+\usepackage{mathtools}         % extends ams with arrows and stuff
+\usepackage{url}               % \url and \href for links
+\usepackage{icomma}            % make comma a thousands separator with correct spacing
+\usepackage{units}             % \unit[1]{m} and unitfrac
+\usepackage{enumerate}         % enumerate style
+\usepackage{array}             % mutirow
+\usepackage[usenames]{color}   % colors with names
+\usepackage{graphicx}          % images
+
+\usepackage[bookmarks, colorlinks=true, linkcolor=black, anchorcolor=black,
+  citecolor=black, filecolor=black, menucolor=black, runcolor=black,
+  urlcolor=black, pdfencoding=unicode]{hyperref}  % clickable references, pdf toc
+\usepackage[
+  paper=a4paper,
+  top=2.5cm,
+  bottom=2.5cm,
+  left=2.5cm,
+  right=2.5cm
+% textheight=24cm,
+]{geometry}  % page geomerty
+
+\newtheorem{izrek}{Izrek}
+\newtheorem{posledica}{Posledica}
+
+\theoremstyle{definition}
+\newtheorem{definicija}{Definicija}
+\newtheorem{opomba}{Opomba}
+\newtheorem{zgled}{Zgled}
+
+% basic sets
+\newcommand{\R}{\ensuremath{\mathbb{R}}}
+\newcommand{\N}{\ensuremath{\mathbb{N}}}
+\newcommand{\Z}{\ensuremath{\mathbb{Z}}}
+\renewcommand{\C}{\ensuremath{\mathbb{C}}}
+\newcommand{\Q}{\ensuremath{\mathbb{Q}}}
+
+% greek letters
+\let\oldphi\phi
+\let\oldtheta\theta
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\theta}{\vartheta}
+
+% vektorska analiza
+\newcommand{\grad}{\operatorname{grad}}
+\newcommand{\rot}{\operatorname{rot}}
+\renewcommand{\div}{\operatorname{div}}
+
+% lists with less vertical space
+\newenvironment{itemize*}{\vspace{-1.5\parskip}\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{2pt}}{\end{itemize}\vspace{-1\parskip}}
+\newenvironment{enumerate*}{\vspace{-1.5\parskip}\begin{enumerate}\setlength{\itemsep}{0pt}\setlength{\parskip}{2pt}}{\end{enumerate}\vspace{-1\parskip}}
+\newenvironment{description*}{\vspace{-6pt}\begin{description}\setlength{\itemsep}{0pt}\setlength{\parskip}{2pt}}{\end{description}\vspace{-1\parskip}}
+
+\newcommand{\Title}{NINDE 2016\,/\,17, 1.\ domača naloga}
+\newcommand{\Author}{Jure Slak}
+\title{\Title}
+\author{\Author}
+\date{\today}
+\hypersetup{pdftitle={\Title}, pdfauthor={\Author}, pdfcreator={\Author},
+            pdfproducer={\Author}, pdfsubject={}, pdfkeywords={}}  % setup pdf metadata
+
+% \pagestyle{empty}              % vse strani prazne
+\setlength{\parindent}{0pt}    % zamik vsakega odstavka
+\setlength{\parskip}{10pt}     % prazen prostor po odstavku
+\setlength{\overfullrule}{30pt}  % oznaci predlogo vrstico z veliko črnine
+
+\begin{document}
+\begin{center}
+  \textbf{\large \Title} \\[12pt]
+  Jure Slak, 27152005
+\end{center}
+
+\textbf{Naloga 1.} \\
+Implementacija sestavljenega Simpsonovega in trapeznega pravila je zelo
+direktna. Dvojni integral lahko izračunamo po Fubinijevem izreku kot
+dvakratnega, na dva načina, ki sta matematično enaka, numerično pa se
+razlikujeta v vrstnem redu seštevanja. Rezultat pri danih podatkih se še precej
+razlikuje od točnega (121.9 proti 123.79). Če $m$ in $n$ povečujemo, metoda
+konvergira, ne pa tudi, če povečujemo samo enega. Razlika med numeričnima
+približkoma zaradi vrstnega reda integracije je v tem primeru zanemarljiva in
+znaša okoli $10^{-14}$.
+
+\begin{verbatim}
+Zunanji po x: 123.7998130262172083
+Zunanji po y: 123.7998130262171941
+Točen:        121.9385660804582869
+\end{verbatim}
+
+\textbf{Naloga 2.} \\
+Metoda uporablja sestavljeno Simpsonovo pravilo iz 1. naloge. Tretnutno ni
+napisana paralelizabilno, saj pri deljenju intervala dovoljeno drugo napako
+izračuna na podlagi prve, jo je pa mogoče paralelizirati. Tudi tukaj se
+približki izboljšujejo, ko gre $\delta \to 0$ in napake ne presegajo dovoljene
+napake $\delta$.
+
+\begin{verbatim}
+I =    1.9980118683563632
+Točen: 1.9980009999997501
+\end{verbatim}
+
+Metodo bi se dalo pospešiti, tako da bi si shranjevala funkcijske vrednosti in
+jih podajala naprej, saj se jih zelo veliko prekriva.
+
+\textbf{Naloga 3.} \\
+Metoda je implementirana malce splošneje za integracijo po kvadru $[a, b]
+\subset \R^d$. Konvergenca je počasna, a zagotovljena po zakonu velikih števil.
+Metodo bi bilo možno pospešiti z uporabo vektorizacije in več pomnilnika,
+kjer bi si vnaprej generirali naključno matriko $n \times d$ s slučajnimi vektorji
+in jih kasneje le uporabili. Poleg tega je metoda tudi zelo primerna za
+paralelizacijo.
+
+\begin{verbatim}
+Točen:           I = 0.1594319846981149
+Pri n =     100, I = 0.1544755419083274, err = 0.0049564427897875
+Pri n =    1000, I = 0.1601708347878220, err = 0.0007388500897071
+Pri n =   10000, I = 0.1602101986607355, err = 0.0007782139626206
+Pri n =  100000, I = 0.1593783551198855, err = 0.0000536295782294
+Pri n = 1000000, I = 0.1593951995388704, err = 0.0000367851592445
+\end{verbatim}
+
+\end{document}
+% vim: syntax=tex
+% vim: spell spelllang=sl
+% vim: foldlevel=99
+% Latex template: Jure Slak, jure.slak@gmail.com
+
