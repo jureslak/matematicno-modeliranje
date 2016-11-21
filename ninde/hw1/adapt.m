@@ -3,7 +3,7 @@ function [I, err] = adapt(f, a, b, delta)
 if nargin < 4, error('Please supply all arguments!'), end
 if delta < eps, error('Requested precision too small, got %g', delta), end
 if abs(a-b) < eps, I = 0.0; err = eps; return, end
-if b < a, [I, err] = simpson(f, b, a, n); I = -I; return, end
+if b < a, [I, err] = adapt(f, a, b, delta); I = -I; return, end
 
 I1 = simpson(f, a, b, 1);
 I2 = simpson(f, a, b, 2);
