@@ -4,8 +4,15 @@
 Rešitev domače naloge 1:
 * integracija z uporabo sestavljenega trapeznega in Simpsonovega pravila
 * računanje dvojnih integralov z zgornjima metodama
-* integracija a adaptivnim Simpsonovim pravilom in Richardsonovo ekstrapolacijo
+* integracija z adaptivnim Simpsonovim pravilom in Richardsonovo ekstrapolacijo
 * integracija po metodi Monte Carlo po splošnem d-dimenzionalnem kvadru
+
+Rešitev domače naloge 2:
+* ekplicitne Runge-Kutta metode
+* Cash-Karpova adaptivna metoda
+* Adams-Bashfordove in Miltonova prediktor-korektor metoda
+* kombinacija tangentne metode in RK4
+* izpeljava metod z rodovnimi polinomi
 
 ## Numerično reševanje parcialnih diferencialnih enačb
 Rešitve domače naloge 1:

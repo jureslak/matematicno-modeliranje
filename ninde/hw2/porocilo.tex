@@ -1,0 +1,151 @@
+\documentclass[a4paper,oneside,12pt]{article}
+
+\usepackage[slovene]{babel}    % slovenian language and hyphenation
+\usepackage[utf8]{inputenc}    % make čšž work on input
+\usepackage[T1]{fontenc}       % make čšž work on output
+\usepackage[reqno]{amsmath}    % basic ams math environments and symbols
+\usepackage{amssymb,amsthm}    % ams symbols and theorems
+\usepackage{mathtools}         % extends ams with arrows and stuff
+\usepackage{url}               % \url and \href for links
+\usepackage{icomma}            % make comma a thousands separator with correct spacing
+\usepackage{units}             % \unit[1]{m} and unitfrac
+\usepackage{enumerate}         % enumerate style
+\usepackage{array}             % mutirow
+\usepackage[usenames]{color}   % colors with names
+\usepackage{graphicx}          % images
+
+\usepackage[bookmarks, colorlinks=true, linkcolor=black, anchorcolor=black,
+  citecolor=black, filecolor=black, menucolor=black, runcolor=black,
+  urlcolor=black, pdfencoding=unicode]{hyperref}  % clickable references, pdf toc
+\usepackage[
+  paper=a4paper,
+  top=2.5cm,
+  bottom=2.5cm,
+  left=2.5cm,
+  right=2.5cm
+% textheight=24cm,
+]{geometry}  % page geomerty
+
+\newtheorem{izrek}{Izrek}
+\newtheorem{posledica}{Posledica}
+
+\theoremstyle{definition}
+\newtheorem{definicija}{Definicija}
+\newtheorem{opomba}{Opomba}
+\newtheorem{zgled}{Zgled}
+
+% basic sets
+\newcommand{\R}{\ensuremath{\mathbb{R}}}
+\newcommand{\N}{\ensuremath{\mathbb{N}}}
+\newcommand{\Z}{\ensuremath{\mathbb{Z}}}
+\renewcommand{\C}{\ensuremath{\mathbb{C}}}
+\newcommand{\Q}{\ensuremath{\mathbb{Q}}}
+
+% greek letters
+\let\oldphi\phi
+\let\oldtheta\theta
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\theta}{\vartheta}
+
+% vektorska analiza
+\newcommand{\grad}{\operatorname{grad}}
+\newcommand{\rot}{\operatorname{rot}}
+\renewcommand{\div}{\operatorname{div}}
+
+% lists with less vertical space
+\newenvironment{itemize*}{\vspace{-1.5\parskip}\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{2pt}}{\end{itemize}\vspace{-1\parskip}}
+\newenvironment{enumerate*}{\vspace{-1.5\parskip}\begin{enumerate}\setlength{\itemsep}{0pt}\setlength{\parskip}{2pt}}{\end{enumerate}\vspace{-1\parskip}}
+\newenvironment{description*}{\vspace{-6pt}\begin{description}\setlength{\itemsep}{0pt}\setlength{\parskip}{2pt}}{\end{description}\vspace{-1\parskip}}
+
+\newcommand{\Title}{NINDE 2016\,/\,17, 2.\ domača naloga}
+\newcommand{\Author}{Jure Slak}
+\title{\Title}
+\author{\Author}
+\date{\today}
+\hypersetup{pdftitle={\Title}, pdfauthor={\Author}, pdfcreator={\Author},
+            pdfproducer={\Author}, pdfsubject={}, pdfkeywords={}}  % setup pdf metadata
+
+% \pagestyle{empty}              % vse strani prazne
+\setlength{\parindent}{0pt}    % zamik vsakega odstavka
+\setlength{\parskip}{10pt}     % prazen prostor po odstavku
+\setlength{\overfullrule}{30pt}  % oznaci predlogo vrstico z veliko črnine
+
+\begin{document}
+\begin{center}
+  \textbf{\large \Title} \\[12pt]
+  Jure Slak, 27152005
+\end{center}
+
+\textbf{Naloga 1.} \\
+Najprej je implementirana splošna eksplicitna RK metoda za reševanje sistemov
+NDE v datoteki \verb|RKEplicit.m| s pomočjo nekaj pomožnih funkcij. V datoteki
+\verb|make_RK4.m| je skripta, ki naredi shemo za RK4 in naredi objekt, ki
+predstavjla solver po tej metodi. Podobno so v skripti \verb|make_CK.m| podatki
+za obe RK metodi, na katerih bazira Cash-Karp metoda (ter tudi podatki za shemo
+metode, predstavljene kot Algoritem 1.). Funkcija \verb|CashKarp| je
+implementirana kot piše na nalogi. Če uporabimo algoritem 1, potem je pri
+natančnosti $10^{-6}$ $h$konstantno enak $hmin$, kar je tudi logično, saj ocena
+napake ni pravilna, in ne kaže dejanske napake. Če pa uporabimo dejansko
+Cash-Karpovo metodo, pa se $h$ res prilagaja in tudi opravi veliko manj
+izračunov. Celotna rešitev naloge je v \verb|nal1.m|.
+
+\begin{verbatim}
+CK-prava: y(2) = 1.9506221914539359
+CK-alg1:  y(2) = 1.9684232501488073
+RK4:      y(2) = 1.9506785300973337
+\end{verbatim}
+
+Pri implementaciji metod bi si lahko shranjevali že izračunane vrednosti $f$ in
+s tem pospešili izvajanje.
+
+\textbf{Naloga 2.} \\
+
+Implementacija obeh metod je direktna, ena v datoteki
+\verb|AdamsBashSistem.m| in druga v \verb|MilneSistem.m|.
+Naloga je rešena v datoteki \verb|nal2.m|.
+
+\begin{verbatim}
+h = 0.1
+Approx for y(10) using AB: -0.3498705377962865
+Approx for y(10) using MI: -0.4414240151890469
+h = 0.05
+Approx for y(10) using AB: -0.4227331662395586
+Approx for y(10) using MI: -0.4222779703683874
+\end{verbatim}
+
+\textbf{Naloga 3.} \\
+Najprej rešimo nalogo z RK4 in iz slike preberemo približek za peto ničlo.
+Nato s standardno tangentno metodo iščemo ničlo, pri čemer odvode in vrednosti
+aproksimiramo z RK4, ki se od prejšnje ničle do naslednje sprehodi z maksimalnim
+korakom $h$, ali pa z manjšim, če je celotna razdalja manjša. Metoda se lahko
+sprehaja v levo ali v desno. Seveda pa je ničla bolj od tega kakšno natančnost
+si zberemo pri Newtonovi iteraciji odvisna od začetnega $h$. Newtonova iteracija
+pričakovano skonvergira v približno petih korakih tudi ob toleranci $10^{-16}$.
+Za začetni približek sem vzel $7.5$.
+
+\begin{verbatim}
+h = 0.1
+korak: 1, priblizek: 7.811265563327425
+korak: 2, priblizek: 7.757021945794063
+korak: 3, priblizek: 7.757430943970567
+korak: 4, priblizek: 7.757430943793660
+korak: 5, priblizek: 7.757430943793660
+Nicla: 7.7574309437936604.
+
+h = 0.01
+korak: 1, priblizek: 7.811097555023491
+korak: 2, priblizek: 7.756912740566238
+korak: 3, priblizek: 7.757320650664874
+korak: 4, priblizek: 7.757320650489378
+korak: 5, priblizek: 7.757320650489378
+Nicla: 7.7573206504893779.
+\end{verbatim}
+
+
+\end{document}
+% vim: syntax=tex
+% vim: spell spelllang=sl
+% vim: foldlevel=99
+% Latex template: Jure Slak, jure.slak@gmail.com
+
