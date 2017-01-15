@@ -88,10 +88,13 @@ implementirana kot piše na nalogi. Če uporabimo algoritem 1, potem je pri
 natančnosti $10^{-6}$ $h$konstantno enak $hmin$, kar je tudi logično, saj ocena
 napake ni pravilna, in ne kaže dejanske napake. Če pa uporabimo dejansko
 Cash-Karpovo metodo, pa se $h$ res prilagaja in tudi opravi veliko manj
-izračunov. Celotna rešitev naloge je v \verb|nal1.m|.
+izračunov. Celotna rešitev naloge je v \verb|nal1.m|. Prava Cash-Carp metoda,
+kot je napisana v algoritmu 1, nikoli ne doseže vrednosti $x=2$, saj je do tja
+premajhen korak. Ker ni specificirano, kaj naj naredimo v tem primeru, sem jaz
+vseeno naredil majhen korak in izračunal vrednost $y(2)$.
 
 \begin{verbatim}
-CK-prava: y(2) = 1.9506221914539359
+CK-prava: y(2) = 1.9506227004274028
 CK-alg1:  y(2) = 1.9684232501488073
 RK4:      y(2) = 1.9506785300973337
 \end{verbatim}

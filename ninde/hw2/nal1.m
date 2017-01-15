@@ -2,7 +2,7 @@
 % ODE given as
 % y' = f(x, y), x in [a, b]
 % y(a) = y0
-% using adaptive CashKarp method.
+% using adaptive Cash-Karp method.
 % Jure Slak
 
 p.f = @(x, y) 2*sin(2*y) + 3*cos(4*x);

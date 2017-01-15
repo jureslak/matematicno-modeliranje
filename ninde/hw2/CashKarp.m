@@ -18,7 +18,7 @@ sol = [x; y];
 make_CK;
 while 1
     K = ck.solver.getk(f, x, y, h);
-    R = abs(h*K*(ck.gam5 - ck.gam4));
+    R = abs(K*(ck.gam5 - ck.gam4));
     if R < tol || h <= hmin
         if (h <= hmin), warning('Minimal step %g reached, error = %g.', hmin, R), end
         x = x + h;
@@ -26,7 +26,7 @@ while 1
         sol = [sol, [x; y]];
     end
     h = min(hmax, max(hmin, gamma*h*(tol / R)^(1/5)));
-    if h > b
+    if x >= b
         break
     elseif x + h > b
         h = b - x;
