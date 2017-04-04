@@ -52,16 +52,44 @@ classdef Spline
             curvelist{m} = Bezier([b0; b1; b2]);
             self = Spline(curvelist);
         end
-%         function self = cubic(u, D)
-%             % u - division of the interval
-%             % D - matrix of points given as rows.
-%             assert(isvector(u), 'u must be a vector.');
-%             assert(ismatrix(D), 'D must be a matrix.');
-%             [m, d] = size(D);
-%             assert(m >= 4, 'At least 4 points are needed');
-%             assert(length(u)+2 == m, 'Numer of rows in D must be two more than length(u).');
-%             m = m - 3;
-%             
-%         end
+        function self = cubic(u, D)
+            % u - division of the interval
+            % D - matrix of points given as rows.
+            assert(isvector(u), 'u must be a vector.');
+            assert(ismatrix(D), 'D must be a matrix.');
+            [m, ~] = size(D);
+            assert(m >= 4, 'At least 4 points are needed');
+            assert(length(u)+2 == m, 'Numer of rows in D must be two more than length(u).');
+            m = m - 3;
+            curvelist = cell(m, 1);
+            if m == 1
+                curvelist{1} = Bezier(D);
+                self = Spline(curvelist);
+                return
+            end
+            du = diff(u);
+            b0 = D(1, :);
+            b1 = D(2, :);
+            b2 = du(2) / (du(2) + du(1)) * D(2, :) + du(1) / (du(2) + du(1)) * D(3, :); 
+            for i = 1:(m-2)
+                s = du(i) + du(i+1) + du(i+2);
+                b1n = (du(i+1) + du(i+2)) / s * D(i+2, :) + du(i) / s * D(i+3, :);
+                b3 =  du(i+1) / (du(i+1) + du(i)) * b2 + du(i) / (du(i+1) + du(i)) * b1n;
+                curvelist{i} = Bezier([b0; b1; b2; b3]);
+                b0 = b3;
+                b1 = b1n;
+                b2 = du(i+2) / s * D(i+2, :) + (du(i) + du(i+1)) / s * D(i+3, :);
+            end
+            b1n =  du(m) / (du(m) + du(m-1)) * D(m, :) + du(m) / (du(m) + du(m-1)) * D(m+2, :);
+            b3 =  du(m) / (du(m) + du(m-1)) * b2 + du(m-1) / (du(m) + du(m-1)) * b1n;
+            curvelist{m-1} = Bezier([b0; b1; b2; b3]);
+
+            b0 = b3;
+            b1 = b1n;
+            b2 = D(m+2, :);
+            b3 = D(m+3, :);
+            curvelist{m} = Bezier([b0; b1; b2; b3]);
+            self = Spline(curvelist);
+        end
     end
 end
