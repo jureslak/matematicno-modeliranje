@@ -23,6 +23,6 @@ while 1
         s = Spline.cubic(Spline.params(D(1:end-2,:), 0.5), D);
         s.plot();
     end
-    plot(x, y, 'ko')
+    plot(x, y, 'ko--')
 end
 close
