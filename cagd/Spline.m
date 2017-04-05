@@ -50,7 +50,8 @@ classdef Spline
             for k = 1:m-1
                 b0 = b2;
                 b1 = D(k+1, :);
-                b2 = du(k) / (du(k) + du(k+1)) * D(k+1, :) + du(k+1) / (du(k) + du(k+1)) * D(k+2, :);
+                imen = du(k) + du(k+1);
+                b2 = du(k+1) / imen * D(k+1, :) + du(k) / imen * D(k+2, :);
                 curvelist{k} = Bezier([b0; b1; b2]);
             end
             b0 = b2;
