@@ -115,13 +115,15 @@ classdef Bezier
             hold on
             if self.d == 1
                 plot(t, b);
-                plot(0:1/(length(self.B)-1):1, self.B, 'ro-')
+                plot(0:1/(length(self.B)-1):1, self.B, 'ko-')
             elseif self.d == 2
                 plot(b(:,1), b(:,2))
-                plot(self.B(:,1), self.B(:,2), 'ro-')
+                plot(self.B(:,1), self.B(:,2), 'ko-')
             elseif self.d == 3
                 plot3(b(:,1), b(:, 2), b(:, 3))
-                plot3(self.B(:,1), self.B(:,2), self.B(:,3), 'ro-')
+                plot3(self.B(:,1), self.B(:,2), self.B(:,3), 'ko-')
+                axis vis3d
+                view(3)
             end
         end
         function plotwithder(self, npts, nder)
@@ -150,6 +152,13 @@ classdef Bezier
                 plot3(self.B(:, 1), self.B(:, 2), self.B(:, 3), 'ro-')
                 quiver3(bder(:, 1), bder(:, 2), bder(:, 3), derval(:, 1), derval(:, 2), derval(:, 3), 'k')
             end
+        end
+        function BP  = proj(self)
+            % project self into one dimension less and return a rational
+            % bezier curve
+            assert(self.d >= 1, 'Cannot project a 1D curve.');
+            w = self.B(:, end);
+            BP = RBezier(bsxfun(@rdivide, self.B(:, 1:end-1), w), w);
         end
     end
     methods(Access=private)
