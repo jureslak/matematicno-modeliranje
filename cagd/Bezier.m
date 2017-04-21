@@ -109,7 +109,7 @@ classdef Bezier
             % plots bezier curve using n equally spaced points
             if nargin < 2, npts = 100; end
             assert(npts >= 2, 'Not enough points to plot the curve.');
-            assert(self.d <= 3, 'Visulazation of curves with dimensions >=4 is left as an exrcise for the user.');
+            assert(self.d <= 3, 'Visulazation of curves with dimensions >=4 is left as an exercise for the user.');
             t = linspace(0, 1, npts);
             b = self.val(t);
             hold on
@@ -131,7 +131,7 @@ classdef Bezier
             if nargin < 3, nder = 20; end
             if nargin < 2, npts = 100; end
             assert(npts >= 2, 'Not enough points to plot the curve, got %d.', npts);
-            assert(self.d <= 3, 'Visulazation of curves with dimensions >=4 is left as an exrcise for the user.');
+            assert(self.d <= 3, 'Visulazation of curves with dimensions >=4 is left as an exercise for the user.');
             t = linspace(0, 1, npts);
             tder = linspace(0, 1, nder);
             b = self.val(t);
