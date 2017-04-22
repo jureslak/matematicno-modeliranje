@@ -7,7 +7,7 @@ classdef BezierTensorSurf
         m
         n
     end
-    
+
     methods
         function obj = BezierTensorSurf(Bx, By, Bz)
             % B = seznam koordinat po tockah
@@ -53,7 +53,7 @@ classdef BezierTensorSurf
         end
         function plot(self, nu, nv)
              % plots bezier surface using n^2 equally spaced points
-            if nargin == 2, error('Supply nu and nv.'), end
+            if nargin == 2, nv = nu; end
             if nargin < 3,  nu = 50; nv = 50; end
             assert(nu >= 2, 'Not enough points in u direction to plot the curve.');
             assert(nv >= 2, 'Not enough points in v direction to plot the curve.');
@@ -61,7 +61,7 @@ classdef BezierTensorSurf
             v = linspace(0, 1, nv);
             hold on
             c = mesh(self.Bx, self.By, self.Bz);
-            set(c, 'FaceAlpha', 0.5)
+            set(c, 'FaceColor', 'none')
             set(c, 'EdgeColor', 'k')
             [X, Y, Z] = self.val(u, v);
             surf(X, Y, Z)
@@ -79,20 +79,26 @@ classdef BezierTensorSurf
             assert(length(v) == K, 'v must be a vector of length %d, got %d.', K, length(v));
             assert(m <= K, 'Degree in u direction must be less than number of points, got m = %d, K = %d', m, K);
             assert(n <= K, 'Degree in u direction must be less than number of points, got m = %d, K = %d', n, K);
-            
-            px = P(:, 1);
-            Mx = zeros(K, (m+1)*(n+1));
+
+            M = zeros(K, (m+1)*(n+1));
+            % polnimo po stolpcih
             for i = 1:m+1
                 for j = 1:n+1
                     ku = zeros(m+1, 1); ku(i) = 1;
                     kv = zeros(n+1, 1); kv(j) = 1;
                     bu = Bezier(ku).val(u);
                     bv = Bezier(kv).val(v);
-                    Mx(:, i*(n+1) + j) = bu .* bv;
+                    M(:, (i-1)*(n+1) + j) = bu .* bv;
                 end
             end
-            Bx = Mx \ px;            
-            BS = BezierTensorSurf(Bx, Bx, Bx);
+            Bx = M \ P(:, 1);
+            By = M \ P(:, 2);
+            Bz = M \ P(:, 3);
+
+            Bx = reshape(Bx, [n+1, m+1]);
+            By = reshape(By, [n+1, m+1]);
+            Bz = reshape(Bz, [n+1, m+1]);
+            BS = BezierTensorSurf(Bx, By, Bz);
         end
     end
 end
