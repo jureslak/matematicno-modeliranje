@@ -14,10 +14,29 @@ classdef Spline
                 end
             end
         end
-        function plot(self)
+        function S = val(self, u, t)
+            % evaluates spline given with parametrization intervals u at parameters t
+            assert(length(u) == self.m + 1, 'Number of intervals for parameters is wrong, got %d separation points, expected %d.', length(u), self.m+1);
+            assert(all(t >= u(1)), 'One of t if less than parameter range [%f %f]', t, u(1), u(end));
+            assert(all(t <= u(end)), 'One of t is greater than parameter range [%f %f]', t, u(1), u(end));
+            p = length(t);
+            S = zeros(p, self.curves{1}.d);
+            du = diff(u);
+            assert(all(du > 0), 'Parameters u must be strictly increasing, got %s.', mat2str(u));
+            for i = 1:p
+                j = Spline.find_piece(t(i), u);
+                S(i, :) = self.curves{j}.val((t(i) - u(j)) / du(j));
+            end
+        end
+        function plot(self, n)
+            % plots spline given with parametrization intervals u using
+            % n(i) points on each piece
+            if nargin < 2, n = 50*ones(self.m, 1); end
+            if isscalar(n), n = n*ones(self.m, 1); end
+            assert(length(n) == self.m, 'Number of points must be giver for all pieces, expected %d, got %d.', self.m, length(n));
             hold on
             for i = 1:self.m
-                self.curves{i}.plot()
+                self.curves{i}.plot(n(i));
             end
         end
     end
@@ -31,7 +50,7 @@ classdef Spline
             DP = diff(P);
             u = zeros(m, 1);
             for i = 1:m-1
-                u(i+1) = u(i) + norm(DP(i, :), 2)^alpha; 
+                u(i+1) = u(i) + norm(DP(i, :), 2)^alpha;
             end
         end
         function self = quad(u, D)
@@ -79,7 +98,7 @@ classdef Spline
             assert(all(du > 0), 'Parameters u must be strictly increasing, got %s.', mat2str(u));
             b0 = D(1, :);
             b1 = D(2, :);
-            b2 = du(2) / (du(2) + du(1)) * D(2, :) + du(1) / (du(2) + du(1)) * D(3, :); 
+            b2 = du(2) / (du(2) + du(1)) * D(2, :) + du(1) / (du(2) + du(1)) * D(3, :);
             for i = 1:(m-2)
                 imen = du(i) + du(i+1) + du(i+2);
                 imen2 = du(i+1) + du(i);
@@ -101,6 +120,20 @@ classdef Spline
             b3 = D(m+3, :);
             curvelist{m} = Bezier([b0; b1; b2; b3]);
             self = Spline(curvelist);
+        end
+    end
+    methods(Static, Access=private)
+        function j = find_piece(t, u)
+            % Finds index of the interval in which parameter t belongs to.
+            % Could be improved using bisection, if a spline is made of
+            % many (ie. >= 100) pieces.
+            for i = 1:length(u)-1
+                if t < u(i)
+                    j = i-1;
+                    return
+                end
+            end
+            j = length(u)-1;
         end
     end
 end

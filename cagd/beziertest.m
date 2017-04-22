@@ -1,3 +1,4 @@
+format compact
 clear
 %figure
 % kont = [0; 2; 5; 3; 1; -1; 7; 2];
@@ -21,18 +22,25 @@ Bder2 = Bezier(kontder2);
 t = 0:1/10:1;
 der2vals = Bder2.val(t);
 der2vals_alt = B2.der(t, 2);
-assert(max(max(abs(der2vals-der2vals_alt))) < 1e-14, 'Two ways of calculating derivatives do not match.');
+assert(max(max(abs(der2vals-der2vals_alt))) < 1e-14, 'Two ways of calculating derivatives do not match, error = %g.', max(max(abs(der2vals-der2vals_alt))));
 
 BE = B2.elevate(3);
 t = 0:0.05:1;
 v1 = BE.val(t);
 v2 = B2.val(t);
-assert(max(max(abs(v1 - v2))) < 1e-14, 'Elevate is not equal to original.')
+assert(max(max(abs(v1 - v2))) < 1e-14, 'Elevate is not equal to original, error = %g.', max(max(abs(v1 - v2))))
 
-clf
-B2.plot();
-s = B2.subdivide(0.4, 2);
-s.plot()
+s = B2.subdivide(0.4, 1);
+t = 0:0.1:1;
+vals1 = B2.val(t);
+vals2 = s.val([0 0.4 1], t);
+assert(max(max(abs(vals1 - vals2))) < 1e-14, 'Subdivided spline does not have same values as divided one, error = %g', max(max(abs(vals1 - vals2))))
+
+
+% clf
+% B2.plot();
+% s.plot()
+
 % figure
 % kont3 = [0, 0, 4; 5, -6, 1; 2, -2, -2; 6, 3, 8];
 % B3 = Bezier(kont3);
