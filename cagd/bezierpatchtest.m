@@ -1,27 +1,39 @@
-B = [2 5 -1 0; 
-    1 3 -4 NaN;
-    0 0 NaN NaN;
-    1 NaN NaN NaN];
-T = [0 0; 5 1; 3 3];
+clear
+close all
+Bx = [
+ 0 2 6 8;
+ 1 3 7 NaN;
+ 2 5 NaN NaN;
+ 4 NaN NaN NaN
+];
+By = [
+ 0 1 0 -1;
+ 2 2 3 NaN;
+ 4 3 NaN NaN;
+ 5 NaN NaN NaN
+];
+Bz = [
+ -2 1 -2 0;
+ 4 -2 3 NaN;
+ 0 5 NaN NaN;
+ 3 NaN NaN NaN
+];
 
-P = BezierPatch(B);
-P1 = [0 0];
-P2 = [1 1];
-P3 = [4 2];
-x = [1 0];
-y = [0 1];
+B = BezierPatch(Bx, By, Bz);
+b = B.val([1/3 1/3 1/3])
 
-u1 = Barycentric.ofPoint(P1, T);
-v1 = P.decastejau(u1);
-u2 = Barycentric.ofPoint(P2, T);
-v2 = P.decastejau(u2);
-u3 = Barycentric.ofPoint(P3, T);
-v3 = P.decastejau(u3);
-
-U = [u2; u2; u2];
-vb2 = P.blossom(U);
-assert(abs(v2-vb2) < eps, 'Blossom does not generalize decastejau.')
-
-P.der(u2, Barycentric.ofVector(x, T), 1)
-assert(abs(v2-P.der(u2, zeros(0, 3), 0)) < eps, 'der does not generalize decastejau.')
-assert(abs(P.der(u2, [], 5)) < eps, 'high derivatives must be 0.')
+[U, T] = BezierPatch.uniform_mesh(3);
+b = B.val(U);
+T=T
+% TRI = [
+%     1 2 5;
+%     2 5 6;
+%     2 3 6;
+%     3 6 7;
+%     3 4 7;
+%     5 6 8;
+%     6 8 9;
+%     6 7 9;
+%     8 9 10;
+% ]
+trimesh(T, b(:, 1), b(:, 2), b(:, 3))

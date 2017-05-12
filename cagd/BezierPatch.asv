@@ -77,11 +77,11 @@ classdef BezierPatch
                 for j = 0:(d-i)
                     k = d - i - j;
                     U(c, :) = [k/d, j/d, i/d];
-                    if 0 < i && i < d
-                        T(t, :) = [c-d c-d+1 c-i+1];
+                    if i ~= d
+                        T(t, :) = [c c+1 c+d-i+2];
                         t = t + 1;
-                        if 0 < j && j < d-i
-                            T(t, :) = [c-d c-i c-i+1];
+                        if j ~= 0
+                            T(t, :) = [c c+d-i+1 c+d-i+2];
                             t = t + 1;
                         end
                     end
