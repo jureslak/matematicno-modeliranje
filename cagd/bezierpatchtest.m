@@ -20,11 +20,9 @@ Bz = [
 ];
 
 B = BezierPatch(Bx, By, Bz);
-b = B.val([1/3 1/3 1/3])
+% b = B.val([1/3 1/3 1/3])
 
 [U, T] = BezierPatch.uniform_mesh(3);
-b = B.val(U);
-T=T
 % TRI = [
 %     1 2 5;
 %     2 5 6;
@@ -36,4 +34,4 @@ T=T
 %     6 7 9;
 %     8 9 10;
 % ]
-trimesh(T, b(:, 1), b(:, 2), b(:, 3))
+B.plot()

@@ -1,7 +1,7 @@
 classdef RBezier
     properties
-        B % kontrol points
-        n % n+1 Control points
+        B % control points
+        n % n+1 control points
         d % dimension
         w % weights
     end
