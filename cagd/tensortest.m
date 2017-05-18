@@ -39,3 +39,4 @@ BLSQ = BezierTensorSurf.LSQ(m, n, [X Y Z], U, V);
 assert(norm(X-X1, 'inf') < 1e-13, 'LSQ approx. does not coincide with interpolation.')
 assert(norm(Y-Y1, 'inf') < 1e-13, 'LSQ approx. does not coincide with interpolation.')
 assert(norm(Z-Z1, 'inf') < 1e-13, 'LSQ approx. does not coincide with interpolation.')
+

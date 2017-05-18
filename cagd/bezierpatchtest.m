@@ -1,28 +1,19 @@
 clear
 close all
-Bx = [
- 0 2 6 8;
- 1 3 7 NaN;
- 2 5 NaN NaN;
- 4 NaN NaN NaN
-];
-By = [
- 0 1 0 -1;
- 2 2 3 NaN;
- 4 3 NaN NaN;
- 5 NaN NaN NaN
-];
-Bz = [
- -2 1 -2 0;
- 4 -2 3 NaN;
- 0 5 NaN NaN;
- 3 NaN NaN NaN
-];
+Bx = [ 0 2 6 8.1; 1 3 7 NaN; 2.6 5 NaN NaN; 4 NaN NaN NaN ];
+By = [ 0 1 0 -1; 2 2.4 3 NaN; 4 3 NaN NaN; 5 NaN NaN NaN ]; 
+Bz = [ -2 1 -2 0; 5.6 -2 3 NaN; 0 5 NaN NaN; 3 NaN NaN NaN ];
 
 B = BezierPatch(Bx, By, Bz);
-% b = B.val([1/3 1/3 1/3])
+P = [1/9 1/23 1-1/9-1/23];
+b = B.val(P)
+v = [-2 3 -1];
+BezierPatch.der(B.Bx, P, [v; v], 2)
+BezierPatch.der(B.By, P, [v; v], 2)
+BezierPatch.der(B.Bz, P, [v; v], 2)
 
-[U, T] = BezierPatch.uniform_mesh(3);
+
+[U, T] = BezierPatch.uniform_mesh(5);
 % TRI = [
 %     1 2 5;
 %     2 5 6;
@@ -34,4 +25,4 @@ B = BezierPatch(Bx, By, Bz);
 %     6 7 9;
 %     8 9 10;
 % ]
-B.plot()
+B.plot(4)

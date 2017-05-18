@@ -81,7 +81,7 @@ classdef BezierPatch
             [q, d] = size(u);
             assert(d == 3, 'Only in 3D.');
             % assert(norm(sum(u, 2) - ones(q, 1)) < eps, 'Coordinates must be barycentric.');
-            assert(q == self.n, 'Blossom must have n point parameters.');
+            assert(q == n, 'Blossom must have n point parameters.');
             for r = 1:n
                 for i = 1:n-r+1
                     for j = 1:n-i+1
@@ -99,15 +99,15 @@ classdef BezierPatch
             if nargin < 4, r = 1; end
             assert(r == floor(r), 'r must be an integer, got %s.', r);
             assert(r >= 0, 'r must be in [0, inf), got %d.', r);
-            if r > self.n, b = 0; return; end
+            if r > n, b = 0; return; end
             assert(length(u) == 3, 'Point has %d components, expected %d.', length(u), 3);
-            assert(abs(sum(u) - 1) < eps, 'Point coordinates must be barycentric.');
+            assert(abs(sum(u) - 1) < 1e-15, 'Point coordinates must be barycentric, error: %g.', abs(sum(u) - 1));
             [p, q] = size(dir);
             assert(q == 3, 'Only in 3D.');
-            assert(norm(sum(dir, 2)) < eps, 'Vector coordinates must be barycentric.');
+            assert(norm(sum(dir, 2)) < 1e-15, 'Vector coordinates must be barycentric.');
             assert(p == r, 'Number of directions (%d) must be equal to degree of the derivative (%d).', p, r);
             U = [dir; repmat(u, n-r, 1)];
-            b = factorial(n) / factorial(n-r) * self.blossom(B, U);
+            b = factorial(n) / factorial(n-r) * BezierPatch.blossom(B, U);
         end
         function [U, T] = uniform_mesh(d)
             % Returns uniform triangle grid on n points.

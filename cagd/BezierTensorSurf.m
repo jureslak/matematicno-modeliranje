@@ -31,6 +31,7 @@ classdef BezierTensorSurf
             assert(nargin == 3, 'Supply values for patameters u and v.');
             assert(isvector(u), 'u must be a vector.');
             assert(isvector(v), 'v must be a vector.');
+            if nargout < 3, error('There are 3 output args.'), end
             M = length(u);
             N = length(v);
             bx = zeros(N, M);
@@ -60,9 +61,9 @@ classdef BezierTensorSurf
             u = linspace(0, 1, nu);
             v = linspace(0, 1, nv);
             hold on
-            c = mesh(self.Bx, self.By, self.Bz);
-            set(c, 'FaceColor', 'none')
-            set(c, 'EdgeColor', 'k')
+%             c = mesh(self.Bx, self.By, self.Bz);
+%             set(c, 'FaceColor', 'none')
+%             set(c, 'EdgeColor', 'k')
             [X, Y, Z] = self.val(u, v);
             surf(X, Y, Z)
         end
